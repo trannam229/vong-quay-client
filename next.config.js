@@ -16,7 +16,16 @@ module.exports = withCSS(withLess({
     javascriptEnabled: true,
     modifyVars: themeVariables, // make your antd custom effective
   },
-  webpack: (config, { isServer }) => {
+  distDir: 'build',
+  compress: false,
+  devIndicators: {
+    autoPrerender: false,
+  },
+  reactStrictMode: true,
+  webpack: (config, { isServer, dev }) => {
+    if (dev) {
+      config.devtool = 'eval-source-map';
+    }
     if (isServer) {
       const antStyles = /antd\/.*?\/style.*?/
       const origExternals = [...config.externals]
