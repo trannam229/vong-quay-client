@@ -6,7 +6,7 @@ import '../assets/style.less';
 import RouterConfigs from  "../config-router";
 
 const ProLayout = dynamic(() => import('@ant-design/pro-layout'), {
-  ssr: true,
+  ssr: false,
 })
 
 
