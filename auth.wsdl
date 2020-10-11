@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://tempuri.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org">
+            <s:element name="Login">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="header" type="tns:AuthenticationHeader" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="AuthenticationHeader">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Sessionid" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Deviceid" type="s:string" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="BaseEntity" />
+            <s:complexType name="AccountInfo">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="1" maxOccurs="1" name="TotalAsset" type="s:double" />
+                            <s:element minOccurs="1" maxOccurs="1" name="AvlAmt" type="s:double" />
+                            <s:element minOccurs="1" maxOccurs="1" name="Invested" type="s:double" />
+                            <s:element minOccurs="1" maxOccurs="1" name="EstProfit" type="s:double" />
+                            <s:element minOccurs="1" maxOccurs="1" name="BrAmt" type="s:double" />
+                            <s:element minOccurs="1" maxOccurs="1" name="EstPayInt" type="s:double" />
+                            <s:element minOccurs="1" maxOccurs="1" name="BlockAmt" type="s:double" />
+                            <s:element minOccurs="1" maxOccurs="1" name="ReCommission" type="s:double" />
+                            <s:element minOccurs="0" maxOccurs="1" name="BankAcct" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="BankAcctName" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="PID" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="PCODE" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="PNAME" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="AccountId" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="BankName" type="s:string" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="AccountResult">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="AccountInfo" type="tns:AccountInfo" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="MessageStatus">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="CfInfo">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="CustID" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="CfType" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="SessionID" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="FullName" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="dateofbirth" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="sex" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="idcode" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="iddate" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="idplace" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="phone" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="contactaddress" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="CustClass" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Careby" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Carebyphone" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="msgStatusT" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="BankAcct" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="BankAcctName" type="s:string" />
+                            <s:element minOccurs="0" maxOccurs="1" name="BankName" type="s:string" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="LoginResultV2">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="CfInfo" type="tns:CfInfo" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Status" type="tns:MessageStatus" />
+                            <s:element minOccurs="0" maxOccurs="1" name="AccountResults" type="tns:ArrayOfAccountResult" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:complexType name="ArrayOfAccountResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="AccountResult" nillable="true" type="tns:AccountResult" />
+                </s:sequence>
+            </s:complexType>
+            <s:element name="LoginResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="tns:LoginResultV2" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckSessionID">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="header" type="tns:AuthenticationHeader" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckSessionIDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="CheckSessionIDResult" type="tns:LoginResult" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="LoginResult">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="CfInfo" type="tns:CfInfo" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Status" type="tns:MessageStatus" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:element name="CheckSessionIDPWD">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="header" type="tns:AuthenticationHeader" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckSessionIDPWDResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="CheckSessionIDPWDResult" type="tns:LoginResult" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ChangePassword">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="header" type="tns:AuthenticationHeader" />
+                        <s:element minOccurs="0" maxOccurs="1" name="NewPassword" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ChangePasswordResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ChangePasswordResult" type="tns:ChangePasswordResult" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ChangePasswordResult">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="CfInfo" type="tns:CfInfo" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Status" type="tns:MessageStatus" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+            <s:element name="LostPassword">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="header" type="tns:AuthenticationHeader" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="LostPasswordResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="LostPasswordResult" type="tns:LostPasswordResult" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="LostPasswordResult">
+                <s:complexContent mixed="false">
+                    <s:extension base="tns:BaseEntity">
+                        <s:sequence>
+                            <s:element minOccurs="0" maxOccurs="1" name="CfInfo" type="tns:CfInfo" />
+                            <s:element minOccurs="0" maxOccurs="1" name="Status" type="tns:MessageStatus" />
+                        </s:sequence>
+                    </s:extension>
+                </s:complexContent>
+            </s:complexType>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="LoginSoapIn">
+        <wsdl:part name="parameters" element="tns:Login" />
+    </wsdl:message>
+    <wsdl:message name="LoginSoapOut">
+        <wsdl:part name="parameters" element="tns:LoginResponse" />
+    </wsdl:message>
+    <wsdl:message name="CheckSessionIDSoapIn">
+        <wsdl:part name="parameters" element="tns:CheckSessionID" />
+    </wsdl:message>
+    <wsdl:message name="CheckSessionIDSoapOut">
+        <wsdl:part name="parameters" element="tns:CheckSessionIDResponse" />
+    </wsdl:message>
+    <wsdl:message name="CheckSessionIDPWDSoapIn">
+        <wsdl:part name="parameters" element="tns:CheckSessionIDPWD" />
+    </wsdl:message>
+    <wsdl:message name="CheckSessionIDPWDSoapOut">
+        <wsdl:part name="parameters" element="tns:CheckSessionIDPWDResponse" />
+    </wsdl:message>
+    <wsdl:message name="ChangePasswordSoapIn">
+        <wsdl:part name="parameters" element="tns:ChangePassword" />
+    </wsdl:message>
+    <wsdl:message name="ChangePasswordSoapOut">
+        <wsdl:part name="parameters" element="tns:ChangePasswordResponse" />
+    </wsdl:message>
+    <wsdl:message name="LostPasswordSoapIn">
+        <wsdl:part name="parameters" element="tns:LostPassword" />
+    </wsdl:message>
+    <wsdl:message name="LostPasswordSoapOut">
+        <wsdl:part name="parameters" element="tns:LostPasswordResponse" />
+    </wsdl:message>
+    <wsdl:portType name="AuthenticateServiceSoap">
+        <wsdl:operation name="Login">
+            <wsdl:input message="tns:LoginSoapIn" />
+            <wsdl:output message="tns:LoginSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="CheckSessionID">
+            <wsdl:input message="tns:CheckSessionIDSoapIn" />
+            <wsdl:output message="tns:CheckSessionIDSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="CheckSessionIDPWD">
+            <wsdl:input message="tns:CheckSessionIDPWDSoapIn" />
+            <wsdl:output message="tns:CheckSessionIDPWDSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="ChangePassword">
+            <wsdl:input message="tns:ChangePasswordSoapIn" />
+            <wsdl:output message="tns:ChangePasswordSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="LostPassword">
+            <wsdl:input message="tns:LostPasswordSoapIn" />
+            <wsdl:output message="tns:LostPasswordSoapOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="AuthenticateServiceSoap" type="tns:AuthenticateServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="Login">
+            <soap:operation soapAction="http://tempuri.org/Login" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckSessionID">
+            <soap:operation soapAction="http://tempuri.org/CheckSessionID" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckSessionIDPWD">
+            <soap:operation soapAction="http://tempuri.org/CheckSessionIDPWD" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ChangePassword">
+            <soap:operation soapAction="http://tempuri.org/ChangePassword" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LostPassword">
+            <soap:operation soapAction="http://tempuri.org/LostPassword" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AuthenticateServiceSoap12" type="tns:AuthenticateServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="Login">
+            <soap12:operation soapAction="http://tempuri.org/Login" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckSessionID">
+            <soap12:operation soapAction="http://tempuri.org/CheckSessionID" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckSessionIDPWD">
+            <soap12:operation soapAction="http://tempuri.org/CheckSessionIDPWD" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ChangePassword">
+            <soap12:operation soapAction="http://tempuri.org/ChangePassword" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LostPassword">
+            <soap12:operation soapAction="http://tempuri.org/LostPassword" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="AuthenticateService">
+        <wsdl:port name="AuthenticateServiceSoap" binding="tns:AuthenticateServiceSoap">
+            <soap:address location="https://bps.lendbiz.vn/BPSTEST/AuthenticateService.asmx" />
+        </wsdl:port>
+        <wsdl:port name="AuthenticateServiceSoap12" binding="tns:AuthenticateServiceSoap12">
+            <soap12:address location="https://bps.lendbiz.vn/BPSTEST/AuthenticateService.asmx" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
