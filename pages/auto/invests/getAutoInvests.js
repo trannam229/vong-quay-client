@@ -1,70 +1,39 @@
+import { Table, Switch, Radio, Form, Space } from 'antd';
 import MainLayout from '@/layouts/main';
 
+
+const dataSource = [
+  {
+    key: '1',
+    name: 'Mike',
+    age: 32,
+    address: '10 Downing Street',
+  },
+  {
+    key: '2',
+    name: 'John',
+    age: 42,
+    address: '10 Downing Street',
+  },
+];
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age',
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
+  },
+];
 export default function Example() {
-  return <MainLayout>
-    <Form layout="horizontal">
-      <FormItem
-        label="Input Number"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 8 }}
-      >
-        <InputNumber
-          size="large"
-          min={1}
-          max={10}
-          style={{ width: 100 }}
-          defaultValue={3}
-          name="inputNumber"
-        />
-        <a href="#">Link</a>
-      </FormItem>
-
-      <FormItem
-        label="Switch"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 8 }}
-      >
-        <Switch defaultChecked />
-      </FormItem>
-
-      <FormItem
-        label="Slider"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 8 }}
-      >
-        <Slider defaultValue={70} />
-      </FormItem>
-
-      <FormItem
-        label="Select"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 8 }}
-      >
-        <Select size="large" defaultValue="lucy" style={{ width: 192 }}>
-          <Option value="jack">jack</Option>
-          <Option value="lucy">lucy</Option>
-          <Option value="disabled" disabled>
-            disabled
-          </Option>
-          <Option value="yiminghe">yiminghe</Option>
-        </Select>
-      </FormItem>
-
-      <FormItem
-        label="DatePicker"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 8 }}
-      >
-        <DatePicker name="startDate" />
-      </FormItem>
-      <FormItem style={{ marginTop: 48 }} wrapperCol={{ span: 8, offset: 8 }}>
-        <Button size="large" type="primary" htmlType="submit">
-          OK
-        </Button>
-        <Button size="large" style={{ marginLeft: 8 }}>
-          Cancel
-        </Button>
-      </FormItem>
-    </Form>
-</MainLayout>
+  return <MainLayout><Table dataSource={dataSource} columns={columns} /></MainLayout>
 }

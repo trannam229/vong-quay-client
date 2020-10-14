@@ -29,7 +29,7 @@ export default {
                     name: 'Cài đặt',
                 },
                 {
-                    path: '/auto/investInfo/getAutoInvestInfo',
+                    path: '/auto/invest-info/getAutoInvestInfo',
                     name: 'Danh sách',
                 }
             ],
