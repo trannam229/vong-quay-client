@@ -5,7 +5,10 @@
       "@layouts/*": [
         "layouts/*"
       ],
-      
+      "@server/*": [
+        "server/*"
+      ]
+
     }
   }
 }
