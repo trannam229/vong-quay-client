@@ -22,6 +22,20 @@ export default {
         },
         {
             path: '/',
+            name: 'Đầu tư tự động',
+            routes: [
+                {
+                    path: '/auto/invests/getAutoInvests',
+                    name: 'Cài đặt',
+                },
+                {
+                    path: '/auto/investInfo/getAutoInvestInfo',
+                    name: 'Danh sách',
+                }
+            ],
+        },
+        {
+            path: '/',
             name: 'Tài khoản',
             routes: [
                 {
