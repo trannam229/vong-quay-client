@@ -1,0 +1,4 @@
+{
+    "watch": [".babelrc", "next.config.js", "server/**/*.js"],
+    "ext": "js json"
+}

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-axios.defaults.baseURL = 'http://localhost:3000/';
+
+axios.defaults.baseURL = "http://localhost:3000/api";
 
 
 /* eslint no-param-reassign: ["error", { "props": true,

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
-    "dev-sv": "node server/index.js",
+    "dev-sv": "nodemon server/index.js",
     "build": "next build",
     "start": "next start",
     "analyze": "cross-env ANALYZE=true yarn build"

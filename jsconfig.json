@@ -8,8 +8,8 @@
       "@server/*": [
         "server/*"
       ],
-      "@config/*": [
-        "config/*"
+      "@configs/*": [
+        "configs/*"
       ]
 
     }

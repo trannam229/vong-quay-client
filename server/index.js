@@ -5,14 +5,15 @@ const PORT = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const bodyParser = require('body-parser')
+const jsonParser = bodyParser.json();
 
 app
   .prepare()
   .then(() => {
     const server = express();
-    const showRoutes = require("./routes/index.js");
-
-    server.use("/api", showRoutes(server));
+    server.use(jsonParser);
+    server.use("/api", require("./routes/index.js"));
 
     server.get("*", (req, res) => {
       return handle(req, res);
