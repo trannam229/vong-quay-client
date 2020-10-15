@@ -1,4 +1,3 @@
-const express = require('express');
 const soap = require('soap');
 // const url = 'https://bps.lendbiz.vn/BPSTEST/AuthenticateService.asmx?WSDL';
 const args = {Username: '000028', Password: 'thanung'};
@@ -6,11 +5,9 @@ const args = {Username: '000028', Password: 'thanung'};
 
 async function soapAuth() {
     try {
+        const func = 'Login'
         const client = await soap.createClientAsync('https://bps.lendbiz.vn/BPSTEST/AuthenticateService.asmx?WSDL');
-        // const auth = new soap.BasicAuthSecurity('000028', 'thanung');
-        client.addSoapHeader({});
-        // client.setSecurity(auth);
-        const response = await client.LoginAsync({header: args})
+        const response = await client[`${func}Async`]({header: args})
 
         return response;
 
@@ -19,4 +16,6 @@ async function soapAuth() {
     }
 }
 
-module.exports = soapAuth
+module.exports = {
+    soapAuth
+}

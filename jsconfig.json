@@ -7,6 +7,9 @@
       ],
       "@server/*": [
         "server/*"
+      ],
+      "@config/*": [
+        "config/*"
       ]
 
     }

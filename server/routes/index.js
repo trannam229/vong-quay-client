@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const soapAuth = require('../soap-http');
+const { soapAuth } = require('../soap-http');
 
 function routes(app) {
     router.get("/login", async (req, res) => {
@@ -9,7 +9,7 @@ function routes(app) {
     });
 
     router.get("/movies/:id", (req, res) => {
-        return app.render(req, res, "/movies", {id: req.params.id});
+        return app.render(req, res, "/movies", { id: req.params.id });
     });
 
     return router;
