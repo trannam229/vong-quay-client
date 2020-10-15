@@ -1,5 +1,4 @@
-import MainLayout from '@/layouts/main';
-import { lAxios } from '@/layouts/axiosConfig';
+import MainLayout from '@layouts/main'
 
 export default function Example() {
   const xmlBody = `
