@@ -5,9 +5,7 @@ function Example({ infoClient }) {
 }
 
 export async function getStaticProps({ params }) {
-  // params contains the post `id`.
-  // If the route is like /posts/1, then params.id is 1
-  const {data: infoClient} = await axios.get(`api/login`);
+  const { data: infoClient } = await axios.get(`api/login`);
   return { props: { infoClient } }
 }
 
