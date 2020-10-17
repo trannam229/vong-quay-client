@@ -6,17 +6,30 @@ const lessToJS = require('less-vars-to-js');
 const fs = require('fs');
 const path = require('path');
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 // Where your antd-custom.less file lives
 const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, './assets/antd-custom.less'), 'utf8')
 );
 
-module.exports = withCSS(withLess({
+module.exports = withBundleAnalyzer(withCSS(withLess({
   lessLoaderOptions: {
     javascriptEnabled: true,
     modifyVars: themeVariables, // make your antd custom effective
   },
-  webpack: (config, { isServer }) => {
+  distDir: 'build',
+  compress: false,
+  devIndicators: {
+    autoPrerender: false,
+  },
+  reactStrictMode: true,
+  webpack: (config, { isServer, dev }) => {
+    if (dev) {
+      config.devtool = 'eval-source-map';
+    }
     if (isServer) {
       const antStyles = /antd\/.*?\/style.*?/
       const origExternals = [...config.externals]
@@ -39,4 +52,4 @@ module.exports = withCSS(withLess({
     }
     return config
   },
-}));
+})));
