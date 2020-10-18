@@ -3,6 +3,7 @@ import axios from '../configs/api-request';
 import { useState, useEffect } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
 
 const layout = {
   labelCol: { span: 8 },
@@ -27,21 +28,15 @@ function Example() {
   const onFinish = async (values) => {
     try {
       const { data } = await axios.post("/login", values);
+      console.log(data);
       if (data.Status.Code !== '0') {
         console.log('Login failed!');
       } else {
-        const info = {
-          CfInfo: data.CfInfo,
-          AccountResults: data.AccountResults,
-          values
-        }
-        const jwtAccount = jwt.sign(info, 'secretKey');
-        localStorage.setItem('_jwtAccount', jwtAccount)
-        const decoded = jwt.verify(jwtAccount, 'secretKey');
-        console.log(decoded);
+        const jwtAccount = jwt.sign(data.CfInfo, 'secretKey');
+        Cookies.set('access_token', jwtAccount)
       }
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e.message);
     }
 
   };
