@@ -24,7 +24,6 @@ function Example() {
     // }
   });
 
-  const [state, setState] = useState([]);
   const onFinish = async (values) => {
     try {
       const { data } = await axios.post("/login", values);

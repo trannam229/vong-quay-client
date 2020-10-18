@@ -1,5 +1,5 @@
 import MainLayout from '@layouts/main';
-import { PageHeader, Row, Col } from 'antd';
+import { PageHeader, Row, Col, Descriptions } from 'antd';
 import { useEffect } from 'react';
 
 import axios from '@configs/api-request';
@@ -16,9 +16,11 @@ export default function Example() {
         title="Hạng thành viên"
         style={{ paddingLeft: 0 }}
       />
-      <div>
-        <p className="font-weight-bold">Chương trình khách hàng thân thiết</p>
-        <p>Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</p>
+      <>
+        <Descriptions title="Chương trình khách hàng thân thiết">
+          <Descriptions.Item label="UserName">Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
+        </Descriptions>,
+
         <Row justify="center" className="mt-5">
           <Col
             span={12}
@@ -39,7 +41,7 @@ export default function Example() {
             </Row>
           </Col>
         </Row>
-      </div>
+      </>
 
       <div className="mt-5">
         <p className="font-weight-bold">Hạng thành viên & Quyền lợi</p>
