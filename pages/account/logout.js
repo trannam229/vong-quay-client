@@ -1,24 +1,19 @@
-import MainLayout from '@layouts/main'
+import MainLayout from '@layouts/main';
+import { PageHeader, Card, Button } from 'antd';
 
 export default function Example() {
-  const xmlBody = `
-  <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-    <Body>
-        <Login xmlns="http://tempuri.org">
-            <!-- Optional -->
-            <header>
-                <Username>000028</Username>
-                <Password>thanung</Password>
-                <Sessionid>[string?]</Sessionid>
-                <Deviceid>[string?]</Deviceid>
-            </header>
-        </Login>
-    </Body>
-  </Envelope>`;
-
-  lAxios.post('https://bps.lendbiz.vn/BPSTEST/AuthenticateService.asmx', xmlBody)
-    .then(res => console.log(res['soap:Envelope']['soap:Body']))
-    .catch(err => console.log(err))
-
-  return <MainLayout>Example page</MainLayout>
+  return (
+    <MainLayout>
+      <PageHeader className="site-page-header"
+        title="Đăng xuất"
+        style={{ paddingLeft: 0 }}
+      />
+      <Card style={{ width: 300, textAlign: "center" }}>
+        <img src="/medal.svg" alt="Vercel Logo" className="logo" width="100px" />
+        <p>Bạn có thực sự muốn Đăng xuất?</p>
+        <Button type="primary" shape="round" style={{ width: 100 }}>Có</Button>
+        <Button shape="round" style={{ width: 100 }}>Không</Button>
+      </Card>
+    </MainLayout>
+  )
 }
