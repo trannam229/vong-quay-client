@@ -1,7 +1,17 @@
-import MainLayout from '@/layouts/main'
+import MainLayout from '@layouts/main';
 import { PageHeader, Row, Col } from 'antd';
+import { useEffect } from 'react';
+import jwt from 'jsonwebtoken';
 
 export default function Example() {
+  let data = {};
+  useEffect(() => {
+    const jwtAccount = localStorage.getItem('_jwtAccount')
+    const account = jwt.verify(jwtAccount, 'secretKey');
+    console.log(account);
+    data.CfInfo = account.CfInfo;
+  });
+
   return (
     <MainLayout>
       <PageHeader
@@ -25,7 +35,7 @@ export default function Example() {
               <Col flex="auto">
                 <p>Hạng thành viên hiện tại</p>
                 <Row style={{ borderBottom: "2px gray solid" }}>
-                  <Col flex="70px" style={{ borderRight: "2px #A4EAFF solid" }}><p>ĐỒNG</p></Col>
+                  <Col flex="70px" style={{ borderRight: "2px #A4EAFF solid" }}><p>{data.CfInfo.CfType}</p></Col>
                   <Col flex="auto">0 điểm</Col>
                 </Row>
                 <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>

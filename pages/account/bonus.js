@@ -1,4 +1,4 @@
-import MainLayout from '@/layouts/main'
+import MainLayout from '@layouts/main'
 import { PageHeader, Row, Col, Table } from 'antd';
 
 export default function Example() {

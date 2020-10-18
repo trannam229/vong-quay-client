@@ -1,4 +1,4 @@
-import MainLayout from '@/layouts/main';
+import MainLayout from '@layouts/main';
 import { PageHeader, Card, Button, Form, Input } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
