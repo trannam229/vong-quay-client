@@ -2,6 +2,9 @@ import MainLayout from '@layouts/main';
 import axios from '../configs/api-request';
 import { useState, useEffect } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
+import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
+
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 8 },
@@ -16,13 +19,14 @@ function Example() {
     try {
       const { data } = await axios.post("/login", values);
       console.log(data);
-      if(data.Status.Message.length > 0){
+      if (data.Status.Code !== '0') {
         console.log('Login failed!');
       } else {
-        console.log('Login successfully!');
+        const jwtAccount = jwt.sign(data.CfInfo, 'secretKey');
+        Cookies.set('access_token', jwtAccount)
       }
-    } catch (error) {
-      console.log('loi roi em oi')
+    } catch (e) {
+      console.log(e.message);
     }
 
   };
