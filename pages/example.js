@@ -15,15 +15,6 @@ const tailLayout = {
 
 
 function Example() {
-  useEffect(() => {
-    // const data = localStorage.getItem('_jwtAccount')
-    // if (data) {
-    //   this.setState(prevState => {
-    //     return JSON.parse(data)
-    //   })
-    // }
-  });
-
   const onFinish = async (values) => {
     try {
       const { data } = await axios.post("/login", values);
@@ -31,13 +22,13 @@ function Example() {
       if (data.Status.Code !== '0') {
         console.log('Login failed!');
       } else {
-        const jwtAccount = jwt.sign(data.CfInfo, 'secretKey');
+        const auth = Object.assign(values, {SessionID: data.CfInfo.SessionID})
+        const jwtAccount = jwt.sign({auth, CfInfo: data.CfInfo}, 'secretKey');
         Cookies.set('access_token', jwtAccount)
       }
     } catch (e) {
       console.log(e.message);
     }
-
   };
 
   const onFinishFailed = errorInfo => {
