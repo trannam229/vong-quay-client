@@ -1,12 +1,35 @@
 import MainLayout from '@layouts/main';
-import { PageHeader, Row, Col, Descriptions } from 'antd';
-import { useEffect } from 'react';
+import { PageHeader, Row, Col, Descriptions, Image } from 'antd';
+import { useEffect, useState } from 'react';
+import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
+import axios from '../../configs/api-request';
 
-import axios from '@configs/api-request';
 export default function Example() {
-  useEffect(async () => {
-    const data = await axios.get('orders');
-    console.log(data);
+  const [state, setState] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const decoded = jwt.decode(Cookies.get('access_token'));
+        const body = {
+          header: {
+            Sessionid: decoded.CfInfo.SessionID,
+          },
+          Custid: decoded.CfInfo.CustID,
+        };
+        const { data } = await axios.post("/account", body);
+
+        setState({
+          cfInfo: decoded.CfInfo,
+          accountInfo: data.AccountInfo,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchData();
   }, []);
 
   return (
@@ -18,8 +41,8 @@ export default function Example() {
       />
       <>
         <Descriptions title="Chương trình khách hàng thân thiết">
-          <Descriptions.Item label="UserName">Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
-        </Descriptions>,
+          <Descriptions.Item>Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
+        </Descriptions>
 
         <Row justify="center" className="mt-5">
           <Col
@@ -28,13 +51,16 @@ export default function Example() {
           >
             <Row>
               <Col flex="100px">
-                <img src="/medal.svg" alt="Vercel Logo" className="logo" width="100px" />
+                <Image
+                  width={100}
+                  src="/medal.svg"
+                />
               </Col>
               <Col flex="auto">
                 <p>Hạng thành viên hiện tại</p>
                 <Row style={{ borderBottom: "2px gray solid" }}>
-                  <Col flex="70px" style={{ borderRight: "2px #A4EAFF solid" }}><p></p></Col>
-                  <Col flex="auto">0 điểm</Col>
+                  <Col flex="70px" style={{ borderRight: "2px #A4EAFF solid" }}><p>{state.cfInfo && state.cfInfo.CustClass}</p></Col>
+                  <Col flex="auto">{state.accountInfo && state.accountInfo.Invested} điểm</Col>
                 </Row>
                 <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>
               </Col>
@@ -44,10 +70,10 @@ export default function Example() {
       </>
 
       <div className="mt-5">
-        <p className="font-weight-bold">Hạng thành viên & Quyền lợi</p>
+        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Hạng thành viên & Quyền lợi</p>
         <Row justify="space-between">
           <Col span={4} className="text-center">
-            <img src="/medal.svg" alt="Vercel Logo" className="logo" width="70px" />
+            <Image src="/medal.svg" width={70} />
             <p className="font-weight-bold">ĐỒNG</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
             <ul>
@@ -56,7 +82,7 @@ export default function Example() {
             </ul>
           </Col>
           <Col span={4} className="text-center">
-            <img src="/medal.svg" alt="Vercel Logo" className="logo" width="70px" />
+            <Image src="/medal.svg" width={70} />
             <p className="font-weight-bold">BẠC</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
             <ul>
@@ -65,7 +91,7 @@ export default function Example() {
             </ul>
           </Col>
           <Col span={4} className="text-center">
-            <img src="/medal.svg" alt="Vercel Logo" className="logo" width="70px" />
+            <Image src="/medal.svg" width={70} />
             <p className="font-weight-bold">VÀNG</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
             <ul>
@@ -74,7 +100,7 @@ export default function Example() {
             </ul>
           </Col>
           <Col span={4} className="text-center">
-            <img src="/medal.svg" alt="Vercel Logo" className="logo" width="70px" />
+            <Image src="/medal.svg" width={70} />
             <p className="font-weight-bold">KIM CƯƠNG</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
             <ul>

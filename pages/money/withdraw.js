@@ -1,5 +1,5 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Row, Col, Input, Select, Button } from 'antd';
+import { PageHeader, Row, Col, Input, Select, Button, Form } from 'antd';
 const { Option } = Select;
 
 export default function Example() {
@@ -34,6 +34,32 @@ export default function Example() {
     (<Option value={bank.id}>{bank.name}</Option>)
   );
 
+  const onFinish = async (values) => {
+    try {
+      const decoded = jwt.decode(Cookies.get('access_token'));
+      const body = {
+        header: {
+          Sessionid: decoded.CfInfo.SessionID,
+          Password: values.Password,
+        },
+        NewPassword: values.NewPassword,
+      };
+
+      const { data } = await axios.post("/changePassword", body);
+      if (data.Status.Code !== '0') {
+        console.log(data.Status.Message);
+      } else {
+        console.log('Congratulations! Your password has been changed successfully!');
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+  };
+
   return (
     <MainLayout>
       <PageHeader
@@ -42,7 +68,25 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <div class="mt-5">
+      <Form
+        layout="vertical"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+      >
+        <Form.Item
+          label="Nhập số tiền cần bán"
+          name="Money"
+          rules={[
+            {
+              required: true,
+              message: 'Bạn cần nhập giá trị',
+            },
+          ]}
+        >
+          <Input.Number suffix="VND" />
+        </Form.Item>
+      </Form>
+      <div className="mt-5">
         <Row className="mt-5 p-2">
           <Col span="6" className="font-weight-bold" style={style.label}>Nhập số tiền bán</Col>
           <Col span="8">
