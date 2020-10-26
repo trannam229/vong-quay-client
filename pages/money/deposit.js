@@ -15,11 +15,11 @@ export default function Example() {
       />
 
       <div>
-        <p class="font-weight-bold">Hướng dẫn nộp tiền đầu tư</p>
+        <p className="font-weight-bold">Hướng dẫn nộp tiền đầu tư</p>
         <p>Bạn chuyển số tiền cần đầu tư vào tài khoản của Lendbiz với nội dung sau:</p>
       </div>
 
-      <div class="mt-5">
+      <div className="mt-5">
         <Row className="mt-5">
           <Col span="4" className="p-2">Số tài khoản</Col>
           <Col span="10" className="p-2" style={styleInfo}>1237040197629</Col>

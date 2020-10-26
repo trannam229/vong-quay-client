@@ -1,5 +1,9 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Row, Col, Table } from 'antd';
+import { PageHeader, Row, Col, Table, Descriptions } from 'antd';
+import { useEffect, useState } from 'react';
+import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
+import axios from '../../configs/api-request';
 
 export default function Example() {
   const columns = [
@@ -41,42 +45,57 @@ export default function Example() {
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      name: 'Nguyễn Phúc An',
-      openDate: '15.02.2020',
-      status: 'Đang đầu tư',
-      bonus: '50,000,000',
-      tempBonus: '50,000,000',
-      tax: '50,000,000',
-      tempBonusAfterTax: '50,000,000'
-    },
-    {
-      key: '2',
-      name: 'Nguyễn Phúc An',
-      openDate: '15.02.2020',
-      status: 'Chưa đầu tư',
-      bonus: '15,000,000',
-      tempBonus: '15,000,000',
-      tax: '10,000,000',
-      tempBonusAfterTax: '50,000,000'
-    },
-    {
-      key: '2',
-      name: 'Nguyễn Phúc An',
-      openDate: '15.02.2020',
-      status: 'Chưa đầu tư',
-      bonus: '15,000,000',
-      tempBonus: '15,000,000',
-      tax: '10,000,000',
-      tempBonusAfterTax: '50,000,000'
-    },
-  ];
-
   const styleTable = {
     bordered: true,
+    loading: true
   }
+
+  const [state, setState] = useState({
+    styleTable: {
+      bordered: true,
+      loading: true
+    }
+  });
+
+  useEffect(() => {
+    const setTableSource = item => {
+      return {
+        key: item.RN,
+        name: item.Fullname,
+        openDate: '',
+        status: item.Status,
+        bonus: item.Accamt,
+        tempBonus: item.TotalEstAmt,
+        tax: item.Vatamt,
+        tempBonusAfterTax: item.EstAmt
+      };
+    };
+
+    async function fetchData() {
+      try {
+        const decoded = jwt.decode(Cookies.get('access_token'));
+        const body = {
+          header: {
+            Sessionid: decoded.CfInfo.SessionID,
+          },
+          pv_Custid: decoded.CfInfo.CustID,
+        };
+        const { data } = await axios.post("/re", body);
+
+        setState({
+          styleTable: {
+            bordered: true,
+            loading: false
+          },
+          cfInfo: decoded.CfInfo,
+          reInfoList: data.REInfoList ? data.REInfoList.map(setTableSource) : [],
+        });
+      } catch (e) {
+        console.log(e);
+      };
+    };
+    fetchData();
+  }, []);
 
   return (
     <MainLayout>
@@ -86,19 +105,18 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <div>
-        <p class="font-weight-bold">Chương trình phát triển đối tác</p>
-        <p class="mb-0">Bạn sẽ nhận được tiền thưởng mỗi khi người được bạn giới thiệu mở tài khoản và đầu tư trong 3 tháng đầu tiên. Thưởng sẽ được trả vào tháng kế tiếp.
-Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận thưởng hấp dẫn.</p>
-      </div>
+      <Descriptions title="Chương trình phát triển đối tác">
+        <Descriptions.Item>Bạn sẽ nhận được tiền thưởng mỗi khi người được bạn giới thiệu mở tài khoản và đầu tư trong 3 tháng đầu tiên. Thưởng sẽ được trả vào tháng kế tiếp.
+Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận thưởng hấp dẫn.</Descriptions.Item>
+      </Descriptions>
 
-      <div class="mt-5">
-        <p class="font-weight-bold">Xem tiền thưởng</p>
+      <div className="mt-5">
+        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Xem tiền thưởng</p>
         <Row>
           <Col
             span={10}
             style={{ backgroundColor: "#A4EAFF", padding: "10px" }}
-            class="p-2"
+            className="p-2"
           >
             <Row>
               <Col span={16}>Tiền thưởng đã trả lũy kế</Col>
@@ -118,11 +136,11 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
         </Row>
       </div>
 
-      <div class="mt-5">
-        <p class="font-weight-bold">Danh sách các nhà đầu tư giới thiệu</p>
+      <div className="mt-5">
+        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh sách các nhà đầu tư giới thiệu</p>
         <Table
-          {...styleTable}
-          dataSource={data}
+          {...state.styleTable}
+          dataSource={state.reInfoList}
           columns={columns}
         />
       </div>
