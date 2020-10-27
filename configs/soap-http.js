@@ -1,12 +1,11 @@
 const soap = require('soap');
-// const url = 'https://bps.lendbiz.vn/BPSTEST/AuthenticateService.asmx?WSDL';
+const {head} = require('lodash');
 
 async function soapAuth(func, args) {
     try {
         const client = await soap.createClientAsync('https://bps.lendbiz.vn/BPSTEST/AuthenticateService.asmx?WSDL');
         const response = await client[`${func}Async`](args)
-        return response;
-
+        return head(response);
     } catch (e) {
         console.error(e.message);
     }
@@ -16,8 +15,7 @@ async function soapTrading(func, args) {
   try {
       const client = await soap.createClientAsync('https://bps.lendbiz.vn/BPSTEST/OnlineTrading.asmx?WSDL');
       const response = await client[`${func}Async`](args)
-      return response;
-
+      return head(response);
   } catch (e) {
       console.error(e.message);
   }

@@ -4,7 +4,7 @@ exports.account = async (req, res) => {
     try {
         const payload = req.body;
         const response = await soapTrading('GetAccount', payload);
-        return successResponse(res, response[0].GetAccountResult);
+        return successResponse(res, response.GetAccountResult);
     } catch (e) {
         return errorResponse(res, e.message);
     }
@@ -14,7 +14,7 @@ exports.changePassword = async (req, res) => {
     try {
         const payload = req.body;
         const response = await soapAuth('ChangePassword', payload);
-        return successResponse(res, response[0].ChangePasswordResult);
+        return successResponse(res, response.ChangePasswordResult);
     } catch (e) {
         return errorResponse(res, e.message);
     }
@@ -26,7 +26,7 @@ exports.re = async (req, res) => {
         const payload = req.body;
         const response = await soapTrading('GetRE', payload);
 
-        return successResponse(res, response[0].GetREResult);
+        return successResponse(res, response.GetREResult);
     } catch (e) {
         return errorResponse(res, e.message);
     }
