@@ -1,12 +1,12 @@
 const { soapTrading } = require('../../configs/soap-http');
-
+const { successResponse, errorResponse } = require('../api-response');
 exports.account = async (req, res) => {
     try {
         const payload = req.body;
         const response = await soapTrading('GetAccount', payload);
-        res.send(response[0].GetAccountResult);
-    } catch (error) {
-        return res.json({ error });
+        return successResponse(res, response[0].GetAccountResult);
+    } catch (e) {
+        return errorResponse(res, e.message);
     }
 };
 
@@ -14,9 +14,9 @@ exports.changePassword = async (req, res) => {
     try {
         const payload = req.body;
         const response = await soapAuth('ChangePassword', payload);
-        res.send(response[0].ChangePasswordResult);
-    } catch (error) {
-        return res.json({ error });
+        return successResponse(res, response[0].ChangePasswordResult);
+    } catch (e) {
+        return errorResponse(res, e.message);
     }
 };
 
@@ -25,8 +25,18 @@ exports.re = async (req, res) => {
     try {
         const payload = req.body;
         const response = await soapTrading('GetRE', payload);
-        res.send(response[0].GetREResult);
-    } catch (error) {
-        return res.json({ error });
+
+        return successResponse(res, response[0].GetREResult);
+    } catch (e) {
+        return errorResponse(res, e.message);
     }
 };
+
+
+exports.priceBoard = async (req, res) => {
+    try {
+        
+    } catch (e) {
+        return errorResponse(res, e.message);
+    }
+}

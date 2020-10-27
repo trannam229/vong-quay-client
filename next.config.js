@@ -25,7 +25,6 @@ module.exports = withBundleAnalyzer(withCSS(withLess({
   devIndicators: {
     autoPrerender: false,
   },
-  reactStrictMode: true,
   webpack: (config, { isServer, dev }) => {
     if (dev) {
       config.devtool = 'eval-source-map';
