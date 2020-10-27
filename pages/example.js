@@ -1,9 +1,9 @@
 import MainLayout from '@layouts/main';
 import axios from '../configs/api-request';
-import { useState, useEffect } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router'
 
 const layout = {
   labelCol: { span: 8 },
@@ -15,16 +15,16 @@ const tailLayout = {
 
 
 function Example() {
+  const route = useRouter();
   const onFinish = async (values) => {
     try {
-      const { data } = await axios.post("/login", values);
-      console.log(data);
+      const { data } = await axios.post("/login", {header: values});
       if (data.Status.Code !== '0') {
         console.log('Login failed!');
       } else {
-        const auth = Object.assign(values, {SessionID: data.CfInfo.SessionID})
-        const jwtAccount = jwt.sign({auth, CfInfo: data.CfInfo}, 'secretKey');
+        const jwtAccount = jwt.sign(data, 'secretKey');
         Cookies.set('access_token', jwtAccount)
+        route.push({ pathname: '/' })
       }
     } catch (e) {
       console.log(e.message);
