@@ -1,4 +1,5 @@
-const { soapTrading } = require('../../configs/soap-http');
+const { soapTrading, soapAuth } = require('../../configs/soap-http');
+
 const { successResponse, errorResponse } = require('../api-response');
 exports.account = async (req, res) => {
     try {
@@ -33,9 +34,14 @@ exports.re = async (req, res) => {
 };
 
 
-exports.priceBoard = async (req, res) => {
+exports.getPriceBoard = async (req, res) => {
     try {
-        
+        const header = {
+            Sessionid: req.account.CfInfo.SessionID,
+        };
+        const response = await soapTrading('GetPriceBoard', { header });
+        return successResponse(res, response);
+
     } catch (e) {
         return errorResponse(res, e.message);
     }
