@@ -9,7 +9,7 @@ export default function Example11() {
   const columns = [
     {
       title: 'Loại khác hàng',
-      dataIndex: 'typeCustomer', 
+      dataIndex: 'typeCustomer',
       key: 'typeCustomer',
     },
     {
@@ -75,14 +75,14 @@ export default function Example11() {
             loading: false
           },
           cfInfo: decoded.CfInfo,
-          reInfoList: data.GetAutoInvestsResult.AutoInvestList ? data.GetAutoInvestsResult.AutoInvestList.map(setTableSource) : [],
-          
+          reInfoList: data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.map(setTableSource) : [],
+
         });
       } catch (e) {
         console.log(e);
       };
     };
-    fetchData(); 
+    fetchData();
   }, []);
 
   return (

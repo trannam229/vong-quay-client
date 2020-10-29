@@ -5,11 +5,11 @@ import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../../configs/api-request';
 
-export default function Example() {
+export default function Example11() {
   const columns = [
     {
       title: 'Loại khác hàng',
-      dataIndex: 'typeCustomer', 
+      dataIndex: 'typeCustomer',
       key: 'typeCustomer',
     },
     {
@@ -68,21 +68,20 @@ export default function Example() {
           CustId: decoded.CfInfo.CustID,
         };
         const { data } = await axios.post("/getAutoInvests", body);
-        console.log("aaa:"+data);
         setState({
           styleTable: {
             bordered: true,
             loading: false
           },
           cfInfo: decoded.CfInfo,
-          reInfoList: data.REInfoList ? data.REInfoList.map(setTableSource) : [],
-          
+          reInfoList: data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.map(setTableSource) : [],
+
         });
       } catch (e) {
         console.log(e);
       };
     };
-    fetchData(); 
+    fetchData();
   }, []);
 
   return (
