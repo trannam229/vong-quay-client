@@ -1,53 +1,107 @@
-import { Table, Switch, Radio, Form, Space } from 'antd';
-import styles from './auto-invest.less';
-import MainLayout from '@/layouts/main';
+import MainLayout from '@layouts/main'
+import { PageHeader, Row, Col, Table, Descriptions } from 'antd';
+import { useEffect, useState } from 'react';
+import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
+import axios from '../../../configs/api-request';
 
+export default function Example11() {
+  const columns = [
+    {
+      title: 'Loại khác hàng',
+      dataIndex: 'typeCustomer', 
+      key: 'typeCustomer',
+    },
+    {
+      title: 'Ngành nghề',
+      dataIndex: 'career',
+      key: 'career',
+    },
+    {
+      title: 'Lợi tức đầu tư',
+      key: 'investmentReturn',
+      dataIndex: 'investmentReturn',
+    },
+    {
+      title: 'Kì hạn đầu tư',
+      key: 'investmentTerm',
+      dataIndex: 'investmentTerm',
+    },
+    {
+      title: 'Số tiền đầu tư',
+      key: 'investmentAmount',
+      dataIndex: 'investmentAmount',
+    }
+  ];
 
-const dataSource = [
-  {
-    key: '1',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street',
-  },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
-  },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
-  },
-];
+  const styleTable = {
+    bordered: true,
+    loading: true
+  }
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-];
-export default function Example() {
-  return <MainLayout><Table dataSource={dataSource} columns={columns} />
-  <div className={styles.title}>AAAAAAAAAAAAAAAAAAAAA</div>
-  </MainLayout>
+  const [state, setState] = useState({
+    styleTable: {
+      bordered: true,
+      loading: true
+    }
+  });
+
+  useEffect(() => {
+    const setTableSource = item => {
+      return {
+        key: item.ID,
+        typeCustomer: item.CustType,
+        career: item.Sector,
+        investmentReturn: item.MinRate - item.MaxRate,
+        investmentTerm: item.MinTerm - item.MaxTerm,
+        investmentAmount: item.MinAmt - item.MaxAmt
+      };
+    };
+
+    async function fetchData() {
+      try {
+        const decoded = jwt.decode(Cookies.get('access_token'));
+        const body = {
+          header: {
+            Sessionid: decoded.CfInfo.SessionID,
+          },
+          CustId: decoded.CfInfo.CustID,
+        };
+        const { data } = await axios.post("/getAutoInvests", body);
+        console.log(data.GetAutoInvestsResult.AutoInvestList);
+        setState({
+          styleTable: {
+            bordered: true,
+            loading: false
+          },
+          cfInfo: decoded.CfInfo,
+          reInfoList: data.GetAutoInvestsResult.AutoInvestList ? data.GetAutoInvestsResult.AutoInvestList.map(setTableSource) : [],
+          
+        });
+      } catch (e) {
+        console.log(e);
+      };
+    };
+    fetchData(); 
+  }, []);
+
+  return (
+    <MainLayout>
+      <PageHeader
+        className="site-page-header"
+        title="Danh sách"
+        style={{ paddingLeft: 0 }}
+      />
+
+      <Descriptions title="Các Robot đang hoạt động">
+        <div className="mt-5">
+          <Table
+            {...state.styleTable}
+            dataSource={state.reInfoList}
+            columns={columns}
+          />
+        </div>
+      </Descriptions>
+    </MainLayout>
+  )
 }

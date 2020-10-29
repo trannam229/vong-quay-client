@@ -31,6 +31,21 @@ export default {
       name: 'Example Page',
     },
     {
+
+      path: '/',
+      name: 'Đầu tư tự động',
+      routes: [
+        {
+          path: '/auto/invests/getAutoInvests',
+          name: 'Cài đặt',
+        },
+        {
+          path: '/auto/invest-info/getAutoInvestInfo',
+          name: 'Danh sách',
+        }
+      ],
+    },
+    {
       path: '/money',
       name: 'Tiền',
       routes: [
@@ -42,31 +57,17 @@ export default {
           path: '/money/withdraw',
           name: 'Rút tiền',
         },
-        {
 
-            path: '/',
-            name: 'Đầu tư tự động',
-            routes: [
-                {
-                    path: '/auto/invests/getAutoInvests',
-                    name: 'Cài đặt',
-                },
-                {
-                    path: '/auto/invest-info/getAutoInvestInfo',
-                    name: 'Danh sách',
-                }
-            ],
-        },
         {
-            path: '/',
-            name: 'Tài khoản',
-            routes: [
-                {
-                    path: '/account/logout',
-                    name: 'Đăng xuất',
-                },
+          path: '/',
+          name: 'Tài khoản',
+          routes: [
+            {
+              path: '/account/logout',
+              name: 'Đăng xuất',
+            },
 
-            ],
+          ],
           path: '/money/payment',
           name: 'Lệnh chờ thanh toán',
         }
