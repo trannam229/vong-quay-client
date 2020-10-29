@@ -26,7 +26,6 @@ exports.re = async (req, res) => {
     try {
         const payload = req.body;
         const response = await soapTrading('GetRE', payload);
-
         return successResponse(res, response.GetREResult);
     } catch (e) {
         return errorResponse(res, e.message);
@@ -46,3 +45,13 @@ exports.getPriceBoard = async (req, res) => {
         return errorResponse(res, e.message);
     }
 }
+
+exports.getAutoInvests = async (req, res) => {
+    try {
+        const payload = req.body;
+        const response = await soapTrading('GetAutoInvests', payload);
+        return successResponse(res, response);
+    } catch (e) {
+        return errorResponse(res, e.message);
+    }
+};
