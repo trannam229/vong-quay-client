@@ -1,6 +1,4 @@
-const successResponse = (res, data) => res.json({
-    data,
-});
+const successResponse = (res, data) => res.json(data);
 
 const errorResponse = (res, message) => res.status(500).json({
     message,
