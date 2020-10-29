@@ -19,4 +19,5 @@ router.post('/account', auth, tradingCtr.account);
 router.post('/re', auth, tradingCtr.re);
 router.post('/changePassword', auth, tradingCtr.changePassword);
 router.get('/price-board', auth, tradingCtr.getPriceBoard);
+router.get('/deal-to-sell', auth, tradingCtr.getDealToSell);
 module.exports = router;
