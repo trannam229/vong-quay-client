@@ -17,6 +17,16 @@ export default {
       ],
     },
     {
+      path: '/',
+      name: 'Giao dịch',
+      routes: [
+        {
+          path: '/trade/invest',
+          name: 'Đầu tư',
+        }
+      ],
+    },
+    {
       path: '/example',
       name: 'Example Page',
     },

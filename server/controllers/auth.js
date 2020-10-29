@@ -1,11 +1,12 @@
 const { soapAuth } = require('../../configs/soap-http');
+const { successResponse, errorResponse } = require('../api-response');
 
 exports.loginLendbiz = async (req, res) => {
     try {
         const payload = req.body;
         const response = await soapAuth('Login', payload);
-        res.send(response[0].LoginResult);
-    } catch (error) {
-        return res.json({ error });
+        return successResponse(res, response.LoginResult);
+    } catch (e) {
+        return errorResponse(res, e.message);
     }
 };

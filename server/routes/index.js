@@ -1,9 +1,6 @@
 
 const { loginLendbiz } = require('../controllers/auth');
-const { fetchOrders } = require('../controllers/order');
-const { account } = require('../controllers/account');
-const { re } = require('../controllers/re');
-const { changePassword } = require('../controllers/changePassword');
+const tradingCtr = require('../controllers/trading');
 
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
@@ -18,9 +15,8 @@ const auth = (req, res, next) => {
 };
 
 router.post('/login', loginLendbiz);
-router.get('/orders', auth, fetchOrders);
-router.post('/account', auth, account);
-router.post('/re', auth, re);
-router.post('/changePassword', auth, changePassword);
-
+router.post('/account', auth, tradingCtr.account);
+router.post('/re', auth, tradingCtr.re);
+router.post('/changePassword', auth, tradingCtr.changePassword);
+router.get('/price-board', auth, tradingCtr.getPriceBoard);
 module.exports = router;

@@ -27,6 +27,12 @@ const menuItemRender = (options, element) => (
   </Link>
 )
 
+const headerRender = () => {
+  return <div className="d-flex justify-content-end mr-5">
+    Xin chào nhà đầu tư Nguyễn Văn A
+  </div>
+}
+
 export default function Main({ children }) {
   const route = useRouter();
   useEffect(() => {
@@ -44,6 +50,7 @@ export default function Main({ children }) {
       route={RouterConfigs}
       menuItemRender={menuItemRender}
       menuHeaderRender={menuHeaderRender}
+      headerRender={headerRender}
     >
       {children}
     </ProLayout>
