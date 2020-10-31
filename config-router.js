@@ -59,15 +59,6 @@ export default {
         },
 
         {
-          path: '/',
-          name: 'Tài khoản',
-          routes: [
-            {
-              path: '/account/logout',
-              name: 'Đăng xuất',
-            },
-
-          ],
           path: '/money/payment',
           name: 'Lệnh chờ thanh toán',
         }

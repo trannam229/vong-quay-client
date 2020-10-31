@@ -45,14 +45,8 @@ export default function Example() {
     },
   ];
 
-  const styleTable = {
-    bordered: true,
-    loading: true
-  }
-
   const [state, setState] = useState({
     styleTable: {
-      bordered: true,
       loading: true
     }
   });
@@ -74,17 +68,11 @@ export default function Example() {
     async function fetchData() {
       try {
         const decoded = jwt.decode(Cookies.get('access_token'));
-        const body = {
-          header: {
-            Sessionid: decoded.CfInfo.SessionID,
-          },
-          pv_Custid: decoded.CfInfo.CustID,
-        };
-        const { data } = await axios.post("/re", body);
+        const params = { pv_Custid: decoded.CfInfo.CustID };
+        const { data } = await axios.get("/re", { params });
 
         setState({
           styleTable: {
-            bordered: true,
             loading: false
           },
           cfInfo: decoded.CfInfo,
@@ -139,7 +127,8 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
       <div className="mt-5">
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh sách các nhà đầu tư giới thiệu</p>
         <Table
-          {...state.styleTable}
+          bordered="true"
+          loading={state.styleTable.loading}
           dataSource={state.reInfoList}
           columns={columns}
         />

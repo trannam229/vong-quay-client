@@ -1,8 +1,9 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Row, Col, Input, Select, Button, Form } from 'antd';
-const { Option } = Select;
+import { PageHeader, Card, Input, Select, Button, Form } from 'antd';
+import { useEffect, useState } from 'react';
+import axios from '../../configs/api-request';
 
-export default function Example() {
+export default function Withdraw() {
   const style = {
     label: {
       color: '#00007A'
@@ -31,29 +32,31 @@ export default function Example() {
   ];
 
   const bankListOptions = bankList.map((bank) =>
-    (<Option value={bank.id}>{bank.name}</Option>)
+    (<Select.Option value={bank.id}>{bank.name}</Select.Option>)
   );
 
-  const onFinish = async (values) => {
-    try {
-      const decoded = jwt.decode(Cookies.get('access_token'));
-      const body = {
-        header: {
-          Sessionid: decoded.CfInfo.SessionID,
-          Password: values.Password,
-        },
-        NewPassword: values.NewPassword,
-      };
+  const [state, setState] = useState({});
 
-      const { data } = await axios.post("/changePassword", body);
-      if (data.Status.Code !== '0') {
-        console.log(data.Status.Message);
-      } else {
-        console.log('Congratulations! Your password has been changed successfully!');
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await axios.get("/bank-account");
+        if (data.Status.Code === '0') {
+          setState({
+            bankList: data.BankAccountList ? data.BankAccountList.BankAccount : [],
+          })
+        } else {
+          console.log(data);
+        }
+      } catch (e) {
+        console.log(e.message);
       }
-    } catch (e) {
-      console.log(e.message);
     }
+
+    fetchData();
+  });
+
+  const onFinish = (values) => {
   };
 
   const onFinishFailed = errorInfo => {
@@ -67,65 +70,59 @@ export default function Example() {
         title="Rút tiền"
         style={{ paddingLeft: 0 }}
       />
+      <Card style={{ width: 450, textAlign: "center" }}>
 
-      <Form
-        layout="vertical"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
-        <Form.Item
-          label="Nhập số tiền cần bán"
-          name="Money"
-          rules={[
-            {
-              required: true,
-              message: 'Bạn cần nhập giá trị',
-            },
-          ]}
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
-          <Input.Number suffix="VND" />
-        </Form.Item>
-      </Form>
-      <div className="mt-5">
-        <Row className="mt-5 p-2">
-          <Col span="6" className="font-weight-bold" style={style.label}>Nhập số tiền bán</Col>
-          <Col span="8">
+          <Form.Item
+            label="Nhập số tiền cần bán"
+            name="Money"
+          >
             <Input suffix="VND" />
-          </Col>
-        </Row>
+          </Form.Item>
 
-        <Row className="mt-5">
-          <Col span="6" className="p-2 font-weight-bold" style={style.label}>Chọn tài khoản ngân hàng</Col>
-          <Col span="8">
+          <Form.Item
+            label="Chọn tài khoản ngân hàng"
+            name="BankAccount"
+          >
             <Select style={style.selectInput}>
               {bankListOptions}
             </Select>
-          </Col>
-        </Row>
+          </Form.Item>
 
-        <Row className="mt-5">
-          <Col span="6" className="p-2 font-weight-bold" style={style.label}>Tên ngân hàng chuyển</Col>
-          <Col span="8">
+          <Form.Item
+            label="Tên ngân hàng chuyển"
+            name="BankName"
+          >
             <Select style={style.selectInput}>
               {bankListOptions}
             </Select>
-          </Col>
-        </Row>
+          </Form.Item>
 
-        <Row className="mt-5">
-          <Col span="6" className="p-2 font-weight-bold" style={style.label}>Lý do muốn rút tiền</Col>
-          <Select style={style.selectInput}>
-            {bankListOptions}
-          </Select>
-        </Row>
+          <Form.Item
+            label="Lý do muốn rút tiền"
+            name="Description"
+          >
+            <Select style={style.selectInput}>
+              {bankListOptions}
+            </Select>
+          </Form.Item>
 
-        <Row className="mt-5">
-          <Col span="8" offset="6">
-            <Button shape="round" style={style.submitButton}>Rút tiền</Button>
-          </Col>
-        </Row>
-
-      </div>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              shape="round"
+              style={style.submitButton}
+            >
+              Rút tiền
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </MainLayout>
   )
 }

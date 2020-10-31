@@ -1,5 +1,5 @@
 
-const { loginLendbiz } = require('../controllers/auth');
+const authCtr = require('../controllers/auth');
 const tradingCtr = require('../controllers/trading');
 
 const router = require('express').Router();
@@ -14,10 +14,15 @@ const auth = (req, res, next) => {
   next();
 };
 
-router.post('/login', loginLendbiz);
-router.post('/account', auth, tradingCtr.account);
-router.post('/re', auth, tradingCtr.re);
-router.post('/changePassword', auth, tradingCtr.changePassword);
+//Authenticate Service
+router.post('/login', authCtr.loginLendbiz);
+router.post('/change-password', auth, authCtr.changePassword);
+
+//Online Trading
+router.get('/account', auth, tradingCtr.account);
+router.get('/re', auth, tradingCtr.re);
 router.get('/price-board', auth, tradingCtr.getPriceBoard);
 router.post('/getAutoInvests', auth, tradingCtr.getAutoInvests);
+router.get('/bank-account', auth, tradingCtr.getBankAccount);
+router.get('/transfer-money', auth, tradingCtr.getTransferMoney);
 module.exports = router;
