@@ -25,4 +25,6 @@ router.get('/price-board', auth, tradingCtr.getPriceBoard);
 router.post('/getAutoInvests', auth, tradingCtr.getAutoInvests);
 router.get('/bank-account', auth, tradingCtr.getBankAccount);
 router.get('/transfer-money', auth, tradingCtr.getTransferMoney);
+router.post('/transfer-money', auth, tradingCtr.postTransferMoney);
+
 module.exports = router;

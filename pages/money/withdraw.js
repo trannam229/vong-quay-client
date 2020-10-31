@@ -16,35 +16,31 @@ export default function Withdraw() {
     }
   };
 
-  const bankList = [
-    {
-      id: 'Tpbank',
-      name: 'NH Tiên Phong'
-    },
-    {
-      id: 'Vietinbank',
-      name: 'NH Vietinbank'
-    },
-    {
-      id: 'HSBC',
-      name: 'NH HSBC'
-    }
+  const description = [
+    'Không có cơ hội đầu tư',
+    'Không thích các cơ hội đầu tư',
+    'Rút vốn chi tiêu',
+    'Đầu tư kênh khác',
+    'Tỷ lệ nợ xấu cao',
+    'Khác'
   ];
-
-  const bankListOptions = bankList.map((bank) =>
-    (<Select.Option value={bank.id}>{bank.name}</Select.Option>)
-  );
-
+  const descriptionOption = description.map(des => (<Select.Option value={des}>{des}</Select.Option>))
   const [state, setState] = useState({});
+  let bankAccountList = [];
 
   useEffect(() => {
-    async function fetchData() {
+    const getBankAccountList = bankAccount => (<Select.Option value={bankAccount.RN}>{bankAccount.AccountNumber}</Select.Option>);
+    const getBankNameList = bankAccount => (<Select.Option value={bankAccount.RN}>{bankAccount.BankName}</Select.Option>);
+    const fetchData = async () => {
       try {
         const { data } = await axios.get("/bank-account");
         if (data.Status.Code === '0') {
+          bankAccountList = data.BankAccountList.BankAccount;
           setState({
-            bankList: data.BankAccountList ? data.BankAccountList.BankAccount : [],
-          })
+            bankAccountList: data.BankAccountList.BankAccount,
+            bankAccountOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankAccountList) : [],
+            bankNameOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankNameList) : [],
+          });
         } else {
           console.log(data);
         }
@@ -54,10 +50,35 @@ export default function Withdraw() {
     }
 
     fetchData();
-  });
+  }, []);
 
-  const onFinish = (values) => {
-  };
+  const onFinish = values => {
+    if (values.bankAccount !== values.bankName) {
+      //TODO
+      return;
+    };
+
+    const transferMoney = async () => {
+      try {
+        const body = {
+          pv_Amt: values.amount,
+          pv_txDesc: values.description,
+          BankAccount: state.bankAccountList.find(bankAccount => bankAccount.RN === values.bankAccount)
+        };
+  
+        const { data } = await axios.post("/transfer-money", body);
+        if (data.Status.Code !== '0') {
+          console.log(data.Status.Message);
+        } else {
+          console.log('Congratulations! Your with draw was made!');
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+
+    transferMoney();
+  }
 
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -79,35 +100,35 @@ export default function Withdraw() {
         >
           <Form.Item
             label="Nhập số tiền cần bán"
-            name="Money"
+            name="amount"
           >
             <Input suffix="VND" />
           </Form.Item>
 
           <Form.Item
             label="Chọn tài khoản ngân hàng"
-            name="BankAccount"
+            name="bankAccount"
           >
             <Select style={style.selectInput}>
-              {bankListOptions}
+              {state.bankAccountOption}
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Tên ngân hàng chuyển"
-            name="BankName"
+            name="bankName"
           >
             <Select style={style.selectInput}>
-              {bankListOptions}
+              {state.bankNameOption}
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Lý do muốn rút tiền"
-            name="Description"
+            name="description"
           >
             <Select style={style.selectInput}>
-              {bankListOptions}
+              {descriptionOption}
             </Select>
           </Form.Item>
 

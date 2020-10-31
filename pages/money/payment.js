@@ -60,8 +60,6 @@ export default function Example() {
     async function fetchData() {
       try {
         const { data } = await axios.get('/transfer-money');
-
-        console.log(data.TransferMoneyList.TransferMoney.map(setTableSource))
         setState({
           styleTable: {
             loading: false

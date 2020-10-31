@@ -59,7 +59,6 @@ exports.getBankAccount = async (req, res) => {
   }
 };
 
-
 exports.getTransferMoney = async (req, res) => {
   try {
       const params = { 
@@ -68,6 +67,22 @@ exports.getTransferMoney = async (req, res) => {
       };
       const response = await soapTrading('GetTransferMoney', params);
       return successResponse(res, response.GetTransferMoneyResult);
+  } catch (e) {
+      return errorResponse(res, e.message);
+  }
+};
+
+exports.postTransferMoney = async (req, res) => {
+  try {
+      req.body.header = {
+        Sessionid: req.account.CfInfo.SessionID,
+        Password: req.account.Password
+      }
+      req.body.pv_CustID = req.account.CfInfo.CustID;
+      const payload = req.body;
+      console.log(payload);
+      const response = await soapTrading('TransferMoney', payload);
+      return successResponse(res, response.TransferMoneyResult);
   } catch (e) {
       return errorResponse(res, e.message);
   }
