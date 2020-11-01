@@ -36,11 +36,11 @@ export default {
       name: 'Đầu tư tự động',
       routes: [
         {
-          path: '/auto/invests/getAutoInvests',
+          path: '/auto/create/createAutoInvestRule',
           name: 'Cài đặt',
         },
         {
-          path: '/auto/invest-info/getAutoInvestInfo',
+          path: '/auto/invests/getAutoInvests',
           name: 'Danh sách',
         }
       ],
