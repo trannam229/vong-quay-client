@@ -1,6 +1,6 @@
 import MainLayout from '@layouts/main'
 import { PageHeader, Card, Input, Select, Button, Form, Row, Col } from 'antd';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router'
 import axios from '../../../configs/api-request';
 
 export default function createAutoInvestRule() {
@@ -35,13 +35,12 @@ export default function createAutoInvestRule() {
   const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des}>{des}</Select.Option>))
   const descriptionOptionSector = descriptionSector.map(des => (<Select.Option value={des}>{des}</Select.Option>))
   const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des}>{des}</Select.Option>))
-
+  const route = useRouter();
   const onFinish = async (values) => {
     try {
-      console.log(values);
-      const { data } = await axios.post("/create-auto-invest-rule", { header: values });
-      if (data.Status.Code !== '0') {
-        console.log('Login failed!');
+      const { data } = await axios.post("/create-auto-invest-rule", { param: values });
+      if (data.CreateAutoInvestRuleResult.Status.Code !== '0') {
+        console.log(data.CreateAutoInvestRuleResult.Status.Message);
       } else {
         console.log("===================================================");
         route.push({ pathname: '/' })
@@ -96,9 +95,8 @@ export default function createAutoInvestRule() {
               <Form.Item
                 title="Hạn mức tối đa theo số tiền đầu tư"
                 label="Nhập số tiền tối thiểu"
-                name="soTienToiThieu"
               >
-                <Input suffix="VND" />
+                <Input suffix="VND" name="soTienToiThieu"/>
               </Form.Item>
             </Col>
             <Col span="11">
