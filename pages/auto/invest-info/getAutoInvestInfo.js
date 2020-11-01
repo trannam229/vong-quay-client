@@ -52,9 +52,9 @@ export default function Example11() {
         key: item.ID,
         typeCustomer: item.CustType,
         career: item.Sector,
-        investmentReturn: item.MinRate - item.MaxRate,
-        investmentTerm: item.MinTerm - item.MaxTerm,
-        investmentAmount: item.MinAmt - item.MaxAmt
+        investmentReturn: item.MinRate +" - "+ item.MaxRate,
+        investmentTerm: item.MinTerm +" - "+ item.MaxTerm,
+        investmentAmount: item.MinAmt +" - "+ item.MaxAmt
       };
     };
 
@@ -67,15 +67,17 @@ export default function Example11() {
           },
           CustId: decoded.CfInfo.CustID,
         };
-        const { data } = await axios.post("/getAutoInvests", body);
-        console.log(data.GetAutoInvestsResult.AutoInvestList);
+        const { data } = await axios.post("/get-auto-invests", body);
+        
+        const result = data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(val => (val !== undefined || val != null || val.length >= 0));
+        console.log(result);
         setState({
           styleTable: {
             bordered: true,
             loading: false
           },
           cfInfo: decoded.CfInfo,
-          reInfoList: data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.map(setTableSource) : [],
+          reInfoList: result ? result.map(setTableSource) : [],
 
         });
       } catch (e) {
