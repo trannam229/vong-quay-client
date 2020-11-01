@@ -12,13 +12,8 @@ export default function Example() {
     async function fetchData() {
       try {
         const decoded = jwt.decode(Cookies.get('access_token'));
-        const body = {
-          header: {
-            Sessionid: decoded.CfInfo.SessionID,
-          },
-          Custid: decoded.CfInfo.CustID,
-        };
-        const { data } = await axios.post("/account", body);
+        const params = { Custid: decoded.CfInfo.CustID };
+        const { data } = await axios.get("/account", { params });
 
         setState({
           cfInfo: decoded.CfInfo,

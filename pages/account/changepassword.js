@@ -1,23 +1,17 @@
 import MainLayout from '@layouts/main';
 import { PageHeader, Card, Button, Form, Input, Image } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import jwt from 'jsonwebtoken';
-import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
 
 export default function Example() {
   const onFinish = async (values) => {
     try {
-      const decoded = jwt.decode(Cookies.get('access_token'));
       const body = {
-        header: {
-          Sessionid: decoded.CfInfo.SessionID,
-          Password: values.Password,
-        },
+        header: { Password: values.Password },
         NewPassword: values.NewPassword,
       };
 
-      const { data } = await axios.post("/changePassword", body);
+      const { data } = await axios.post("/change-password", body);
       if (data.Status.Code !== '0') {
         console.log(data.Status.Message);
       } else {
