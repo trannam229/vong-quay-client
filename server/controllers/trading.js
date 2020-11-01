@@ -39,10 +39,14 @@ exports.getPriceBoard = async (req, res) => {
         const info = req.account.CfInfo;
         const header = {
             Sessionid: info.SessionID,
-            Username: info.CustID
         };
         console.log(header);
-        const response = await soapTrading('GetPriceBoard', { header });
+        const response = await soapTrading('GetPriceBoard', {
+            header,
+            SearchPriceBoard: {
+                SearchPagingInfo: {}
+            }
+        });
         return successResponse(res, response);
 
     } catch (e) {
@@ -54,10 +58,8 @@ exports.getDealToSell = async (req, res) => {
         const info = req.account.CfInfo;
         const header = {
             Sessionid: info.SessionID,
-            Username: info.CustID
         };
-        console.log(header);
-        const response = await soapTrading('GetDealToSell', { header, CustId: info.CustID });
+        const response = await soapTrading('GetDealToSell', { header, CustID: info.CustID });
         return successResponse(res, response);
 
     } catch (e) {
