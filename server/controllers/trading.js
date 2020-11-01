@@ -49,7 +49,7 @@ exports.getPriceBoard = async (req, res) => {
 exports.getAutoInvests = async (req, res) => {
     try {
         const payload = req.body;
-        const response = await soapTrading('GetAutoInvests', payload);
+        const response = await soapTrading('GetAutoInvests', payload);        
         return successResponse(res, response);
     } catch (e) {
         return errorResponse(res, e.message);
