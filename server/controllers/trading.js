@@ -39,7 +39,6 @@ exports.getPriceBoard = async (req, res) => {
         const header = {
             Sessionid: info.SessionID,
         };
-        console.log(header);
         const response = await soapTrading('GetPriceBoard', {
             header,
             SearchPriceBoard: {
