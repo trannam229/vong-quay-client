@@ -26,4 +26,5 @@ router.get('/bank-account', auth, tradingCtr.getBankAccount);
 router.get('/transfer-money', auth, tradingCtr.getTransferMoney);
 router.post('/transfer-money', auth, tradingCtr.postTransferMoney);
 router.post('/get-auto-invests', auth, tradingCtr.getAutoInvests);
+router.post('/create-auto-invest-rule', auth, tradingCtr.createAutoInvestRule);
 module.exports = router;

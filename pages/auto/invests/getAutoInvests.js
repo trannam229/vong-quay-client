@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../../configs/api-request';
 
-export default function Example11() {
+export default function GetAutoInvests() {
   const columns = [
     {
       title: 'Loại khác hàng',

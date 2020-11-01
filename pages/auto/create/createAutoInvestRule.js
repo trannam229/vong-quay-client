@@ -1,5 +1,5 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Card, Input, Select, Button, Form, Row } from 'antd';
+import { PageHeader, Card, Input, Select, Button, Form, Row, Col } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../../configs/api-request';
 
@@ -35,60 +35,21 @@ export default function createAutoInvestRule() {
   const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des}>{des}</Select.Option>))
   const descriptionOptionSector = descriptionSector.map(des => (<Select.Option value={des}>{des}</Select.Option>))
   const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des}>{des}</Select.Option>))
-  const [state, setState] = useState({});
-  let bankAccountList = [];
 
-  useEffect(() => {
-    const getBankAccountList = bankAccount => (<Select.Option value={bankAccount.RN}>{bankAccount.AccountNumber}</Select.Option>);
-    const getBankNameList = bankAccount => (<Select.Option value={bankAccount.RN}>{bankAccount.BankName}</Select.Option>);
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get("/bank-account");
-        if (data.Status.Code === '0') {
-          bankAccountList = data.BankAccountList.BankAccount;
-          setState({
-            bankAccountList: data.BankAccountList.BankAccount,
-            bankAccountOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankAccountList) : [],
-            bankNameOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankNameList) : [],
-          });
-        } else {
-          console.log(data);
-        }
-      } catch (e) {
-        console.log(e.message);
+  const onFinish = async (values) => {
+    try {
+      console.log(values);
+      const { data } = await axios.post("/create-auto-invest-rule", { header: values });
+      if (data.Status.Code !== '0') {
+        console.log('Login failed!');
+      } else {
+        console.log("===================================================");
+        route.push({ pathname: '/' })
       }
+    } catch (e) {
+      console.log(e.message);
     }
-
-    fetchData();
-  }, []);
-
-  const onFinish = values => {
-    if (values.bankAccount !== values.bankName) {
-      //TODO
-      return;
-    };
-
-    const transferMoney = async () => {
-      try {
-        const body = {
-          pv_Amt: values.amount,
-          pv_txDesc: values.descriptionCustType,
-          BankAccount: state.bankAccountList.find(bankAccount => bankAccount.RN === values.bankAccount)
-        };
-
-        const { data } = await axios.post("/transfer-money", body);
-        if (data.Status.Code !== '0') {
-          console.log(data.Status.Message);
-        } else {
-          console.log('Congratulations! Your with draw was made!');
-        }
-      } catch (e) {
-        console.log(e.message);
-      }
-    }
-
-    transferMoney();
-  }
+  };
 
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -101,95 +62,110 @@ export default function createAutoInvestRule() {
         title="Cài đặt"
         style={{ paddingLeft: 0 }}
       />
-      <Card style={{ width: 950, textAlign: "center" }}>
+      <Card style={{ width: '100%', textAlign: "center" }}>
         <Form
-          layout="inline"
+          layout="horizontal"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
-          <Row justify="center" className="mt-5">
-            <Form.Item
-              label="Chọn loại khách hàng"
-              name="descriptionCustType"
-            >
-              <Select style={style.selectInput}>
-                {descriptionOptionCustType}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="Chọn ngành nghề"
-              name="bankAccount"
-            >
-              <Select style={style.selectInput}>
-                {descriptionOptionSector}
-              </Select>
-            </Form.Item>
+          <Row>
+            <Col span="11" >
+              <Form.Item
+                label="Chọn loại khách hàng"
+                name="loaiKhachHang"
+              >
+                <Select style={style.selectInput}>
+                  {descriptionOptionCustType}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span="11">
+              <Form.Item
+                label="Chọn ngành nghề"
+                name="chonNganhNghe"
+              >
+                <Select style={style.selectInput}>
+                  {descriptionOptionSector}
+                </Select>
+              </Form.Item>
+            </Col>
           </Row>
-        </Form>
-        <Form
-          layout="vertical"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            label="Chọn loại khách hàng"
-            name="descriptionCustType"
-          >
-            <Select style={style.selectInput}>
-              {descriptionOptionCustType}
-            </Select>
-          </Form.Item>
 
-          <Form.Item
-            label="Chọn ngành nghề"
-            name="bankAccount"
-          >
-            <Select style={style.selectInput}>
-              {descriptionOptionSector}
-            </Select>
-          </Form.Item>
+          <Row>
+            <Col span="11">
+              <Form.Item
+                title="Hạn mức tối đa theo số tiền đầu tư"
+                label="Nhập số tiền tối thiểu"
+                name="soTienToiThieu"
+              >
+                <Input suffix="VND" />
+              </Form.Item>
+            </Col>
+            <Col span="11">
+              <Form.Item
+                label="Nhập số tiền tối đa"
+                name="soTienToiDa"
+              >
+                <Input suffix="VND" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            title="Hạn mức tối đa theo số tiền đầu tư"
-            label="Nhập số tiền tối thiểu"
-            name="bankName"
-          >
-            <Input suffix="VND" />
-          </Form.Item>
+          <Row>
+            <Col span="11">
+              <Form.Item
+                label="Sử dụng hết số dư"
+                name="suDungHetSoDu"
+              >
+                <Select style={style.selectInput}>
+                  {descriptionOptionSurplus}
+                </Select>
+              </Form.Item>
+            </Col>
 
-          <Form.Item
-            label="Nhập số tiền tối đa"
-            name="bankName"
-          >
-            <Input suffix="VND" />
-          </Form.Item>
+            <Col span="11">
+              <Form.Item
+                label="Hạn mức tối đa theo người gọi vốn"
+                name="hanMucToiDaTheoNguoiGoiVon"
+              >
+                <Input suffix="VND" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            label="Sử dụng hết số dư"
-            name="descriptionSurplus"
-          >
-            <Select style={style.selectInput}>
-              {descriptionOptionSurplus}
-            </Select>
-          </Form.Item>
+          <Row>
+            <Col span="4">
+              <Form.Item
+                label="Từ"
+                name="kiHanDauTuTu"
+              >
+                <Input suffix="tháng" />
+              </Form.Item>
+            </Col>
 
-          <Form.Item
-            label="Hạn mức tối đa theo người gọi vốn"
-            name="bankName"
-          >
-            <Input suffix="VND" />
-          </Form.Item>
+            <Col span="4" style={{ marginLeft: '5%' }}>
+              <Form.Item
+                lable="Đến"
+                name="kiHanDauTuDen" >
+                <Input suffix="tháng" />
+              </Form.Item>
+            </Col>
+            <Col span="4" style={{ marginLeft: '5%' }}>
+              <Form.Item
+                lable="Từ"
+                name="loiTucDauTuTu" >
+                <Input suffix="%" />
+              </Form.Item>
+            </Col>
+            <Col span="4" style={{ marginLeft: '5%' }}>
 
-          <Form.Item
-            label="Cài đặt kì hạn đầu tư"
-            name="bankName"
-          >
-            <span>Từ</span>
-            <Input suffix="tháng" />
-            <span>Đến</span>
-            <Input suffix="tháng" />
-          </Form.Item>
-
+              <Form.Item
+                lable="Đến"
+                name="loiTucDauTuDen" >
+                <Input suffix="%" />
+              </Form.Item>
+            </Col>
+          </Row>
           <Form.Item>
             <Button
               type="primary"
@@ -198,8 +174,9 @@ export default function createAutoInvestRule() {
               style={style.submitButton}
             >
               Lưu
-            </Button>
+              </Button>
           </Form.Item>
+
         </Form>
       </Card>
     </MainLayout>
