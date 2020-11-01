@@ -87,3 +87,16 @@ exports.postTransferMoney = async (req, res) => {
       return errorResponse(res, e.message);
   }
 };
+
+exports.createAutoInvestRule = async (req, res) => {
+    try {
+        const params = { 
+          header: { Sessionid: req.account.CfInfo.SessionID },
+          Custid: req.account.CfInfo.CustID
+        };
+        const response = await soapTrading('CreateAutoInvestRule', params);
+        return successResponse(res, response);
+    } catch (e) {
+        return errorResponse(res, e.message);
+    }
+  };
