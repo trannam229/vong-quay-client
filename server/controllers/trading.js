@@ -39,7 +39,7 @@ exports.getPriceBoard = async (req, res) => {
 exports.getAutoInvests = async (req, res) => {
     try {
         const payload = req.body;
-        const response = await soapTrading('GetAutoInvests', payload);        
+        const response = await soapTrading('GetAutoInvests', payload);
         return successResponse(res, response);
     } catch (e) {
         return errorResponse(res, e.message);
@@ -47,68 +47,66 @@ exports.getAutoInvests = async (req, res) => {
 };
 
 exports.getBankAccount = async (req, res) => {
-  try {
-      const params = { 
-        header: { Sessionid: req.account.CfInfo.SessionID },
-        pv_Custid: req.account.CfInfo.CustID
-      };
-      const response = await soapTrading('GetBankAccount', params);
-      return successResponse(res, response.GetBankAccountResult);
-  } catch (e) {
-      return errorResponse(res, e.message);
-  }
+    try {
+        const params = {
+            header: { Sessionid: req.account.CfInfo.SessionID },
+            pv_Custid: req.account.CfInfo.CustID
+        };
+        const response = await soapTrading('GetBankAccount', params);
+        return successResponse(res, response.GetBankAccountResult);
+    } catch (e) {
+        return errorResponse(res, e.message);
+    }
 };
 
 exports.getTransferMoney = async (req, res) => {
-  try {
-      const params = { 
-        header: { Sessionid: req.account.CfInfo.SessionID },
-        pv_Custid: req.account.CfInfo.CustID
-      };
-      const response = await soapTrading('GetTransferMoney', params);
-      return successResponse(res, response.GetTransferMoneyResult);
-  } catch (e) {
-      return errorResponse(res, e.message);
-  }
+    try {
+        const params = {
+            header: { Sessionid: req.account.CfInfo.SessionID },
+            pv_Custid: req.account.CfInfo.CustID
+        };
+        const response = await soapTrading('GetTransferMoney', params);
+        return successResponse(res, response.GetTransferMoneyResult);
+    } catch (e) {
+        return errorResponse(res, e.message);
+    }
 };
 
 exports.postTransferMoney = async (req, res) => {
-  try {
-      req.body.header = {
-        Sessionid: req.account.CfInfo.SessionID,
-        Password: req.account.Password
-      }
-      req.body.pv_CustID = req.account.CfInfo.CustID;
-      const payload = req.body;
-      console.log(payload);
-      const response = await soapTrading('TransferMoney', payload);
-      return successResponse(res, response.TransferMoneyResult);
-  } catch (e) {
-      return errorResponse(res, e.message);
-  }
+    try {
+        req.body.header = {
+            Sessionid: req.account.CfInfo.SessionID,
+            Password: req.account.Password
+        }
+        req.body.pv_CustID = req.account.CfInfo.CustID;
+        const payload = req.body;
+        const response = await soapTrading('TransferMoney', payload);
+        return successResponse(res, response.TransferMoneyResult);
+    } catch (e) {
+        return errorResponse(res, e.message);
+    }
 };
 
 exports.createAutoInvestRule = async (req, res) => {
     try {
-        const params = { 
-          header: { Sessionid: req.account.CfInfo.SessionID },
-          Custid: req.account.CfInfo.CustID,
-          MinAmt: req.values.soTienToiThieu,
-          MaxAmt:req.values.soTienToiDa,
-          ExhaustBalance:req.values.suDungHetSoDu,
-          MinRate:req.values.loiTucDauTuTu,
-          MaxRate:req.values.loiTucDauTuDen,
-          MinTerm:req.values.kiHanDauTuTu,
-          MaxTerm:req.values.kiHanDauTuDen,
-          CustType:req.values.loaiKhachHang,
-          MaxPercent:req.values.hanMucToiDaTheoNguoiGoiVon,
-          Sector:req.values.chonNganhNghe
+        const params = {
+            header: { Sessionid: req.account.CfInfo.SessionID },
+            RuleRequest: {Custid: req.account.CfInfo.CustID,
+            MinAmt: req.body.param.soTienToiThieu,
+            MaxAmt: req.body.param.soTienToiDa,
+            ExhaustBalance: req.body.param.suDungHetSoDu,
+            MinRate: req.body.param.loiTucDauTuTu,
+            MaxRate: req.body.param.loiTucDauTuDen,
+            MinTerm: req.body.param.kiHanDauTuTu,
+            MaxTerm: req.body.param.kiHanDauTuDen,
+            CustType: req.body.param.loaiKhachHang,
+            MaxPercent: req.body.param.hanMucToiDaTheoNguoiGoiVon,
+            Sector: req.body.param.chonNganhNghe}
         };
         const response = await soapTrading('CreateAutoInvestRule', params);
-        console.log(response)
-        return successResponse(res, response);
+        return successResponse(res, response.CreateAutoInvestRuleResult);
     } catch (e) {
         console.log(e)
         return errorResponse(res, e.message);
     }
-  };
+};
