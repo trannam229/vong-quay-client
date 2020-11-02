@@ -17,28 +17,57 @@ export default function createAutoInvestRule() {
   };
 
   const descriptionCustType = [
-    'Doanh nghiệp',
-    'Hộ kinh doanh',
-    'Cá nhân'
+    {
+      desc:'Doanh nghiệp',
+      value:'DN'
+    },
+    {
+      desc:'Hộ kinh doanh',
+      value:'HKD'
+    },
+    {
+      desc:'Cá nhân',
+      value:'CN'
+    },
+    
   ];
 
   const descriptionSector = [
-    'Chọn tất cả',
-    'Thời trang, Phụ kiện, Trang sức',
-    'Thực phẩm, Nhà hàng, Ăn uống'
+    {
+      desc:'Chọn tất cả',
+      value:'1'
+    },
+    {
+      desc:'Thời trang, Phụ kiện, Trang sức',
+      value:'2'
+    },
+    {
+      desc:'Thực phẩm, Nhà hàng, Ăn uống',
+      value:'3'
+    }
+    
   ];
 
   const descriptionSurplus = [
-    'Có',
-    'Không'
+    {
+      desc:'Có',
+      value:'1'
+    },
+    {
+      desc:'Không',
+      value:'0'
+    }
+    
+    
   ];
-  const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des}>{des}</Select.Option>))
-  const descriptionOptionSector = descriptionSector.map(des => (<Select.Option value={des}>{des}</Select.Option>))
-  const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des}>{des}</Select.Option>))
+  const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
+  const descriptionOptionSector = descriptionSector.map(des =>  (<Select.Option value={des.value}>{des.desc}</Select.Option>))
+  const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
   const route = useRouter();
   const onFinish = async (values) => {
     try {
       const { data } = await axios.post("/create-auto-invest-rule", { param: values });
+      console.log(data);
       if (data.CreateAutoInvestRuleResult.Status.Code !== '0') {
         console.log(data.CreateAutoInvestRuleResult.Status.Message);
       } else {
@@ -95,8 +124,9 @@ export default function createAutoInvestRule() {
               <Form.Item
                 title="Hạn mức tối đa theo số tiền đầu tư"
                 label="Nhập số tiền tối thiểu"
+                name="soTienToiThieu"
               >
-                <Input suffix="VND" name="soTienToiThieu"/>
+                <Input suffix="VND" />
               </Form.Item>
             </Col>
             <Col span="11">
@@ -155,10 +185,9 @@ export default function createAutoInvestRule() {
                 <Input suffix="%" />
               </Form.Item>
             </Col>
-            <Col span="4" style={{ marginLeft: '5%' }}>
-
+            <Col span="5" style={{ marginLeft: '5%' }}>
+              <label style={{  float:'left', textAlign:'center' ,margin:'5%'}}> Đến</label>
               <Form.Item
-                lable="Đến"
                 name="loiTucDauTuDen" >
                 <Input suffix="%" />
               </Form.Item>

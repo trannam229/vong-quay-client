@@ -88,23 +88,25 @@ exports.postTransferMoney = async (req, res) => {
 };
 
 exports.createAutoInvestRule = async (req, res) => {
+    console.log(req);
     try {
         const params = {
             header: { Sessionid: req.account.CfInfo.SessionID },
             Custid: req.account.CfInfo.CustID,
-            MinAmt: req.param.soTienToiThieu,
-            MaxAmt: req.param.soTienToiDa,
-            ExhaustBalance: req.param.suDungHetSoDu,
-            MinRate: req.param.loiTucDauTuTu,
-            MaxRate: req.param.loiTucDauTuDen,
-            MinTerm: req.param.kiHanDauTuTu,
-            MaxTerm: req.param.kiHanDauTuDen,
-            CustType: req.param.loaiKhachHang,
-            MaxPercent: req.param.hanMucToiDaTheoNguoiGoiVon,
-            Sector: req.param.chonNganhNghe
+            MinAmt: req.body.param.soTienToiThieu,
+            MaxAmt: req.body.param.soTienToiDa,
+            ExhaustBalance: req.body.param.suDungHetSoDu,
+            MinRate: req.body.param.loiTucDauTuTu,
+            MaxRate: req.body.param.loiTucDauTuDen,
+            MinTerm: req.body.param.kiHanDauTuTu,
+            MaxTerm: req.body.param.kiHanDauTuDen,
+            CustType: req.body.param.loaiKhachHang,
+            MaxPercent: req.body.param.hanMucToiDaTheoNguoiGoiVon,
+            Sector: req.body.param.chonNganhNghe
         };
+        console.log(params);
         const response = await soapTrading('CreateAutoInvestRule', params);
-        console.log(response);
+        
         return successResponse(res, response);
     } catch (e) {
         console.log(e)
