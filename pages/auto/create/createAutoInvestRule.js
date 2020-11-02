@@ -68,10 +68,9 @@ export default function createAutoInvestRule() {
     try {
       const { data } = await axios.post("/create-auto-invest-rule", { param: values });
       console.log(data);
-      if (data.CreateAutoInvestRuleResult.Status.Code !== '0') {
-        console.log(data.CreateAutoInvestRuleResult.Status.Message);
+      if (data.Status.Code !== '0') {
+        alert(data.Status.Message);
       } else {
-        console.log("===================================================");
         route.push({ pathname: '/' })
       }
     } catch (e) {

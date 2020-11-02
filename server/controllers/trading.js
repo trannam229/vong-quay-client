@@ -88,11 +88,10 @@ exports.postTransferMoney = async (req, res) => {
 };
 
 exports.createAutoInvestRule = async (req, res) => {
-    console.log(req);
     try {
         const params = {
             header: { Sessionid: req.account.CfInfo.SessionID },
-            Custid: req.account.CfInfo.CustID,
+            RuleRequest: {Custid: req.account.CfInfo.CustID,
             MinAmt: req.body.param.soTienToiThieu,
             MaxAmt: req.body.param.soTienToiDa,
             ExhaustBalance: req.body.param.suDungHetSoDu,
@@ -102,12 +101,10 @@ exports.createAutoInvestRule = async (req, res) => {
             MaxTerm: req.body.param.kiHanDauTuDen,
             CustType: req.body.param.loaiKhachHang,
             MaxPercent: req.body.param.hanMucToiDaTheoNguoiGoiVon,
-            Sector: req.body.param.chonNganhNghe
+            Sector: req.body.param.chonNganhNghe}
         };
-        console.log(params);
         const response = await soapTrading('CreateAutoInvestRule', params);
-        
-        return successResponse(res, response);
+        return successResponse(res, response.CreateAutoInvestRuleResult);
     } catch (e) {
         console.log(e)
         return errorResponse(res, e.message);
