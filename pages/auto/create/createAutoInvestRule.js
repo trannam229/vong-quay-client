@@ -167,8 +167,8 @@ export default function createAutoInvestRule() {
                 <Row>
                   <Col span={12} className="pr-3">
                     <Form.Item
-                      labelCol={{ span: 3 }}
-                      wrapperCol={{ span: 21 }}
+                      labelCol={{ span: 5 }}
+                      wrapperCol={{ span: 19 }}
                       label="Từ"
                       labelAlign="left"
                       name="kiHanDauTuTu"
@@ -178,8 +178,8 @@ export default function createAutoInvestRule() {
                   </Col>
                   <Col span={12} className="pl-3">
                     <Form.Item
-                      labelCol={{ span: 3 }}
-                      wrapperCol={{ span: 21 }}
+                      labelCol={{ span: 5 }}
+                      wrapperCol={{ span: 19 }}
                       label="Đến"
                       labelAlign="left"
                       name="kiHanDauTuDen" >
@@ -195,8 +195,8 @@ export default function createAutoInvestRule() {
                 <Row>
                   <Col span={12} className="pr-3">
                     <Form.Item
-                      labelCol={{ span: 3 }}
-                      wrapperCol={{ span: 21 }}
+                      labelCol={{ span: 5 }}
+                      wrapperCol={{ span: 19 }}
                       labelAlign="left"
                       label="Từ"
                       name="loiTucDauTuTu" >
@@ -205,8 +205,8 @@ export default function createAutoInvestRule() {
                   </Col>
                   <Col span={12} className="pl-3">
                     <Form.Item
-                      labelCol={{ span: 3 }}
-                      wrapperCol={{ span: 21 }}
+                      labelCol={{ span: 5 }}
+                      wrapperCol={{ span: 19 }}
                       labelAlign="left"
                       label="Đến"
                       name="loiTucDauTuDen" >
