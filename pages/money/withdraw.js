@@ -42,10 +42,10 @@ export default function Withdraw() {
             bankNameOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankNameList) : [],
           });
         } else {
-          console.log(data);
+          alert(data);
         }
       } catch (e) {
-        console.log(e.message);
+        alert(e.message);
       }
     }
 
@@ -65,15 +65,15 @@ export default function Withdraw() {
           pv_txDesc: values.description,
           BankAccount: state.bankAccountList.find(bankAccount => bankAccount.RN === values.bankAccount)
         };
-  
+
         const { data } = await axios.post("/transfer-money", body);
         if (data.Status.Code !== '0') {
-          console.log(data.Status.Message);
+          alert(data.Status.Message);
         } else {
-          console.log('Congratulations! Your with draw was made!');
+          alert('Congratulations! Your with draw was made!');
         }
       } catch (e) {
-        console.log(e.message);
+        alert(e.message);
       }
     }
 
@@ -81,7 +81,7 @@ export default function Withdraw() {
   }
 
   const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+    alert('Failed:', errorInfo);
   };
 
   return (
@@ -91,8 +91,7 @@ export default function Withdraw() {
         title="Rút tiền"
         style={{ paddingLeft: 0 }}
       />
-      <Card style={{ width: 450, textAlign: "center" }}>
-
+      <Card style={{ width: 450, textAlign: "center", margin: '0 auto' }}>
         <Form
           layout="vertical"
           onFinish={onFinish}

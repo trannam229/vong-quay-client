@@ -64,10 +64,10 @@ export default function Example() {
           styleTable: {
             loading: false
           },
-          transferMoneyList: data.TransferMoneyList ? data.TransferMoneyList.TransferMoney.map(setTableSource) : [],
+          transferMoneyList: data.TransferMoneyList ? data.TransferMoneyList.TransferMoney.filter(item => item.Status === 'Chờ duyệt').map(setTableSource) : [],
         });
       } catch (e) {
-        console.log(e);
+        alert(e);
       };
     };
     fetchData();

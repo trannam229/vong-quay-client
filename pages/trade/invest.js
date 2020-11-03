@@ -6,7 +6,7 @@ export default function Example() {
     useEffect(() => {
         const fetchData = async () => {
             const { data } = await axios.get("/price-board");
-            console.log(data);
+            alert(data);
         }
 
         fetchData();

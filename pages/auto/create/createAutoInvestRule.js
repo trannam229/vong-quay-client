@@ -67,22 +67,22 @@ export default function createAutoInvestRule() {
   const onFinish = async (values) => {
     try {
       const { data } = await axios.post("/create-auto-invest-rule", { param: values });
-      console.log(data);
+      alert(data);
       if (data.Status.Code !== '0') {
         alert(data.Status.Message);
       } else {
         route.push({ pathname: '/' })
       }
     } catch (e) {
-      console.log(e.message);
+      alert(e.message);
     }
   };
 
   const switchButton = () => {
-    console.log('AAAAAAAAA')
+    alert('AAAAAAAAA')
   }
   const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+    alert('Failed:', errorInfo);
   };
 
   return (
