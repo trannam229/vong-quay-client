@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../../configs/api-request';
 
-export default function Example11() {
+export default function GetAutoInvests() {
   const columns = [
     {
       title: 'Loại khác hàng',
@@ -52,9 +52,9 @@ export default function Example11() {
         key: item.ID,
         typeCustomer: item.CustType,
         career: item.Sector,
-        investmentReturn: item.MinRate - item.MaxRate,
-        investmentTerm: item.MinTerm - item.MaxTerm,
-        investmentAmount: item.MinAmt - item.MaxAmt
+        investmentReturn: item.MinRate +" - "+ item.MaxRate,
+        investmentTerm: item.MinTerm +" - "+ item.MaxTerm,
+        investmentAmount: item.MinAmt +" - "+ item.MaxAmt
       };
     };
 
@@ -67,18 +67,22 @@ export default function Example11() {
           },
           CustId: decoded.CfInfo.CustID,
         };
-        const { data } = await axios.post("/getAutoInvests", body);
+        const { data } = await axios.post("/get-auto-invests", body);
+        const result = data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function(investInfo){
+            return investInfo.hasOwnProperty('CustType');
+        });
+        alert(result);
         setState({
           styleTable: {
             bordered: true,
             loading: false
           },
           cfInfo: decoded.CfInfo,
-          reInfoList: data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.map(setTableSource) : [],
+          reInfoList: result ? result.map(setTableSource) : [],
 
         });
       } catch (e) {
-        console.log(e);
+        alert(e);
       };
     };
     fetchData();

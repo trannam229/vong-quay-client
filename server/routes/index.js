@@ -1,5 +1,5 @@
 
-const { loginLendbiz } = require('../controllers/auth');
+const authCtr = require('../controllers/auth');
 const tradingCtr = require('../controllers/trading');
 
 const router = require('express').Router();
@@ -14,11 +14,23 @@ const auth = (req, res, next) => {
   next();
 };
 
-router.post('/login', loginLendbiz);
-router.post('/account', auth, tradingCtr.account);
-router.post('/re', auth, tradingCtr.re);
-router.post('/changePassword', auth, tradingCtr.changePassword);
+//Authenticate Service
+router.post('/login', authCtr.loginLendbiz);
+router.post('/change-password', auth, authCtr.changePassword);
+
+//Online Trading
+router.get('/account', auth, tradingCtr.account);
+router.get('/re', auth, tradingCtr.re);
 router.get('/price-board', auth, tradingCtr.getPriceBoard);
 router.get('/deal-to-sell', auth, tradingCtr.getDealToSell);
-router.post('/getAutoInvests', auth, tradingCtr.getAutoInvests);
+router.get('/bank-account', auth, tradingCtr.getBankAccount);
+router.get('/transfer-money', auth, tradingCtr.getTransferMoney);
+router.post('/transfer-money', auth, tradingCtr.postTransferMoney);
+router.post('/get-auto-invests', auth, tradingCtr.getAutoInvests);
+router.post('/create-auto-invest-rule', auth, tradingCtr.createAutoInvestRule);
+router.get('/nar', auth, tradingCtr.getNar);
+router.get('/ci', auth, tradingCtr.getCI);
+router.get('/ln', auth, tradingCtr.getLN);
+router.get('/order-book', auth, tradingCtr.getOrderBook);
+
 module.exports = router;
