@@ -27,4 +27,9 @@ router.get('/transfer-money', auth, tradingCtr.getTransferMoney);
 router.post('/transfer-money', auth, tradingCtr.postTransferMoney);
 router.post('/get-auto-invests', auth, tradingCtr.getAutoInvests);
 router.post('/create-auto-invest-rule', auth, tradingCtr.createAutoInvestRule);
+router.get('/nar', auth, tradingCtr.getNar);
+router.get('/ci', auth, tradingCtr.getCI);
+router.get('/ln', auth, tradingCtr.getLN);
+router.get('/order-book', auth, tradingCtr.getOrderBook);
+
 module.exports = router;

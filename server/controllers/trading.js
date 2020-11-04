@@ -3,7 +3,10 @@ const { successResponse, errorResponse } = require('../api-response');
 
 exports.account = async (req, res) => {
     try {
-        const params = Object.assign(req.query, { header: { Sessionid: req.account.CfInfo.SessionID } });
+        const params = {
+            header: { Sessionid: req.account.CfInfo.SessionID },
+            Custid: req.account.CfInfo.CustID
+        };
         const response = await soapTrading('GetAccount', params);
         return successResponse(res, response.GetAccountResult);
     } catch (e) {
@@ -109,4 +112,92 @@ exports.createAutoInvestRule = async (req, res) => {
         console.log(e)
         return errorResponse(res, e.message);
     }
+};
+
+// Tỷ suất sinh lời
+exports.getNar = async (req, res) => {
+  try {
+      const params = {
+          header: { Sessionid: req.account.CfInfo.SessionID },
+          CustId: req.account.CfInfo.CustID
+      };
+      const response = await soapTrading('GetNar', params);
+      return successResponse(res, response.GetNarResult);
+  } catch (e) {
+      return errorResponse(res, e.message);
+  }
+};
+
+// Lịch sử giao dịch
+exports.getCI = async (req, res) => {
+  try {
+      const params = {
+          header: {
+            Sessionid: req.account.CfInfo.SessionID
+          },
+          SearchCI: {
+            CustID: req.account.CfInfo.CustID,
+            SearchPagingInfo: {
+              OffsetNumber: req.query.OffsetNumber,
+              TotalItem: req.query.TotalItem,
+              CurrentIndex: req.query.CurrentIndex
+            },
+            FromDate: req.query.FromDate,
+            ToDate: req.query.ToDate,
+          }
+      };
+      const response = await soapTrading('GetCI', params);
+      return successResponse(res, response.GetCIResult);
+  } catch (e) {
+      return errorResponse(res, e.message);
+  }
+};
+
+exports.getLN = async (req, res) => {
+  try {
+      const params = {
+          header: {
+            Sessionid: req.account.CfInfo.SessionID
+          },
+          SearchLN: {
+            CustID: req.account.CfInfo.CustID,
+            SearchPagingInfo: {
+              OffsetNumber: req.query.OffsetNumber,
+              TotalItem: req.query.TotalItem,
+              CurrentIndex: req.query.CurrentIndex
+            },
+            FromDate: req.query.FromDate,
+            ToDate: req.query.ToDate,
+          }
+      };
+      const response = await soapTrading('GetLN', params);
+      return successResponse(res, response.GetLNResult);
+  } catch (e) {
+      return errorResponse(res, e.message);
+  }
+};
+
+// Lịch sử giao dịch
+exports.getOrderBook = async (req, res) => {
+  try {
+      const params = {
+          header: {
+            Sessionid: req.account.CfInfo.SessionID
+          },
+          SearchOrders: {
+            CustID: req.account.CfInfo.CustID,
+            SearchPagingInfo: {
+              OffsetNumber: req.query.OffsetNumber,
+              TotalItem: req.query.TotalItem,
+              CurrentIndex: req.query.CurrentIndex
+            },
+            FromDate: req.query.FromDate,
+            ToDate: req.query.ToDate,
+          }
+      };
+      const response = await soapTrading('GetOrderBook', params);
+      return successResponse(res, response.GetOrderBookResult);
+  } catch (e) {
+      return errorResponse(res, e.message);
+  }
 };

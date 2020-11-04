@@ -39,7 +39,7 @@ export default function Main({ children }) {
     const token = Cookies.get('access_token');
     
     if (!token) {
-      route.push({ pathname: '/example' })
+      route.push({ pathname: '/login' })
       return;
     }
   }, [])
