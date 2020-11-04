@@ -2,22 +2,33 @@ export default {
   path: '/',
   routes: [
     {
-      path: '/',
+      path: '/category',
       name: 'Danh mục',
       routes: [
         {
-          path: '/category/income',
+          path: '/category/dashboard',
+          name: 'Tổng quan',
+        },
+        {
+          path: '/category/account-statement',
           name: 'Sao kê tài khoản',
         },
         {
-          path: '/welcome',
+          path: '/category/invest-category',
           name: 'Danh mục đầu tư',
         },
-
+        {
+          path: '/category/income-report',
+          name: 'Báo cáo thu nhập',
+        },
+        {
+          path: '/category/processing-category',
+          name: 'Danh mục chờ khớp lệnh',
+        },
       ],
     },
     {
-      path: '/',
+      path: '/trade',
       name: 'Giao dịch',
       routes: [
         {
@@ -32,7 +43,7 @@ export default {
     },
     {
 
-      path: '/',
+      path: '/auto',
       name: 'Đầu tư tự động',
       routes: [
         {
@@ -65,7 +76,7 @@ export default {
       ]
     },
     {
-      path: '/',
+      path: '/account',
       name: 'Tài khoản',
       routes: [
         {
