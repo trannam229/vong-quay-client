@@ -37,7 +37,7 @@ export default function Example() {
 
         <Row className="mt-5">
           <Col span="4" className="p-2">Nội dung</Col>
-          <Col span="10" className="p-2" style={styleInfo}>Chuyển vào tài khoản &lt;SĐT của bạn&gt mở tại Lendbiz</Col>
+          <Col span="10" className="p-2" style={styleInfo}>Chuyển vào tài khoản &lt;SĐT của bạn&gt; mở tại Lendbiz</Col>
         </Row>
       </div>
     </MainLayout>

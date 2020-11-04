@@ -18,7 +18,7 @@ export default function Example() {
         title="Đăng xuất"
         style={{ paddingLeft: 0 }}
       />
-      <Card style={{ width: 300, textAlign: "center" }}>
+      <Card style={{ width: 300, textAlign: 'center', margin: '0 auto' }}>
         <Image src="/medal.svg" width={100} />
         <p>Bạn có thực sự muốn Đăng xuất?</p>
         <Button

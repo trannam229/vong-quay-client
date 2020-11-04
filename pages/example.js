@@ -13,26 +13,25 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-
 function Example() {
   const route = useRouter();
   const onFinish = async (values) => {
     try {
       const { data } = await axios.post("/login", {header: values});
       if (data.Status.Code !== '0') {
-        console.log('Login failed!');
+        alert('Login failed!');
       } else {
         const jwtAccount = jwt.sign(Object.assign(data, { Password: values.Password }), 'secretKey');
         Cookies.set('access_token', jwtAccount)
         route.push({ pathname: '/' })
       }
     } catch (e) {
-      console.log(e.message);
+      alert(e.message);
     }
   };
 
   const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+    alert('Failed:', errorInfo);
   };
 
   return (
