@@ -1,15 +1,15 @@
 import axios from '../configs/api-request';
-import {Card, Form, Input, Button} from 'antd';
+import { Card, Form, Input, Button } from 'antd';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 
 const layout = {
-    labelCol: {span: 8},
-    wrapperCol: {span: 8},
+    labelCol: { span: 8 },
+    wrapperCol: { span: 8 },
 };
 const tailLayout = {
-    wrapperCol: {offset: 8, span: 16},
+    wrapperCol: { offset: 8, span: 16 },
 };
 
 
@@ -17,13 +17,13 @@ function login() {
     const route = useRouter();
     const onFinish = async (values) => {
         try {
-            const {data} = await axios.post("/login", {header: values});
+            const { data } = await axios.post("/login", { header: values });
             if (data.Status.Code !== '0') {
                 console.log('Login failed!');
             } else {
-                const jwtAccount = jwt.sign(Object.assign(data, {Password: values.Password}), 'secretKey');
+                const jwtAccount = jwt.sign(Object.assign(data, { Password: values.Password }), 'secretKey');
                 Cookies.set('access_token', jwtAccount)
-                route.push({pathname: '/'})
+                route.push({ pathname: '/' })
             }
         } catch (e) {
             console.log(e.message);
@@ -36,28 +36,28 @@ function login() {
 
     return (
         <div className="pt-5">
-            <Card title="Login form" className="mx-auto" style={{width: '50%'}}>
+            <Card title="Login form" style={{ width: '50%', margin: 'auto', 'margin-top': '100px' }}>
                 <Form
                     {...layout}
                     name="basic"
-                    initialValues={{remember: true}}
+                    initialValues={{ remember: true }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                 >
                     <Form.Item
                         label="Username"
                         name="Username"
-                        rules={[{required: true, message: 'Please input your username!'}]}
+                        rules={[{ required: true, message: 'Please input your username!' }]}
                     >
-                        <Input/>
+                        <Input />
                     </Form.Item>
 
                     <Form.Item
                         label="Password"
                         name="Password"
-                        rules={[{required: true, message: 'Please input your password!'}]}
+                        rules={[{ required: true, message: 'Please input your password!' }]}
                     >
-                        <Input.Password/>
+                        <Input.Password />
                     </Form.Item>
                     <Form.Item {...tailLayout}>
                         <Button type="primary" htmlType="submit">
