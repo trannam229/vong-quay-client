@@ -36,7 +36,7 @@ function login() {
 
     return (
         <div className="pt-5">
-            <Card title="Login form" style={{ width: '50%', margin: 'auto', 'margin-top': '100px' }}>
+            <Card title="Login form" style={{ width: '50%', margin: 'auto', 'padding-top': '100px' }}>
                 <Form
                     {...layout}
                     name="basic"
