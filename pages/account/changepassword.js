@@ -1,35 +1,29 @@
 import MainLayout from '@layouts/main';
 import { PageHeader, Card, Button, Form, Input, Image } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import jwt from 'jsonwebtoken';
-import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
 
 export default function Example() {
   const onFinish = async (values) => {
     try {
-      const decoded = jwt.decode(Cookies.get('access_token'));
       const body = {
-        header: {
-          Sessionid: decoded.CfInfo.SessionID,
-          Password: values.Password,
-        },
+        header: { Password: values.Password },
         NewPassword: values.NewPassword,
       };
 
-      const { data } = await axios.post("/changePassword", body);
+      const { data } = await axios.post("/change-password", body);
       if (data.Status.Code !== '0') {
-        console.log(data.Status.Message);
+        alert(data.Status.Message);
       } else {
-        console.log('Congratulations! Your password has been changed successfully!');
+        alert('Congratulations! Your password has been changed successfully!');
       }
     } catch (e) {
-      console.log(e.message);
+      alert(e.message);
     }
   };
 
   const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+    alert('Failed:', errorInfo);
   };
 
   return (
@@ -38,7 +32,7 @@ export default function Example() {
         title="Đổi mật khẩu"
         style={{ paddingLeft: 0 }}
       />
-      <Card style={{ width: 450, textAlign: "center" }}>
+      <Card style={{ width: 450, textAlign: "center", margin: '0 auto' }}>
         <Image src="/medal.svg" width={100} />
         <Form
           layout="vertical"

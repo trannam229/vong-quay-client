@@ -12,20 +12,14 @@ export default function Example() {
     async function fetchData() {
       try {
         const decoded = jwt.decode(Cookies.get('access_token'));
-        const body = {
-          header: {
-            Sessionid: decoded.CfInfo.SessionID,
-          },
-          Custid: decoded.CfInfo.CustID,
-        };
-        const { data } = await axios.post("/account", body);
+        const { data } = await axios.get('/account');
 
         setState({
           cfInfo: decoded.CfInfo,
           accountInfo: data.AccountInfo,
         });
       } catch (e) {
-        console.log(e);
+        alert(e);
       }
     }
 
