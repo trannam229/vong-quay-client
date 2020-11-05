@@ -31,7 +31,7 @@ export default function Example() {
 
   const style = {
     card: {
-      borderRadius: 30,
+      borderRadius: 20,
       border: '2px #69c0ff solid',
       width: 650,
       margin: '20px auto',
@@ -44,7 +44,13 @@ export default function Example() {
     },
     custClassText: {
       marginBottom: 7,
-    }
+    },
+    benefit: {
+      borderRadius: 5,
+      backgroundColor: 'white',
+      padding: '15px 15px',
+      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+    },
   };
 
   return (
@@ -75,46 +81,45 @@ export default function Example() {
         </Row>
       </Card>
 
-        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Hạng thành viên & Quyền lợi</p>
-        <Row justify="space-between">
-          <Col span={4}>
-            <Image src="/bronze.svg" width={70} />
-            <p className="font-weight-bold">ĐỒNG</p>
-            <p>Mặc định cho tất cả các nhà đầu tư</p>
-            <ul>
-              <li>Hỗ trợ Live Chat</li>
-              <li>Đặt lệnh tự động</li>
-            </ul>
-          </Col>
-          <Col span={4}>
-            <Image src="/silver.svg" width={70} />
-            <p className="font-weight-bold">BẠC</p>
-            <p>Mặc định cho tất cả các nhà đầu tư</p>
-            <ul>
-              <li>Hỗ trợ Live Chat</li>
-              <li>Đặt lệnh tự động</li>
-            </ul>
-          </Col>
-          <Col span={4}>
-            <Image src="/gold.svg" width={70} />
-            <p className="font-weight-bold">VÀNG</p>
-            <p>Mặc định cho tất cả các nhà đầu tư</p>
-            <ul>
-              <li>Hỗ trợ Live Chat</li>
-              <li>Đặt lệnh tự động</li>
-            </ul>
-          </Col>
-          <Col span={4}>
-            <Image src="/medal.svg" width={70} />
-            <p className="font-weight-bold">KIM CƯƠNG</p>
-            <p>Mặc định cho tất cả các nhà đầu tư</p>
-            <ul>
-              <li>Hỗ trợ Live Chat</li>
-              <li>Đặt lệnh tự động</li>
-            </ul>
-
-          </Col>
-        </Row>
+      <p className="font-weight-bold" style={{ fontSize: '16px' }}>Hạng thành viên & Quyền lợi</p>
+      <Row justify="space-between">
+        <Col span={5} style={style.benefit}>
+          <Image src="/bronze.svg" width={70} />
+          <p className="font-weight-bold mt-2 mb-0">ĐỒNG</p>
+          <p>Mặc định cho tất cả các nhà đầu tư</p>
+          <ul>
+            <li>Hỗ trợ Live Chat</li>
+            <li>Đặt lệnh tự động</li>
+          </ul>
+        </Col>
+        <Col span={5} style={style.benefit}>
+          <Image src="/silver.svg" width={70} />
+          <p className="font-weight-bold mt-2 mb-0">BẠC</p>
+          <p>Mặc định cho tất cả các nhà đầu tư</p>
+          <ul>
+            <li>Hỗ trợ Live Chat</li>
+            <li>Đặt lệnh tự động</li>
+          </ul>
+        </Col>
+        <Col span={5} style={style.benefit}>
+          <Image src="/gold.svg" width={70} />
+          <p className="font-weight-bold mt-2 mb-0">VÀNG</p>
+          <p>Mặc định cho tất cả các nhà đầu tư</p>
+          <ul>
+            <li>Hỗ trợ Live Chat</li>
+            <li>Đặt lệnh tự động</li>
+          </ul>
+        </Col>
+        <Col span={5} style={style.benefit}>
+          <Image src="/medal.svg" width={70} />
+          <p className="font-weight-bold mt-2 mb-0">KIM CƯƠNG</p>
+          <p>Mặc định cho tất cả các nhà đầu tư</p>
+          <ul>
+            <li>Hỗ trợ Live Chat</li>
+            <li>Đặt lệnh tự động</li>
+          </ul>
+        </Col>
+      </Row>
     </MainLayout>
   )
 }

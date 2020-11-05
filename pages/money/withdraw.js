@@ -91,7 +91,7 @@ export default function Withdraw() {
         title="Rút tiền"
         style={{ paddingLeft: 0 }}
       />
-      <Card style={{ width: 450, textAlign: "center", margin: '0 auto' }}>
+      <Card style={{ width: '100%', textAlign: "center", margin: '0 auto' }}>
         <Form
           layout="vertical"
           onFinish={onFinish}
