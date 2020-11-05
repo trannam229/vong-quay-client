@@ -16,3 +16,35 @@
 // .ant-pro-global-header{
 //     background-color: @color-2!important;
 // }
+
+.ant-table-thead > tr > th {
+  background-color: #03b1fe !important;
+  color: @color-6 !important;
+
+  &:first-child {
+    border-top-left-radius: 0px !important;
+  }
+
+  &:last-child {
+    border-right: none !important;
+    border-top-right-radius: 0px !important;
+  }
+}
+
+.ant-table-bordered table tr > td {
+  border-color: #2bb9ff !important;
+}
+
+.ant-table-bordered table {
+  border-left: 1px #2bb9ff solid !important;
+  border-radius: 0px !important;
+}
+
+.ant-table-bordered table tr:nth-child(even) {
+  background-color: #d9f5ff;
+
+  &:hover {
+    background-color: #d9f5ff !important;
+  }
+}
+

@@ -111,7 +111,7 @@ export default function Example() {
           </ul>
         </Col>
         <Col span={5} style={style.benefit}>
-          <Image src="/medal.svg" width={70} />
+          <Image src="/diamond.svg" width={70} />
           <p className="font-weight-bold mt-2 mb-0">KIM CƯƠNG</p>
           <p>Mặc định cho tất cả các nhà đầu tư</p>
           <ul>
