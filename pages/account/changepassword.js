@@ -26,18 +26,35 @@ export default function Example() {
     alert('Failed:', errorInfo);
   };
 
+  const style = {
+    button: {
+      width: 150,
+      height: 40,
+      fontSize: 16
+    },
+    txt: {
+      fontSize: 18
+    },
+    header: {
+      textAlign: 'center'
+    },
+    card: {
+      width: 450,
+      textAlign: 'center',
+      margin: '0 auto'
+    }
+  }
+
   return (
     <MainLayout>
-      <PageHeader className="site-page-header"
-        title="Đổi mật khẩu"
-        style={{ paddingLeft: 0 }}
-      />
-      <Card style={{ width: 450, textAlign: "center", margin: '0 auto' }}>
-        <Image src="/medal.svg" width={100} />
+      <h3 style={style.header}>Đổi mật khẩu</h3>
+      <Card style={style.card} className="mt-4">
+        <Image src="/key.svg" className="mt-3" width={100} />
         <Form
           layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          className="mt-4"
         >
           <Form.Item
             label="Mật khẩu hiện tại"
@@ -88,7 +105,7 @@ export default function Example() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">Lưu thay đổi</Button>
+            <Button type="primary" shape="round" style={style.button} htmlType="submit">Lưu thay đổi</Button>
           </Form.Item>
         </Form>
       </Card>

@@ -28,10 +28,29 @@ exports.re = async (req, res) => {
 
 exports.getPriceBoard = async (req, res) => {
     try {
+        const info = req.account.CfInfo;
         const header = {
-            Sessionid: req.account.CfInfo.SessionID,
+            Sessionid: info.SessionID,
         };
-        const response = await soapTrading('GetPriceBoard', { header });
+        const response = await soapTrading('GetPriceBoard', {
+            header,
+            SearchPriceBoard: {
+                SearchPagingInfo: {}
+            }
+        });
+        return successResponse(res, response);
+
+    } catch (e) {
+        return errorResponse(res, e.message);
+    }
+}
+exports.getDealToSell = async (req, res) => {
+    try {
+        const info = req.account.CfInfo;
+        const header = {
+            Sessionid: info.SessionID,
+        };
+        const response = await soapTrading('GetDealToSell', { header, CustID: info.CustID });
         return successResponse(res, response);
 
     } catch (e) {

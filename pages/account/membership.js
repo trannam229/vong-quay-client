@@ -1,12 +1,14 @@
 import MainLayout from '@layouts/main';
-import { PageHeader, Row, Col, Descriptions, Image } from 'antd';
+import { PageHeader, Row, Col, Descriptions, Image, Card } from 'antd';
 import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
 
 export default function Example() {
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    loading: true
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -15,6 +17,7 @@ export default function Example() {
         const { data } = await axios.get('/account');
 
         setState({
+          loading: false,
           cfInfo: decoded.CfInfo,
           accountInfo: data.AccountInfo,
         });
@@ -26,6 +29,24 @@ export default function Example() {
     fetchData();
   }, []);
 
+  const style = {
+    card: {
+      borderRadius: 30,
+      border: '2px #69c0ff solid',
+      width: 650,
+      margin: '20px auto',
+    },
+    custClass: {
+      borderBottom: '2px gray solid',
+      fontSize: 18,
+      fontWeight: 550,
+      color: '#69c0ff'
+    },
+    custClassText: {
+      marginBottom: 7,
+    }
+  };
+
   return (
     <MainLayout>
       <PageHeader
@@ -33,41 +54,31 @@ export default function Example() {
         title="Hạng thành viên"
         style={{ paddingLeft: 0 }}
       />
-      <>
-        <Descriptions title="Chương trình khách hàng thân thiết">
-          <Descriptions.Item>Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
-        </Descriptions>
+      <Descriptions title="Chương trình khách hàng thân thiết">
+        <Descriptions.Item>Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
+      </Descriptions>
 
-        <Row justify="center" className="mt-5">
-          <Col
-            span={12}
-            style={{ border: "2px #A4EAFF solid", borderRadius: 30 }}
-          >
-            <Row>
-              <Col flex="100px">
-                <Image
-                  width={100}
-                  src="/medal.svg"
-                />
-              </Col>
-              <Col flex="auto">
-                <p>Hạng thành viên hiện tại</p>
-                <Row style={{ borderBottom: "2px gray solid" }}>
-                  <Col flex="70px" style={{ borderRight: "2px #A4EAFF solid" }}><p>{state.cfInfo && state.cfInfo.CustClass}</p></Col>
-                  <Col flex="auto">{state.accountInfo && state.accountInfo.Invested} điểm</Col>
-                </Row>
-                <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>
-              </Col>
+      <Card style={style.card} loading={state.loading}>
+        <Row>
+          <Col flex="100px">
+            <Image width={100} src={`/${state.cfInfo ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
+          </Col>
+          <Col flex="auto">
+            <p>Hạng thành viên hiện tại</p>
+            <Row style={style.custClass}>
+              <Col flex="80px" style={style.custClassText}>{state.cfInfo && state.cfInfo.CustClass}</Col>
+              <Col style={style.custClassText}>|</Col>
+              <Col flex="auto" style={style.custClassText}>{state.accountInfo && state.accountInfo.Invested} ĐIỂM</Col>
             </Row>
+            <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>
           </Col>
         </Row>
-      </>
+      </Card>
 
-      <div className="mt-5">
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Hạng thành viên & Quyền lợi</p>
         <Row justify="space-between">
-          <Col span={4} className="text-center">
-            <Image src="/medal.svg" width={70} />
+          <Col span={4}>
+            <Image src="/bronze.svg" width={70} />
             <p className="font-weight-bold">ĐỒNG</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
             <ul>
@@ -75,8 +86,8 @@ export default function Example() {
               <li>Đặt lệnh tự động</li>
             </ul>
           </Col>
-          <Col span={4} className="text-center">
-            <Image src="/medal.svg" width={70} />
+          <Col span={4}>
+            <Image src="/silver.svg" width={70} />
             <p className="font-weight-bold">BẠC</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
             <ul>
@@ -84,8 +95,8 @@ export default function Example() {
               <li>Đặt lệnh tự động</li>
             </ul>
           </Col>
-          <Col span={4} className="text-center">
-            <Image src="/medal.svg" width={70} />
+          <Col span={4}>
+            <Image src="/gold.svg" width={70} />
             <p className="font-weight-bold">VÀNG</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
             <ul>
@@ -93,7 +104,7 @@ export default function Example() {
               <li>Đặt lệnh tự động</li>
             </ul>
           </Col>
-          <Col span={4} className="text-center">
+          <Col span={4}>
             <Image src="/medal.svg" width={70} />
             <p className="font-weight-bold">KIM CƯƠNG</p>
             <p>Mặc định cho tất cả các nhà đầu tư</p>
@@ -104,7 +115,6 @@ export default function Example() {
 
           </Col>
         </Row>
-      </div>
     </MainLayout>
   )
 }

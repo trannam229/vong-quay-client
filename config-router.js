@@ -38,10 +38,6 @@ export default {
       ],
     },
     {
-      path: '/example',
-      name: 'Example Page',
-    },
-    {
 
       path: '/auto',
       name: 'Đầu tư tự động',
