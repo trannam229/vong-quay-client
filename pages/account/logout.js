@@ -9,24 +9,41 @@ export default function Example() {
 
   const logout = () => {
     Cookies.remove('access_token');
-    route.push({ pathname: '/example' })
+    route.push({ pathname: '/login' })
+  }
+
+  const style = {
+    button: {
+      width: 150,
+      height: 40,
+      fontSize: 16
+    },
+    txt: {
+      fontSize: 18
+    },
+    header: {
+      textAlign: 'center'
+    },
+    card: {
+      width: 600,
+      textAlign: 'center',
+      margin: '0 auto'
+    }
   }
 
   return (
     <MainLayout>
-      <PageHeader className="site-page-header"
-        title="Đăng xuất"
-        style={{ paddingLeft: 0 }}
-      />
-      <Card style={{ width: 300, textAlign: 'center', margin: '0 auto' }}>
-        <Image src="/medal.svg" width={100} />
-        <p>Bạn có thực sự muốn Đăng xuất?</p>
+      <h3 style={style.header}>Đăng xuất</h3>
+      <Card style={style.card} className="mt-4">
+        <Image src="/logout.svg" className="mt-3" width={100} />
+        <p style={style.txt} className="mt-5">Bạn có thực sự muốn Đăng xuất?</p>
         <Button
           type="primary"
           shape="round"
-          style={{ width: 100 }}
+          style={style.button}
+          className="mr-5 mt-3 mb-3"
           onClick={logout}>Có</Button>
-        <Button shape="round" style={{ width: 100 }}>Không</Button>
+        <Button shape="round" style={style.button}>Không</Button>
       </Card>
     </MainLayout>
   )
