@@ -6,19 +6,17 @@ import { useRouter } from 'next/router'
 import Cookies from 'js-cookie';
 import RouterConfigs from "../config-router";
 import { useEffect } from 'react';
-
+import jwt from 'jsonwebtoken'
 const ProLayout = dynamic(() => import('@ant-design/pro-layout'), {
   ssr: false,
 })
 
 
 const menuHeaderRender = (logoDom, titleDom, props) => (
-  <Link href="/">
-    <a>
-      {logoDom}
-      {/* {!props?.collapsed && titleDom} */}
-    </a>
+  <Link href="/" className="m-auto">
+    <div className="text-center">{logoDom}</div>
   </Link>
+
 )
 
 const menuItemRender = (options, element) => (
@@ -37,7 +35,8 @@ export default function Main({ children }) {
   const route = useRouter();
   useEffect(() => {
     const token = Cookies.get('access_token');
-    
+    const decoded = jwt.decode(Cookies.get('access_token'));
+    console.log(decoded)
     if (!token) {
       route.push({ pathname: '/login' })
       return;
@@ -48,6 +47,7 @@ export default function Main({ children }) {
     <ProLayout
       style={{ minHeight: '100vh' }}
       route={RouterConfigs}
+      logo="/logo-white.png"
       menuItemRender={menuItemRender}
       menuHeaderRender={menuHeaderRender}
       headerRender={headerRender}
