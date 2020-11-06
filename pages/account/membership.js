@@ -22,7 +22,7 @@ export default function Example() {
           accountInfo: data.AccountInfo,
         });
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
     }
 

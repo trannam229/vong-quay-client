@@ -22,8 +22,8 @@ function login() {
                 console.log('Login failed!');
             } else {
                 const jwtAccount = jwt.sign(Object.assign(data, {Password: values.Password}), 'secretKey');
-                Cookies.set('access_token', jwtAccount);
-                route.push({pathname: '/'})
+                Cookies.set('access_token', jwtAccount)
+                route.push({pathname: '/category/dashboard'})
             }
         } catch (e) {
             console.log(e.message);
