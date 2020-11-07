@@ -44,9 +44,7 @@ export default function Example() {
 
   const [state, setState] = useState({
     orderBookInfo: [],
-    styleTable: {
-      loading: true
-    },
+    loading: true,
     totalAmt: 0
   });
 
@@ -55,7 +53,7 @@ export default function Example() {
       return {
         key: item.ReqID,
         name: item.ShortName || 'No data available',
-        sector: item.txnum || 'No data available',
+        sector: item.Sector || 'No data available',
         time: item.IRegDate,
         class: item.CustClass,
         int: item.Int,

@@ -91,7 +91,7 @@ export default function Example() {
             { medal: 'diamond', name: 'KIM CƯƠNG' }
           ].map(item => {
             return (
-              <Col span={5} style={style.benefit}>
+              <Col span={5} style={style.benefit} key={item.name}>
                 <Image src={`/${item.medal}.svg`} width={70} />
                 <p className="font-weight-bold mt-2 mb-2">{item.name}</p>
                 <p className="mb-2">Mặc định cho tất cả các nhà đầu tư</p>

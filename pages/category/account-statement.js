@@ -30,9 +30,7 @@ export default function Example() {
   const [state, setState] = useState({
     accountInfo: {},
     ciInfo: [],
-    styleTable: {
-      loading: true
-    }
+    loading: true
   });
 
   useEffect(() => {
@@ -49,9 +47,7 @@ export default function Example() {
     async function fetchData() {
       try {
         const data = {
-          styleTable: {
-            loading: true
-          }
+          loading: true
         };
 
         const accountResult = await axios.get('/account');
@@ -71,7 +67,7 @@ export default function Example() {
         const ciResult = await axios.get('/ci', { params });
         if (ciResult.data.Status.Code === '0') {
           data.ciInfo = ciResult.data.CIInfoList ? ciResult.data.CIInfoList.CIInfo.map(setTableSource) : [];
-          data.styleTable.loading = false;
+          data.loading = false;
         } else {
           alert(ciResult.data.Status.Message)
         }
@@ -109,7 +105,7 @@ export default function Example() {
 
       <Row>
         <Col span={8}>
-          <p className="font-weight-bold">Số dư khả dụng: {(state.accountInfo.AvlAmt || 0) + ' VND'}</p>
+          <p className="font-weight-bold">Số dư khả dụng: {state.loading ? '' : state.accountInfo.AvlAmt + ' VND'}</p>
         </Col>
         <Col span={10} offset={6}>
           <Form layout="horizontal">
@@ -125,17 +121,17 @@ export default function Example() {
           <Col span="6" offset="1" style={style.infoDetail}>
             Tổng phát sinh tăng
             <br />
-            <b>{state.accountInfo.TotalAsset + ' VND'}</b>
+            <b>{(state.accountInfo.TotalAsset || 0) + ' VND'}</b>
           </Col>
           <Col span="6" offset="2" style={style.infoDetail}>
             Tổng phát sinh giảm
             <br />
-            <b>{state.accountInfo.AvlAmt + ' VND'}</b>
+            <b>{(state.accountInfo.AvlAmt || 0) + ' VND'}</b>
           </Col>
           <Col span="6" offset="2" style={style.infoDetail}>
             Số dư cuối kỳ
             <br />
-            <b>{state.accountInfo.Invested + ' VND'}</b>
+            <b>{(state.accountInfo.Invested || 0) + ' VND'}</b>
           </Col>
         </Row>
       </Card>
@@ -144,7 +140,7 @@ export default function Example() {
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Sao kê chi tiết</p>
         <Table
           bordered="true"
-          loading={state.styleTable.loading}
+          loading={state.loading}
           dataSource={state.ciInfo}
           columns={columns}
         />
