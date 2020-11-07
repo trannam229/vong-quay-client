@@ -7,6 +7,10 @@
 @color-7: #e9e6e6;
 @color-8: #00007A;
 
+.ant-layout{
+  background-color: white!important;
+}
+
 .ant-layout-sider{
   background-color: @color-7!important;
 }
@@ -54,6 +58,7 @@ header .d-flex.justify-content-end{
 .ant-table-thead > tr > th {
   background-color: #03b1fe !important;
   color: @color-6 !important;
+  text-align: center;
 
   &:first-child {
     border-top-left-radius: 0px !important;
@@ -75,10 +80,55 @@ header .d-flex.justify-content-end{
 }
 
 .ant-table-bordered table tr:nth-child(even) {
-  background-color: #d9f5ff;
+  background-color: @color-4;
+}
 
-  &:hover {
-    background-color: #d9f5ff !important;
+//Category
+.category-dashboard-header {
+  .ant-descriptions-item-label {
+    color: black;
+    font-weight: bold;
+  }
+
+  .ant-descriptions-item-content {
+    color: black;
   }
 }
 
+.category-dashboard {
+  .ant-card-body{
+    background-color: transparent !important;
+    padding: 0 !important;
+  }
+
+  .ant-col {
+    background-color: @color-4;
+  }
+
+  .ant-descriptions-view{
+    border-style: none !important;
+    padding: 5px 20px;
+
+    .ant-descriptions-row {
+      border-bottom: 1px #a2adb0 solid;
+      &:last-child {
+        border-style: none;
+      }
+    }
+
+    .ant-descriptions-item-label{
+      background-color: transparent !important;
+      padding: 7px 0 !important;
+      border-style: none;
+      color: black;
+    }
+
+    .ant-descriptions-item-content {
+      padding: 0 !important;
+      text-align: right;
+      font-weight: bold;
+      border-style: none;
+      color: black;
+    }
+  }
+}

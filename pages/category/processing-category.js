@@ -70,22 +70,20 @@ export default function Example() {
           OffsetNumber: '',
           TotalItem: '',
           CurrentIndex: '',
-          FromDate: '2019-10-22T21:32:52.12679',
-          ToDate: '2020-10-22T21:32:52.12679',
+          FromDate: '2019-10-22',
+          ToDate: '2020-10-22',
         }
         const orderBookResult = await axios.get('/order-book', { params });
         if (orderBookResult.data.Status.Code === '0') {
           const orderBookInfo = orderBookResult.data.OrderList
             ? orderBookResult.data.OrderList.OrderInfo.filter(item => item.OrdStatus === 'Chờ khớp').map(setTableSource)
             : [];
-          const totalAmt = state.orderBookInfo.reduce((accumulator, currentItem) => accumulator + currentItem.amt, 0);
+          const totalAmt = orderBookInfo.reduce((accumulator, currentItem) => accumulator + currentItem.amt, 0);
 
           setState({
             orderBookInfo,
             totalAmt,
-            styleTable: {
-              loading: false
-            },
+            loading: false
           })
         } else {
           alert(orderBookResult.data.Status.Message)
@@ -96,7 +94,22 @@ export default function Example() {
     }
 
     fetchData();
-  }, [state]);
+  }, []);
+
+  const style = {
+    info: {
+      backgroundColor: 'none',
+      width: 900,
+      margin: '0 auto',
+      borderStyle: 'none'
+    },
+    infoDetail: {
+      borderRadius: 50,
+      backgroundColor: '#D9F5FF',
+      padding: '20px 20px',
+      textAlign: 'center'
+    }
+  }
 
   return (
     <MainLayout>
@@ -106,17 +119,25 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Card size="small" style={{ width: 1000, margin: '0 auto' }}>
-        <Descriptions layout="vertical" bordered>
-          <Descriptions.Item label="Khoản chờ khớp lệnh">{state.orderBookInfo.length}</Descriptions.Item>
-          <Descriptions.Item label="Số dư chờ khớp lệnh">{state.totalAmt + ' VND'}</Descriptions.Item>
-        </Descriptions>
+      <Card size="small" loading={state.loading} style={style.info}>
+        <Row>
+          <Col span="6" offset="3" style={style.infoDetail}>
+            <b>{state.orderBookInfo.length}</b>
+            <br />
+            Khoản chờ khớp lệnh
+          </Col>
+          <Col span="6" offset="2" style={style.infoDetail}>
+            <b>{state.totalAmt + ' VND'}</b>
+            <br />
+            Số dư chờ khớp lệnh
+          </Col>
+        </Row>
       </Card>
 
       <Table
-        className="mt-5"
+        className="mt-4"
         bordered="true"
-        loading={state.styleTable.loading}
+        loading={state.loading}
         dataSource={state.orderBookInfo}
         columns={columns}
       />

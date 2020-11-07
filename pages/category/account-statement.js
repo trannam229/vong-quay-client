@@ -85,6 +85,20 @@ export default function Example() {
     fetchData();
   }, []);
 
+  const style = {
+    info: {
+      backgroundColor: 'none',
+      width: 900,
+      margin: '0 auto',
+      borderStyle: 'none'
+    },
+    infoDetail: {
+      borderRadius: 5,
+      backgroundColor: '#D9F5FF',
+      padding: '20px 20px',
+      textAlign: 'center'
+    }
+  }
   return (
     <MainLayout>
       <PageHeader
@@ -95,28 +109,38 @@ export default function Example() {
 
       <Row>
         <Col span={8}>
-          <Descriptions>
-            <Descriptions.Item label="Số dư khả dụng">{state.accountInfo.AvlAmt}</Descriptions.Item>
-          </Descriptions>
+          <p className="font-weight-bold">Số dư khả dụng: {(state.accountInfo.AvlAmt || 0) + ' VND'}</p>
         </Col>
         <Col span={10} offset={6}>
           <Form layout="horizontal">
-            <Form.Item label="Thời gian" name="size">
-              <DatePicker.RangePicker style={{ width: '100%' }}/>
+            <Form.Item label="Thời gian" name="size" style={{ color: '#03b1fe' }}>
+              <DatePicker.RangePicker style={{ width: '100%' }} />
             </Form.Item>
           </Form>
         </Col>
       </Row>
 
-      <Card size="small" style={{ marginTop: '3rem', width: 1000, margin: '0 auto' }}>
-        <Descriptions layout="vertical" bordered>
-          <Descriptions.Item label="Tổng phát sinh tăng">{state.accountInfo.TotalAsset}</Descriptions.Item>
-          <Descriptions.Item label="Tổng phát sinh giảm">{state.accountInfo.AvlAmt}</Descriptions.Item>
-          <Descriptions.Item label="Số dư cuối kỳ">{state.accountInfo.Invested}</Descriptions.Item>
-        </Descriptions>
+      <Card size="small" loading={state.loading} style={style.info} className="mt-3">
+        <Row>
+          <Col span="6" offset="1" style={style.infoDetail}>
+            Tổng phát sinh tăng
+            <br />
+            <b>{state.accountInfo.TotalAsset + ' VND'}</b>
+          </Col>
+          <Col span="6" offset="2" style={style.infoDetail}>
+            Tổng phát sinh giảm
+            <br />
+            <b>{state.accountInfo.AvlAmt + ' VND'}</b>
+          </Col>
+          <Col span="6" offset="2" style={style.infoDetail}>
+            Số dư cuối kỳ
+            <br />
+            <b>{state.accountInfo.Invested + ' VND'}</b>
+          </Col>
+        </Row>
       </Card>
 
-      <div className="mt-2">
+      <div className="mt-4">
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Sao kê chi tiết</p>
         <Table
           bordered="true"

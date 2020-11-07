@@ -83,42 +83,26 @@ export default function Example() {
 
       <p className="font-weight-bold" style={{ fontSize: '16px' }}>Hạng thành viên & Quyền lợi</p>
       <Row justify="space-between">
-        <Col span={5} style={style.benefit}>
-          <Image src="/bronze.svg" width={70} />
-          <p className="font-weight-bold mt-2 mb-0">ĐỒNG</p>
-          <p>Mặc định cho tất cả các nhà đầu tư</p>
-          <ul>
-            <li>Hỗ trợ Live Chat</li>
-            <li>Đặt lệnh tự động</li>
-          </ul>
-        </Col>
-        <Col span={5} style={style.benefit}>
-          <Image src="/silver.svg" width={70} />
-          <p className="font-weight-bold mt-2 mb-0">BẠC</p>
-          <p>Mặc định cho tất cả các nhà đầu tư</p>
-          <ul>
-            <li>Hỗ trợ Live Chat</li>
-            <li>Đặt lệnh tự động</li>
-          </ul>
-        </Col>
-        <Col span={5} style={style.benefit}>
-          <Image src="/gold.svg" width={70} />
-          <p className="font-weight-bold mt-2 mb-0">VÀNG</p>
-          <p>Mặc định cho tất cả các nhà đầu tư</p>
-          <ul>
-            <li>Hỗ trợ Live Chat</li>
-            <li>Đặt lệnh tự động</li>
-          </ul>
-        </Col>
-        <Col span={5} style={style.benefit}>
-          <Image src="/diamond.svg" width={70} />
-          <p className="font-weight-bold mt-2 mb-0">KIM CƯƠNG</p>
-          <p>Mặc định cho tất cả các nhà đầu tư</p>
-          <ul>
-            <li>Hỗ trợ Live Chat</li>
-            <li>Đặt lệnh tự động</li>
-          </ul>
-        </Col>
+        {
+          [
+            { medal: 'bronze', name: 'ĐỒNG' },
+            { medal: 'silver', name: 'BẠC' },
+            { medal: 'gold', name: 'VÀNG' },
+            { medal: 'diamond', name: 'KIM CƯƠNG' }
+          ].map(item => {
+            return (
+              <Col span={5} style={style.benefit}>
+                <Image src={`/${item.medal}.svg`} width={70} />
+                <p className="font-weight-bold mt-2 mb-2">{item.name}</p>
+                <p className="mb-2">Mặc định cho tất cả các nhà đầu tư</p>
+                <ul className="pl-4">
+                  <li>Hỗ trợ Live Chat</li>
+                  <li>Đặt lệnh tự động</li>
+                </ul>
+              </Col>
+            );
+          })
+        }
       </Row>
     </MainLayout>
   )

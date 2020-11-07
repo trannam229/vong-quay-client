@@ -38,21 +38,6 @@ export default {
       ],
     },
     {
-
-      path: '/auto',
-      name: 'Đầu tư tự động',
-      routes: [
-        {
-          path: '/auto/create/createAutoInvestRule',
-          name: 'Cài đặt',
-        },
-        {
-          path: '/auto/invests/getAutoInvests',
-          name: 'Danh sách',
-        }
-      ],
-    },
-    {
       path: '/money',
       name: 'Tiền',
       routes: [
@@ -70,6 +55,20 @@ export default {
           name: 'Lệnh chờ thanh toán',
         }
       ]
+    },
+    {
+      path: '/auto',
+      name: 'Đầu tư tự động',
+      routes: [
+        {
+          path: '/auto/create/createAutoInvestRule',
+          name: 'Cài đặt',
+        },
+        {
+          path: '/auto/invests/getAutoInvests',
+          name: 'Danh sách',
+        }
+      ],
     },
     {
       path: '/account',
