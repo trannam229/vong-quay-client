@@ -68,7 +68,7 @@ export default function GetAutoInvests() {
           CustId: decoded.CfInfo.CustID,
         };
         const { data } = await axios.post("/get-auto-invests", body);
-        const result =data.GetAutoInvestsResult.AutoInvestList ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function(investInfo){
+        const result =data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function(investInfo){
             return investInfo.hasOwnProperty('CustType');
         }): [];
         setState({
