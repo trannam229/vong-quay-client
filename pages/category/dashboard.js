@@ -23,19 +23,19 @@ export default function Example() {
         if (accountResult.data.Status.Code === '0') {
           data.accountInfo = accountResult.data.AccountInfo;
         } else {
-          alert(accountResult.data.Status.Message)
+          console.log(accountResult.data.Status.Message)
         }
 
         const narResult = await axios.get('/nar');
         if (narResult.data.Status.Code === '0') {
           data.nar = narResult.data.Nar;
         } else {
-          alert(narResult.data.Status.Message)
+          console.log(narResult.data.Status.Message)
         }
 
         setState(data)
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
     }
 

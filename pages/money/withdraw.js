@@ -42,10 +42,10 @@ export default function Withdraw() {
             bankNameOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankNameList) : [],
           });
         } else {
-          alert(data);
+          console.log(data);
         }
       } catch (e) {
-        alert(e.message);
+        console.log(e.message);
       }
     }
 
@@ -68,12 +68,12 @@ export default function Withdraw() {
 
         const { data } = await axios.post("/transfer-money", body);
         if (data.Status.Code !== '0') {
-          alert(data.Status.Message);
+          console.log(data.Status.Message);
         } else {
-          alert('Congratulations! Your with draw was made!');
+          console.log('Congratulations! Your with draw was made!');
         }
       } catch (e) {
-        alert(e.message);
+        console.log(e.message);
       }
     }
 
@@ -81,7 +81,7 @@ export default function Withdraw() {
   }
 
   const onFinishFailed = errorInfo => {
-    alert('Failed:', errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
   return (

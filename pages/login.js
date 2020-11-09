@@ -35,8 +35,8 @@ function login() {
     };
 
     return (
-        <div className="pt-5">
-            <Card title="Login form"  style={{width: '50%', 'margin-top': '100px', margin: 'auto'}}>
+        <div style="padding-top:100px">
+            <Card title="Login form" style={{width: '50%', 'margin-top': '100px', margin: 'auto'}}>
                 <Form
                     {...layout}
                     name="basic"

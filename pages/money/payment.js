@@ -67,7 +67,7 @@ export default function Example() {
           transferMoneyList: data.TransferMoneyList ? data.TransferMoneyList.TransferMoney.filter(item => item.Status === 'Chờ duyệt').map(setTableSource) : [],
         });
       } catch (e) {
-        alert(e);
+        console.log(e);
       };
     };
     fetchData();

@@ -19,19 +19,19 @@ function Example() {
     try {
       const { data } = await axios.post("/login", {header: values});
       if (data.Status.Code !== '0') {
-        alert('Login failed!');
+        console.log('Login failed!');
       } else {
         const jwtAccount = jwt.sign(Object.assign(data, { Password: values.Password }), 'secretKey');
         Cookies.set('access_token', jwtAccount)
         route.push({ pathname: '/' })
       }
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 
   const onFinishFailed = errorInfo => {
-    alert('Failed:', errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
   return (

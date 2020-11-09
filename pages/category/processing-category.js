@@ -88,10 +88,10 @@ export default function Example() {
             },
           })
         } else {
-          alert(orderBookResult.data.Status.Message)
+          console.log(orderBookResult.data.Status.Message)
         }
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
     }
 

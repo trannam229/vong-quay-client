@@ -71,7 +71,7 @@ export default function GetAutoInvests() {
         const result = data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function(investInfo){
             return investInfo.hasOwnProperty('CustType');
         });
-        alert(result);
+        console.log(result);
         setState({
           styleTable: {
             bordered: true,
@@ -82,7 +82,7 @@ export default function GetAutoInvests() {
 
         });
       } catch (e) {
-        alert(e);
+        console.log(e);
       };
     };
     fetchData();
