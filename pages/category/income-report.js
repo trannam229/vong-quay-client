@@ -49,6 +49,10 @@ export default function Example() {
         } else {
           console.log(ciResult.data.Status.Message)
         }
+        const calculatedAll = {
+          income: +allInfo.profits -  +allInfo.namt - +allInfo.namt + +allInfo.ReCommission + +allInfo.amountOvd,
+          allFee: +allInfo.fee - +allInfo.tax
+        }
 
         const calculatedMonth = {
           income: +monthInfo.profits -  +monthInfo.namt - +monthInfo.namt + +monthInfo.ReCommission + +monthInfo.amountOvd,
