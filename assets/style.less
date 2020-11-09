@@ -132,3 +132,25 @@ header .d-flex.justify-content-end{
     }
   }
 }
+
+// Income report
+.income-report {
+  .ant-table-bordered table {
+    tr {
+      background-color: transparent;
+  
+      th {
+        width: 33%;
+      }
+    }
+
+    tr[data-row-key="Thu nhập"],tr[data-row-key="Chi phí"],tr[data-row-key="Thu nhập ròng"] {
+      font-weight: bold;
+      background-color: @color-4 !important; 
+    }
+
+    td:not(:first-child) {
+      text-align: center;
+    }
+  }
+}

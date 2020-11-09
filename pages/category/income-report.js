@@ -6,75 +6,72 @@ import axios from '../../configs/api-request';
 export default function Example() {
   const columns = [
     {
-      title: 'Thời gian',
-      dataIndex: 'time',
-      key: 'time',
+      title: '',
+      dataIndex: 'key',
+      key: 'key',
     },
     {
-      title: 'Số REF',
-      dataIndex: 'ref',
-      key: 'ref',
+      title: 'Cộng dồn',
+      dataIndex: 'all',
+      key: 'all',
     },
     {
-      title: 'Nội dung',
-      dataIndex: 'description',
-      key: 'description',
-    },
-    {
-      title: 'Số tiền',
-      key: 'amt',
-      dataIndex: 'amt',
-    },
+      title: 'Tháng',
+      dataIndex: 'month',
+      key: 'month',
+    }
   ];
 
   const [state, setState] = useState({
-    accountInfo: {},
-    ciInfo: [],
-    styleTable: {
-      loading: true
-    }
+    dataTable: [],
+    loading: true
   });
 
   useEffect(() => {
-    const setTableSource = item => {
-      return {
-        key: item.RN,
-        time: item.txdate,
-        ref: item.txnum,
-        description: item.txdesc,
-        amt: item.InitBalance
-      };
-    };
-
     async function fetchData() {
       try {
         const data = {
-          styleTable: {
-            loading: true
-          }
+          loading: false
         };
+        let allInfo;
+        let monthInfo;
 
-        const accountResult = await axios.get('/account');
-        if (accountResult.data.Status.Code === '0') {
-          data.accountInfo = accountResult.data.AccountInfo;
+        const allInfoResult = await axios.get('/all-income-report');
+        if (allInfoResult.data.Status.Code === '0') {
+          allInfo = allInfoResult.data.IncomeInfo;
         } else {
-          alert(accountResult.data.Status.Message)
+          alert(allInfoResult.data.Status.Message)
         }
 
-        const params = {
-          OffsetNumber: '',
-          TotalItem: '',
-          CurrentIndex: '',
-          FromDate: '2019-10-22T21:32:52.12679',
-          ToDate: '2020-10-22T21:32:52.12679',
-        }
-        const ciResult = await axios.get('/ci', { params });
-        if (ciResult.data.Status.Code === '0') {
-          data.ciInfo = ciResult.data.CIInfoList ? ciResult.data.CIInfoList.CIInfo.map(setTableSource) : [];
-          data.styleTable.loading = false;
+        const monthInfoResult = await axios.get('/income-by-time');
+        if (monthInfoResult.data.Status.Code === '0') {
+          monthInfo = monthInfoResult.data.IncomeInfo;
         } else {
-          alert(ciResult.data.Status.Message)
+          alert(monthInfoResult.data.Status.Message)
         }
+
+        const calculatedAll = {
+          income: +allInfo.profits -  +allInfo.namt - +allInfo.namt + +allInfo.ReCommission + +allInfo.amountOvd,
+          allFee: +allInfo.fee - +allInfo.tax,
+        }
+
+        const calculatedMonth = {
+          income: +monthInfo.profits -  +monthInfo.namt - +monthInfo.namt + +monthInfo.ReCommission + +monthInfo.amountOvd,
+          allFee: +monthInfo.fee - +monthInfo.tax,
+        }
+
+        data.dataTable = [
+          { key: 'Thu nhập', all: calculatedAll.income, month: calculatedMonth.income },
+          { key: 'Lợi tức đã nhận', all: allInfo.profits, month: monthInfo.profits },
+          { key: 'Phạt thanh toán trước hạn', all: allInfo.namt, month: monthInfo.namt },
+          { key: 'Phạt chậm trả', all: allInfo.namt, month: monthInfo.namt },
+          { key: 'Hoa hồng', all: allInfo.amountOvd, month: monthInfo.amountOvd },
+          { key: 'Thưởng', all: allInfo.ReCommission, month: monthInfo.ReCommission },
+          { key: 'Chi phí', all: calculatedAll.allFee, month: calculatedMonth.allFee },
+          { key: 'Phí dịch vụ', all: allInfo.fee, month: monthInfo.fee },
+          { key: 'Thuế TNCN', all: allInfo.tax, month: monthInfo.tax },
+          { key: 'Thu nhập ròng', all: +calculatedAll.income - +calculatedAll.allFee, month: +calculatedMonth.income - +calculatedMonth.allFee }
+        ];
 
         setState(data)
       } catch (e) {
@@ -89,15 +86,16 @@ export default function Example() {
     <MainLayout>
       <PageHeader
         className="site-page-header"
-        title="Báo cáo thu nhập (Cần xem lại API)"
+        title="Báo cáo thu nhập"
         style={{ paddingLeft: 0 }}
       />
-        <Table
-          bordered="true"
-          loading={state.styleTable.loading}
-          dataSource={state.ciInfo}
-          columns={columns}
-        />
+      <Table
+        bordered="true"
+        className="income-report"
+        loading={state.loading}
+        dataSource={state.dataTable}
+        columns={columns}
+      />
     </MainLayout>
   )
 }

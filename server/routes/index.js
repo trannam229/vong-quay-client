@@ -32,5 +32,8 @@ router.get('/nar', auth, tradingCtr.getNar);
 router.get('/ci', auth, tradingCtr.getCI);
 router.get('/ln', auth, tradingCtr.getLN);
 router.get('/order-book', auth, tradingCtr.getOrderBook);
+router.get('/all-income-report', auth, tradingCtr.getAllIncomeReport);
+router.get('/income-by-time', auth, tradingCtr.getIncomeByTime);
+router.get('/sectors', auth, tradingCtr.getSectors);
 
 module.exports = router;

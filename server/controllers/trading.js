@@ -181,9 +181,9 @@ exports.getLN = async (req, res) => {
           SearchLN: {
             CustID: req.account.CfInfo.CustID,
             SearchPagingInfo: {
-              OffsetNumber: req.query.OffsetNumber,
-              TotalItem: req.query.TotalItem,
-              CurrentIndex: req.query.CurrentIndex
+              OffsetNumber: '',
+              TotalItem: '',
+              CurrentIndex: ''
             },
             FromDate: req.query.FromDate,
             ToDate: req.query.ToDate,
@@ -218,5 +218,49 @@ exports.getOrderBook = async (req, res) => {
       return successResponse(res, response.GetOrderBookResult);
   } catch (e) {
       return errorResponse(res, e.message);
+  }
+};
+
+exports.getAllIncomeReport = async (req, res) => {
+  try {
+    const params = {
+      header: {
+        Sessionid: req.account.CfInfo.SessionID
+      },
+      Custid: req.account.CfInfo.CustID,
+    };
+    const response = await soapTrading('GetAllIncomeReport', params);
+    return successResponse(res, response.GetAllIncomeReportResult);
+  } catch (e) {
+    return errorResponse(res, e.message);
+  }
+};
+
+exports.getIncomeByTime = async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const fromDate = `${currentDate.getFullYear()}-${currentDate.getMonth()}-01`;
+    const toDate = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate().length > 1 ? currentDate.getDate() : '0' + currentDate.getDate()}`
+    const params = {
+      header: {
+        Sessionid: req.account.CfInfo.SessionID
+      },
+      Custid: req.account.CfInfo.CustID,
+      fromDate: fromDate,
+      toDate: toDate,
+    };
+    const response = await soapTrading('GetIncomeByTime', params);
+    return successResponse(res, response.GetIncomeByTimeResult);
+  } catch (e) {
+    return errorResponse(res, e.message);
+  }
+};
+
+exports.getSectors = async (req, res) => {
+  try {
+    const response = await soapTrading('GetSectors');
+    return successResponse(res, response.GetSectorsResult);
+  } catch (e) {
+    return errorResponse(res, e.message);
   }
 };

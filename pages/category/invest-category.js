@@ -1,79 +1,83 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Row, Col, Descriptions, Input, Table } from 'antd';
+import { PageHeader, Row, Col, Descriptions, Input, Select, Table, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 
 export default function Example() {
   const columns = [
     {
-      title: 'Thời gian',
-      dataIndex: 'time',
-      key: 'time',
+      title: 'Tên chiến dịch',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: 'Số REF',
-      dataIndex: 'ref',
-      key: 'ref',
+      title: 'Ngành',
+      dataIndex: 'sector',
+      key: 'sector',
     },
     {
-      title: 'Nội dung',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Hạng',
+      dataIndex: 'class',
+      key: 'class',
+    },
+    {
+      title: 'Lợi suất',
+      key: 'int',
+      dataIndex: 'int',
     },
     {
       title: 'Số tiền',
       key: 'amt',
       dataIndex: 'amt',
     },
+    {
+      title: 'Kỳ hạn',
+      key: 'term',
+      dataIndex: 'term',
+    },
   ];
 
   const [state, setState] = useState({
-    accountInfo: {},
-    ciInfo: [],
-    styleTable: {
-      loading: true
-    }
+    lnInfo: [],
+    sectors: [],
+    loading: true
   });
 
   useEffect(() => {
-    const setTableSource = item => {
-      return {
-        key: item.RN,
-        time: item.txdate,
-        ref: item.txnum,
-        description: item.txdesc,
-        amt: item.InitBalance
-      };
-    };
-
     async function fetchData() {
       try {
-        const data = {
-          styleTable: {
-            loading: true
-          }
-        };
-
-        const accountResult = await axios.get('/account');
-        if (accountResult.data.Status.Code === '0') {
-          data.accountInfo = accountResult.data.AccountInfo;
+        const data = {};
+        const sectorsResult = await axios.get('/sectors', { params });
+        if (sectorsResult.data.Status.Code === '0') {
+          data.sectors = sectorsResult.data.Sectors.SectorInfo;
         } else {
-          alert(accountResult.data.Status.Message)
+          alert(lnResult.data.Status.Message)
         }
 
+
+        const currentDate = new Date();
         const params = {
-          OffsetNumber: '',
-          TotalItem: '',
-          CurrentIndex: '',
-          FromDate: '2019-10-22T21:32:52.12679',
-          ToDate: '2020-10-22T21:32:52.12679',
+          FromDate: `${currentDate.getFullYear() - 1}-${currentDate.getMonth()}-01`,
+          ToDate: `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate().length > 1 ? currentDate.getDate() : '0' + currentDate.getDate()}`,
         }
-        const ciResult = await axios.get('/ci', { params });
-        if (ciResult.data.Status.Code === '0') {
-          data.ciInfo = ciResult.data.CIInfoList ? ciResult.data.CIInfoList.CIInfo.map(setTableSource) : [];
-          data.styleTable.loading = false;
+        const lnResult = await axios.get('/ln', { params });
+        if (lnResult.data.Status.Code === '0') {
+          data.lnInfo = lnResult.data.LNInfoList
+            ? lnResult.data.LNInfoList.LNInfo.map(item => {
+              return {
+                key: item.RN,
+                name: item.ShortName,
+                sector: data.sectors.find(sector => sector.Val === item.Sector).Content,
+                class: '?',
+                int: item.int,
+                amt: item.rlsamt,
+                term: item.term + ' tháng'
+              };
+            })
+            : [];
+          data.loading = false;
         } else {
-          alert(ciResult.data.Status.Message)
+          alert(lnResult.data.Status.Message)
         }
 
         setState(data)
@@ -85,20 +89,65 @@ export default function Example() {
     fetchData();
   }, []);
 
+  const style = {};
+
+  const getStatusList =  [
+    'Trong hạn',
+    'Đã hoàn thành',
+    'Chậm trả có khả năng thu hồi',
+    'Nợ xấu'
+  ].map(item => (<Select.Option value={item} key={item}>{item}</Select.Option>));
+
+  const getCustomerTypeList = [
+    'Doanh nghiệp',
+    'Hộ kinh doanh',
+    'Cá nhân'
+  ].map(item => (<Select.Option value={item} key={item}>{item}</Select.Option>));
+
+  const getSectorsList = state.sectors.map(item => (<Select.Option value={item.Val} key={item.Val}>{item.Content}</Select.Option>));
+
   return (
     <MainLayout>
       <PageHeader
         className="site-page-header"
-        title="Danh mục đầu tư (Cần xem lại API)"
+        title="Danh mục đầu tư"
         style={{ paddingLeft: 0 }}
       />
+      <Form
+        layout="vertical"
+      >
+        <Row>
+          <Col span="7">
+            <Form.Item label="Lọc theo tình trạng khoản đầu tư" name="status">
+              <Select>
+                {getStatusList}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span="7" offset="1">
+            <Form.Item label="Lọc theo loại khách hàng" name="customerType">
+              <Select>
+                {getCustomerTypeList}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span="7" offset="1">
+            <Form.Item label="Lọc theo ngành nghề" name="sector">
+              <Select>
+                {getSectorsList}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
 
-        <Table
-          bordered="true"
-          loading={state.styleTable.loading}
-          dataSource={state.ciInfo}
-          columns={columns}
-        />
+      <Table
+        bordered="true"
+        loading={state.loading}
+        dataSource={state.lnInfo}
+        columns={columns}
+        className="mt-4"
+      />
     </MainLayout>
   )
 }
