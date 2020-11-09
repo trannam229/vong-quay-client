@@ -13,17 +13,17 @@ export default function Example() {
 
       const { data } = await axios.post("/change-password", body);
       if (data.Status.Code !== '0') {
-        alert(data.Status.Message);
+        console.log(data.Status.Message);
       } else {
-        alert('Congratulations! Your password has been changed successfully!');
+        console.log('Congratulations! Your password has been changed successfully!');
       }
     } catch (e) {
-      alert(e.message);
+      console.log(e.message);
     }
   };
 
   const onFinishFailed = errorInfo => {
-    alert('Failed:', errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
   const style = {

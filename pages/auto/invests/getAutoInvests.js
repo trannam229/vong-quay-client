@@ -81,7 +81,7 @@ export default function GetAutoInvests() {
 
         });
       } catch (e) {
-        alert(e);
+        console.log(e);
       };
     };
     fetchData();

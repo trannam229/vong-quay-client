@@ -40,19 +40,14 @@ export default function Example() {
         if (allInfoResult.data.Status.Code === '0') {
           allInfo = allInfoResult.data.IncomeInfo;
         } else {
-          alert(allInfoResult.data.Status.Message)
+          console.log(accountResult.data.Status.Message)
         }
 
         const monthInfoResult = await axios.get('/income-by-time');
         if (monthInfoResult.data.Status.Code === '0') {
           monthInfo = monthInfoResult.data.IncomeInfo;
         } else {
-          alert(monthInfoResult.data.Status.Message)
-        }
-
-        const calculatedAll = {
-          income: +allInfo.profits -  +allInfo.namt - +allInfo.namt + +allInfo.ReCommission + +allInfo.amountOvd,
-          allFee: +allInfo.fee - +allInfo.tax,
+          console.log(ciResult.data.Status.Message)
         }
 
         const calculatedMonth = {
@@ -75,7 +70,7 @@ export default function Example() {
 
         setState(data)
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
     }
 

@@ -24,6 +24,7 @@ export default function Example() {
         if (accountResult.data.Status.Code === '0') {
           data.accountInfo = accountResult.data.AccountInfo;
         } else {
+          console.log(accountResult.data.Status.Message)
           throw accountResult.data.Status.Message;
         }
 
@@ -31,12 +32,13 @@ export default function Example() {
         if (narResult.data.Status.Code === '0') {
           data.nar = narResult.data.Nar;
         } else {
+          console.log(narResult.data.Status.Message)
           throw narResult.data.Status.Message;
         }
 
         setState({ ...data, loading: false })
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
     }
 

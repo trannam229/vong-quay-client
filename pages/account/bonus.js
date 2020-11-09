@@ -79,7 +79,7 @@ export default function Example() {
           reInfoList: data.REInfoList ? data.REInfoList.map(setTableSource) : [],
         });
       } catch (e) {
-        alert(e);
+        console.log(e);
       };
     };
     fetchData();

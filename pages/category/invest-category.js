@@ -51,7 +51,7 @@ export default function Example() {
         if (sectorsResult.data.Status.Code === '0') {
           data.sectors = sectorsResult.data.Sectors.SectorInfo;
         } else {
-          alert(lnResult.data.Status.Message)
+          console.log(accountResult.data.Status.Message)
         }
 
 
@@ -77,12 +77,12 @@ export default function Example() {
             : [];
           data.loading = false;
         } else {
-          alert(lnResult.data.Status.Message)
+          console.log(ciResult.data.Status.Message)
         }
 
         setState(data)
       } catch (e) {
-        alert(e);
+        console.log(e.message);
       }
     }
 

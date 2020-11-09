@@ -54,7 +54,7 @@ export default function Example() {
         if (accountResult.data.Status.Code === '0') {
           data.accountInfo = accountResult.data.AccountInfo;
         } else {
-          alert(accountResult.data.Status.Message)
+          console.log(accountResult.data.Status.Message)
         }
 
         const params = {
@@ -69,12 +69,12 @@ export default function Example() {
           data.ciInfo = ciResult.data.CIInfoList ? ciResult.data.CIInfoList.CIInfo.map(setTableSource) : [];
           data.loading = false;
         } else {
-          alert(ciResult.data.Status.Message)
+          console.log(ciResult.data.Status.Message)
         }
 
         setState(data)
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
     }
 
