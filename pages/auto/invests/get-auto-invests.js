@@ -47,14 +47,25 @@ export default function GetAutoInvests() {
   });
 
   useEffect(() => {
+    async function getData(){
+      const dataResutl = {};
+      const { sectorsResult } = await axios.get('/sectors');
+      // if (sectorsResult.Status.Code === '0') {
+      //   dataResutl.sectors = sectorsResult.Sectors.SectorInfo;
+      // } else {
+      //   console.log(accountResult)
+      // }
+      console.log(sectorsResult.Status.Code)
+    }
+    getData();
     const setTableSource = item => {
       return {
         key: item.ID,
         typeCustomer: item.CustType,
         career: item.Sector,
-        investmentReturn: item.MinRate +" - "+ item.MaxRate,
-        investmentTerm: item.MinTerm +" - "+ item.MaxTerm,
-        investmentAmount: item.MinAmt +" - "+ item.MaxAmt
+        investmentReturn: item.MinRate + " - " + item.MaxRate,
+        investmentTerm: item.MinTerm + " - " + item.MaxTerm,
+        investmentAmount: item.MinAmt + " - " + item.MaxAmt
       };
     };
 
@@ -68,16 +79,16 @@ export default function GetAutoInvests() {
           CustId: decoded.CfInfo.CustID,
         };
         const { data } = await axios.post("/get-auto-invests", body);
-        const result =data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function(investInfo){
-            return investInfo.hasOwnProperty('CustType');
-        }): [];
+        const result = data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function (investInfo) {
+          return investInfo.hasOwnProperty('CustType');
+        }).map(setTableSource) : [];
         setState({
           styleTable: {
             bordered: true,
             loading: false
           },
           cfInfo: decoded.CfInfo,
-          reInfoList: result ? result.map(setTableSource) : [],
+          reInfoList: result,
 
         });
       } catch (e) {
