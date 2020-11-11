@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
+import {numberWithCommas} from "@configs/helper";
 
 export default function Example() {
   const [state, setState] = useState({
@@ -74,7 +75,7 @@ export default function Example() {
             <Row style={style.custClass}>
               <Col flex="80px" style={style.custClassText}>{state.cfInfo && state.cfInfo.CustClass}</Col>
               <Col style={style.custClassText}>|</Col>
-              <Col flex="auto" style={style.custClassText}>{state.accountInfo && state.accountInfo.Invested} ĐIỂM</Col>
+              <Col flex="auto" style={style.custClassText}>{numberWithCommas(state?.accountInfo?.Invested || 0)} ĐIỂM</Col>
             </Row>
             <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>
           </Col>
