@@ -7,7 +7,9 @@ import axios from '../../configs/api-request';
 
 export default function Example() {
   const [state, setState] = useState({
-    loading: true
+    loading: true,
+    cfInfo: {},
+    accountInfo: {}
   });
 
   useEffect(() => {
@@ -72,9 +74,9 @@ export default function Example() {
           <Col flex="auto">
             <p>Hạng thành viên hiện tại</p>
             <Row style={style.custClass}>
-              <Col flex="80px" style={style.custClassText}>{state.cfInfo && state.cfInfo.CustClass}</Col>
+              <Col flex="80px" style={style.custClassText}>{state.cfInfo.CustClass}</Col>
               <Col style={style.custClassText}>|</Col>
-              <Col flex="auto" style={style.custClassText}>{state.accountInfo && state.accountInfo.Invested} ĐIỂM</Col>
+              <Col flex="auto" style={style.custClassText}>{state.accountInfo.Point || 0} ĐIỂM</Col>
             </Row>
             <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>
           </Col>

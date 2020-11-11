@@ -187,6 +187,7 @@ exports.getLN = async (req, res) => {
             },
             FromDate: req.query.FromDate,
             ToDate: req.query.ToDate,
+            Status: req.query.Status
           }
       };
       const response = await soapTrading('GetLN', params);
@@ -238,16 +239,13 @@ exports.getAllIncomeReport = async (req, res) => {
 
 exports.getIncomeByTime = async (req, res) => {
   try {
-    const currentDate = new Date();
-    const fromDate = `${currentDate.getFullYear()}-${currentDate.getMonth()}-01`;
-    const toDate = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate().length > 1 ? currentDate.getDate() : '0' + currentDate.getDate()}`
     const params = {
       header: {
         Sessionid: req.account.CfInfo.SessionID
       },
       Custid: req.account.CfInfo.CustID,
-      fromDate: fromDate,
-      toDate: toDate,
+      fromDate: req.query.FromDate,
+      toDate: req.query.ToDate,
     };
     const response = await soapTrading('GetIncomeByTime', params);
     return successResponse(res, response.GetIncomeByTimeResult);
@@ -260,6 +258,21 @@ exports.getSectors = async (req, res) => {
   try {
     const response = await soapTrading('GetSectors');
     return successResponse(res, response.GetSectorsResult);
+  } catch (e) {
+    return errorResponse(res, e.message);
+  }
+};
+
+exports.getChartInfo = async (req, res) => {
+  try {
+    const params = {
+      header: {
+        Sessionid: req.account.CfInfo.SessionID
+      },
+      Custid: req.account.CfInfo.CustID,
+    };
+    const response = await soapTrading('GetChartInfo', params);
+    return successResponse(res, response.GetChartInfoResult);
   } catch (e) {
     return errorResponse(res, e.message);
   }

@@ -2,6 +2,7 @@ import MainLayout from '@layouts/main'
 import { PageHeader, Row, Col, Descriptions, Input, Select, Table, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
+import moment from 'moment';
 
 export default function Example() {
   const columns = [
@@ -42,50 +43,48 @@ export default function Example() {
     sectors: [],
     loading: true
   });
+  const fetchData = async (status) => {
+    try {
+      const data = {};
+      const sectorsResult = await axios.get('/sectors', { params });
+      if (sectorsResult.data.Status.Code === '0') {
+        data.sectors = sectorsResult.data.Sectors.SectorInfo;
+      } else {
+        console.log(accountResult.data.Status.Message)
+      }
+
+      const params = {
+        FromDate: moment().subtract(1, 'year').format('YYYY-MM-DD').toString(),
+        ToDate: moment().format('YYYY-MM-DD').toString(),
+        Status: status || ''
+      }
+      const lnResult = await axios.get('/ln', { params });
+      if (lnResult.data.Status.Code === '0') {
+        data.lnInfo = lnResult.data.LNInfoList
+          ? lnResult.data.LNInfoList.LNInfo.map(item => {
+            return {
+              key: item.RN,
+              name: item.ShortName,
+              sector: data.sectors.find(sector => sector.Val === item.Sector).Content,
+              class: '?',
+              int: item.int,
+              amt: item.rlsamt,
+              term: item.term + ' tháng'
+            };
+          })
+          : [];
+        data.loading = false;
+      } else {
+        console.log(ciResult.data.Status.Message)
+      }
+
+      setState(data)
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = {};
-        const sectorsResult = await axios.get('/sectors', { params });
-        if (sectorsResult.data.Status.Code === '0') {
-          data.sectors = sectorsResult.data.Sectors.SectorInfo;
-        } else {
-          console.log(accountResult.data.Status.Message)
-        }
-
-
-        const currentDate = new Date();
-        const params = {
-          FromDate: `${currentDate.getFullYear() - 1}-${currentDate.getMonth()}-01`,
-          ToDate: `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate().length > 1 ? currentDate.getDate() : '0' + currentDate.getDate()}`,
-        }
-        const lnResult = await axios.get('/ln', { params });
-        if (lnResult.data.Status.Code === '0') {
-          data.lnInfo = lnResult.data.LNInfoList
-            ? lnResult.data.LNInfoList.LNInfo.map(item => {
-              return {
-                key: item.RN,
-                name: item.ShortName,
-                sector: data.sectors.find(sector => sector.Val === item.Sector).Content,
-                class: '?',
-                int: item.int,
-                amt: item.rlsamt,
-                term: item.term + ' tháng'
-              };
-            })
-            : [];
-          data.loading = false;
-        } else {
-          console.log(ciResult.data.Status.Message)
-        }
-
-        setState(data)
-      } catch (e) {
-        console.log(e.message);
-      }
-    }
-
     fetchData();
   }, []);
 
@@ -120,6 +119,7 @@ export default function Example() {
           <Col span="7">
             <Form.Item label="Lọc theo tình trạng khoản đầu tư" name="status">
               <Select>
+                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
                 {getStatusList}
               </Select>
             </Form.Item>
@@ -127,6 +127,7 @@ export default function Example() {
           <Col span="7" offset="1">
             <Form.Item label="Lọc theo loại khách hàng" name="customerType">
               <Select>
+                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
                 {getCustomerTypeList}
               </Select>
             </Form.Item>
@@ -134,6 +135,7 @@ export default function Example() {
           <Col span="7" offset="1">
             <Form.Item label="Lọc theo ngành nghề" name="sector">
               <Select>
+                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
                 {getSectorsList}
               </Select>
             </Form.Item>

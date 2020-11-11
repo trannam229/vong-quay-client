@@ -2,6 +2,7 @@ import MainLayout from '@layouts/main'
 import { PageHeader, Row, Col, Descriptions, Input, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
+import moment from 'moment';
 
 export default function Example() {
   const columns = [
@@ -40,10 +41,14 @@ export default function Example() {
         if (allInfoResult.data.Status.Code === '0') {
           allInfo = allInfoResult.data.IncomeInfo;
         } else {
-          console.log(accountResult.data.Status.Message)
+          console.log(allInfoResult.data.Status.Message)
         }
 
-        const monthInfoResult = await axios.get('/income-by-time');
+        const params = {
+          FromDate: moment().startOf('month').format('YYYY-MM-DD').toString(),
+          ToDate: moment().format('YYYY-MM-DD').toString(),
+        }
+        const monthInfoResult = await axios.get('/income-by-time', {params});
         if (monthInfoResult.data.Status.Code === '0') {
           monthInfo = monthInfoResult.data.IncomeInfo;
         } else {
