@@ -1,9 +1,35 @@
 import MainLayout from '@layouts/main'
 import { PageHeader, Card, Input, Select, Button, Form, Row, Col, Switch } from 'antd';
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
 import axios from '../../../configs/api-request';
 
 export default function createAutoInvestRule() {
+  const [state, setState] = useState({
+    sectors: [],
+    loading: true
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = {};
+        const sectorsResult = await axios.get('/sectors');
+        if (sectorsResult.data.Status.Code === '0') {
+          data.sectors = sectorsResult.data.Sectors.SectorInfo;
+        } else {
+          console.log(accountResult.data.Status.Message)
+        }
+        console.log(data.sectors)
+        setState(data)
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+
+    fetchData();
+  }, []);
+  
   const style = {
     label: {
       color: '#00007A'
@@ -32,22 +58,6 @@ export default function createAutoInvestRule() {
 
   ];
 
-  const descriptionSector = [
-    {
-      desc: 'Chọn tất cả',
-      value: '1'
-    },
-    {
-      desc: 'Thời trang, Phụ kiện, Trang sức',
-      value: '2'
-    },
-    {
-      desc: 'Thực phẩm, Nhà hàng, Ăn uống',
-      value: '3'
-    }
-
-  ];
-
   const descriptionSurplus = [
     {
       desc: 'Có',
@@ -60,24 +70,25 @@ export default function createAutoInvestRule() {
 
 
   ];
+
+  const descriptionOptionSector = state.sectors.map(item => (<Select.Option value={item.Val} key={item.Val}>{item.Content}</Select.Option>))
   const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
-  const descriptionOptionSector = descriptionSector.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
   const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
   const route = useRouter();
   const onFinish = async (values) => {
     try {
-      const { data } = await axios.post("/create-auto-invest-rule", { param: values });
+      const { data } = await axios.post("/create-auto-invest", { param: values });
       console.log(data);
       if (data.Status.Code !== '0') {
-        console.log(data.Status.Message);
+        alert(data.Status.Message);
       } else {
-        route.push({ pathname: '/' })
+        alert(data.Status.Message);
+        route.push({ pathname: '/auto/invests/get-auto-invests' })
       }
     } catch (e) {
-      console.log(e.message);
+      alert(e.message);
     }
   };
-
   const switchButton = () => {
     console.log('AAAAAAAAA')
   }
