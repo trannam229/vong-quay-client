@@ -34,6 +34,10 @@ export default {
         {
           path: '/trade/invest',
           name: 'Đầu tư',
+        },
+        {
+          path: '/trade/sell',
+          name: 'Thoái vốn',
         }
       ],
     },

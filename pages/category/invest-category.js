@@ -46,7 +46,7 @@ export default function Example() {
   const fetchData = async (status) => {
     try {
       const data = {};
-      const sectorsResult = await axios.get('/sectors', { params });
+      const sectorsResult = await axios.get('/sectors');
       if (sectorsResult.data.Status.Code === '0') {
         data.sectors = sectorsResult.data.Sectors.SectorInfo;
       } else {

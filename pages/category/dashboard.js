@@ -41,9 +41,9 @@ export default function Example() {
       const chartResult = await axios.get('/chart-info');
       if (chartResult.data.ProductInfoResult.Status.Code === '0') {
         data.chart = {};
-        const rank = chartResult.data.RankInfoResult.RankInfo.Info.map(item => { return { Val: item.Val, Amount: 1 } });
-        const term = chartResult.data.TermInfoResult.TermInfo.Info.map(item => { return { Val: item.Val, Amount: 1 } });
-        const productInfo = chartResult.data.ProductInfoResult.ProductInfo.Info.map(item => { return { Val: item.Val, Amount: 1 } });
+        const rank = chartResult.data.RankInfoResult.RankInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
+        const term = chartResult.data.TermInfoResult.TermInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
+        const productInfo = chartResult.data.ProductInfoResult.ProductInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
         console.log(rank, term, productInfo)
         data.chart = {
           rankConfig: {

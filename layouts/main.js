@@ -35,8 +35,6 @@ export default function Main({ children }) {
   const route = useRouter();
   useEffect(() => {
     const token = Cookies.get('access_token');
-    const decoded = jwt.decode(Cookies.get('access_token'));
-    console.log(decoded)
     if (!token) {
       route.push({ pathname: '/login' })
       return;

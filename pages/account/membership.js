@@ -70,7 +70,7 @@ export default function Example() {
       <Card style={style.card} loading={state.loading}>
         <Row>
           <Col flex="100px">
-            <Image width={100} src={`/${state.cfInfo ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
+            <Image width={100} src={`/${state.cfInfo.CustClass ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
           </Col>
           <Col flex="auto">
             <p>Hạng thành viên hiện tại</p>

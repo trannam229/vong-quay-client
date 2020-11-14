@@ -22,6 +22,7 @@ router.post('/change-password', auth, authCtr.changePassword);
 router.get('/account', auth, tradingCtr.account);
 router.get('/re', auth, tradingCtr.re);
 router.get('/price-board', auth, tradingCtr.getPriceBoard);
+router.get('/price-board-hkd', auth, tradingCtr.getPriceBoardHKD);
 router.get('/deal-to-sell', auth, tradingCtr.getDealToSell);
 router.get('/bank-account', auth, tradingCtr.getBankAccount);
 router.get('/transfer-money', auth, tradingCtr.getTransferMoney);
@@ -36,5 +37,7 @@ router.get('/all-income-report', auth, tradingCtr.getAllIncomeReport);
 router.get('/income-by-time', auth, tradingCtr.getIncomeByTime);
 router.get('/sectors', auth, tradingCtr.getSectors);
 router.get('/chart-info', auth, tradingCtr.getChartInfo);
+router.post('/ireg', auth, tradingCtr.ireg);
+router.post('/ireg-to-sell', auth, tradingCtr.iRegToSell);
 
 module.exports = router;

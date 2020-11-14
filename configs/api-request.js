@@ -10,4 +10,13 @@ if (accessToken) {
     axios.defaults.headers.Authorization = accessToken;
 }
 
+axios.interceptors.response.use((res) => {
+  // console.log(res.data.Status.Code);
+  // if (res.data.Status.Code === '3') {
+  //   Cookies.remove('access_token');
+  //   // const route = useRouter();
+  //   // history.push({ pathname: '/login' })
+  // }
+  return res;
+});
 export default axios;
