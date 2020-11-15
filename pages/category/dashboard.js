@@ -1,10 +1,12 @@
 import MainLayout from '@layouts/main'
 import { PageHeader, Descriptions, Card, Row, Col } from 'antd';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
 // import { Column } from '@ant-design/charts';
+import { Bar } from 'react-chartjs-2';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
   const [state, setState] = useState({
@@ -15,7 +17,7 @@ export default function Example() {
     loading: true
   });
 
-  const fetchData = async function() {
+  const fetchData = async function () {
     try {
       const data = {};
 
@@ -29,7 +31,13 @@ export default function Example() {
         console.log(accountResult.data.Status.Message)
         throw accountResult.data.Status.Message;
       }
-
+      // const dataChartCustomer = {
+      //   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      //   datasets: [{
+      //     label: 'Theo hạng khách hàng',
+      //     data: [65, 59, 80, 81, 56, 55, 40]
+      //   }]
+      // };
       const narResult = await axios.get('/nar');
       if (narResult.data.Status.Code === '0') {
         data.nar = narResult.data.Nar;
@@ -44,32 +52,53 @@ export default function Example() {
         const rank = chartResult.data.RankInfoResult.RankInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
         const term = chartResult.data.TermInfoResult.TermInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
         const productInfo = chartResult.data.ProductInfoResult.ProductInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
-        console.log(rank, term, productInfo)
-        data.chart = {
-          rankConfig: {
-            rank,
-            height: 400,
-            yField: 'Amount',
-            xField: 'Val',
-          },
-          termConfig: {
-            term,
-            height: 400,
-            yField: 'Amount',
-            xField: 'Val',
-          },
-          productInfoConfig: {
-            productInfo,
-            height: 400,
-            yField: 'Amount',
-            xField: 'Val',
-          }
+
+        const chartRank = {
+          labels: rank.map(item => item.Val),
+          datasets: [{
+            label: "Theo hạng khách hàng",
+            backgroundColor: '#B2E4FF',
+            borderColor: '#B2E4FF',
+            borderWidth: 1,
+            hoverBackgroundColor: '#00007A',
+            hoverBorderColor: '#B2E4FF',
+            data: rank.map(item => (item.Amount)),
+          }]
         }
-      } else {
+        const chartTerm = {
+          labels: term.map(item => item.Val),
+          datasets: [{
+            label: "Theo thời gian đầu tư còn lại",
+            backgroundColor: '#B2E4FF',
+            borderColor: '#B2E4FF',
+            borderWidth: 1,
+            hoverBackgroundColor: '#00007A',
+            hoverBorderColor: '#B2E4FF',
+            data: term.map(item => (item.Amount)),
+          }]
+        }
+        const chartProduct = {
+          labels: productInfo.map(item => item.Val),
+          datasets: [{
+            label: "Theo sản phẩm",
+            backgroundColor: '#B2E4FF',
+            borderColor: '#B2E4FF',
+            borderWidth: 1,
+            hoverBackgroundColor: '#00007A',
+            hoverBorderColor: '#B2E4FF',
+            data: productInfo.map(item => (item.Amount)),
+          }]
+        }
+        data.chartRank = chartRank;
+        data.chartTerm = chartTerm;
+        data.chartProduct = chartProduct;
+      }
+
+      else {
         throw chartResult.data.ProductInfoResult.Status.Message;
       };
 
-      setState({...data, loading: false});
+      setState({ ...data, loading: false });
     } catch (e) {
       console.log(e);
     }
@@ -102,24 +131,6 @@ export default function Example() {
       borderStyle: 'none'
     },
   }
-
-  const data = [
-    { year: '1991', value: 3 },
-    { year: '1992', value: 4 },
-    { year: '1993', value: 3.5 },
-    { year: '1994', value: 5 },
-    { year: '1995', value: 4.9 },
-    { year: '1996', value: 6 },
-    { year: '1997', value: 7 },
-    { year: '1998', value: 9 },
-    { year: '1999', value: 13 },
-  ];
-  const config = {
-    data,
-    height: 400,
-    yField: 'value',
-    xField: 'year',
-  };
 
   return (
     <MainLayout>
@@ -155,15 +166,22 @@ export default function Example() {
 
       <Card loading={state.loading} className="mt-5">
         <Row>
-          {/* <Col span={7}>
-            <Column {...state.chart.rankConfig} />
+          <Col span={8}>
+            <Bar
+              data={state.chartRank}
+            />
           </Col>
-          <Col span={6} offset={2}>
-            <Column {...state.chart.termConfig} />
+          <Col span={8}>
+            <Bar
+              data={state.chartTerm}
+            />
           </Col>
-          <Col span={7} offset={2}>
-            <Column {...state.chart.productInfoConfig} />
-          </Col> */}
+          <Col span={8}>
+            <Bar
+              data={state.chartProduct}
+            />
+          </Col>
+
         </Row>
       </Card>
     </MainLayout>

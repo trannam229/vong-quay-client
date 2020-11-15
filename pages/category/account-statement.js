@@ -113,7 +113,7 @@ export default function Example() {
 
       <Row>
         <Col span={8}>
-          <p className="font-weight-bold">Số dư khả dụng: {state.loading ? '' : state.accountInfo.AvlAmt + ' VND'}</p>
+          <p className="font-weight-bold">Số dư khả dụng: {state.loading ? '' : state?.accountInfo?.AvlAmt + ' VND'}</p>
         </Col>
         <Col span={10} offset={6}>
           <Form layout="horizontal">
@@ -129,17 +129,17 @@ export default function Example() {
           <Col span="6" offset="1" style={style.infoDetail}>
             Tổng phát sinh tăng
             <br />
-            <b>{(state.accountInfo.TotalAsset || 0) + ' VND'}</b>
+            <b>{(state?.accountInfo?.TotalAsset || 0) + ' VND'}</b>
           </Col>
           <Col span="6" offset="2" style={style.infoDetail}>
             Tổng phát sinh giảm
             <br />
-            <b>{(state.accountInfo.AvlAmt || 0) + ' VND'}</b>
+            <b>{(state?.accountInfo?.AvlAmt || 0) + ' VND'}</b>
           </Col>
           <Col span="6" offset="2" style={style.infoDetail}>
             Số dư cuối kỳ
             <br />
-            <b>{(state.accountInfo.Invested || 0) + ' VND'}</b>
+            <b>{(state?.accountInfo?.Invested || 0) + ' VND'}</b>
           </Col>
         </Row>
       </Card>

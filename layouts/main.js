@@ -26,8 +26,10 @@ const menuItemRender = (options, element) => (
 )
 
 const headerRender = () => {
+  const user = Cookies.get('account_name');
+
   return <div className="d-flex justify-content-end mr-5">
-    Xin chào nhà đầu tư Nguyễn Văn A
+    Xin chào nhà đầu tư {user}
   </div>
 }
 
