@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
-// import { Column } from '@ant-design/charts';
 import { Bar } from 'react-chartjs-2';
 import { numberWithCommas } from '@configs/helper';
 
@@ -31,13 +30,6 @@ export default function Example() {
         console.log(accountResult.data.Status.Message)
         throw accountResult.data.Status.Message;
       }
-      // const dataChartCustomer = {
-      //   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      //   datasets: [{
-      //     label: 'Theo hạng khách hàng',
-      //     data: [65, 59, 80, 81, 56, 55, 40]
-      //   }]
-      // };
       const narResult = await axios.get('/nar');
       if (narResult.data.Status.Code === '0') {
         data.nar = narResult.data.Nar;
@@ -115,6 +107,10 @@ export default function Example() {
       margin: '0 auto',
       borderStyle: 'none'
     },
+    chart: {
+      borderStyle: 'none',
+      backgroundColor: 'none'
+    },
     col: {
       borderRadius: 10,
     },
@@ -141,42 +137,42 @@ export default function Example() {
       />
       <Descriptions column={1} style={style.headerInfo} className="category-dashboard-header">
         <Descriptions.Item label="· Hạng thành viên">{state?.cfInfo?.CustClass ?? '-'}</Descriptions.Item>
-        <Descriptions.Item label="· Số điểm hiện tại">{state?.accountInfo?.Invested ?? '-'}</Descriptions.Item>
+        <Descriptions.Item label="· Số điểm hiện tại">{state?.accountInfo?.Point || '0'}</Descriptions.Item>
       </Descriptions>
 
-      <Card loading={state.loading} style={style.info} className="mt-3 category-dashboard">
+      <Card loading={state.loading} style={style.info} className="mt-3 category-dashboard mb-3">
         <Row>
           <Col span={11} style={style.col}>
             <Descriptions column={1} bordered>
-              <Descriptions.Item label="Tổng tài sản">{state?.accountInfo?.TotalAsset ? state?.accountInfo?.TotalAsset + ' VND' : '-'}</Descriptions.Item>
-              <Descriptions.Item label="Số dư có thể đầu tư">{state?.accountInfo?.AvlAmt + ' VND'}</Descriptions.Item>
-              <Descriptions.Item label="Số dư đã đầu tư">{state?.accountInfo?.Invested + ' VND'}</Descriptions.Item>
-              <Descriptions.Item label="Số dư chờ khớp lệnh">{state?.accountInfo?.BlockAmt}</Descriptions.Item>
+              <Descriptions.Item label="Tổng tài sản">{state.accountInfo.TotalAsset ? numberWithCommas(state.accountInfo.TotalAsset) + ' VND' : '-'}</Descriptions.Item>
+              <Descriptions.Item label="Số dư có thể đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.AvlAmt) + ' VND'}</Descriptions.Item>
+              <Descriptions.Item label="Số dư đã đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.Invested) + ' VND'}</Descriptions.Item>
+              <Descriptions.Item label="Số dư chờ khớp lệnh">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.BlockAmt)}</Descriptions.Item>
             </Descriptions>
           </Col>
           <Col offset={2} span={11} style={style.col}>
             <Descriptions column={1} bordered>
-              <Descriptions.Item label="Khoản đầu tư">{state?.accountInfo?.BlockAmt ?? '-'}</Descriptions.Item>
-              <Descriptions.Item label="Thu thập ròng">{state?.accountInfo?.EstProfit + ' VND'}</Descriptions.Item>
+              <Descriptions.Item label="Khoản đầu tư">??? {state?.accountInfo?.BlockAmt ?? '-'}</Descriptions.Item>
+              <Descriptions.Item label="Thu thập ròng">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.EstProfit) + ' VND'}</Descriptions.Item>
               <Descriptions.Item label="Tỷ suất sinh lời bình quân">{state?.nar + '%'}</Descriptions.Item>
             </Descriptions>
           </Col>
         </Row>
       </Card>
 
-      <Card loading={state.loading} className="mt-5">
+      <Card loading={state.loading} style={style.chart} className="mt-5">
         <Row>
-          <Col span={8}>
+          <Col span={7}>
             <Bar
               data={state.chartRank}
             />
           </Col>
-          <Col span={8}>
+          <Col span={7} offset={1}>
             <Bar
               data={state.chartTerm}
             />
           </Col>
-          <Col span={8}>
+          <Col span={7} offset={1}>
             <Bar
               data={state.chartProduct}
             />

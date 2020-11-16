@@ -2,6 +2,7 @@ import MainLayout from '@layouts/main'
 import { PageHeader, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
   const columns = [
@@ -52,7 +53,7 @@ export default function Example() {
       fullName: item.FullName,
       bankName: item.BankName,
       date: item.txDate,
-      amount: item.Amt,
+      amount: numberWithCommas(item.Amt),
     };
   };
 

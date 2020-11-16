@@ -2,6 +2,7 @@ import MainLayout from '@layouts/main';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import { PageHeader, Table, Button, Modal, Card, Descriptions, Input, Form } from 'antd';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
   const columns = [
@@ -151,6 +152,9 @@ export default function Example() {
       data.priceBoard = priceBoardResult.data.PriceBoardList?.PriceBoard.map(item => {
         item.key = item.RN;
         item.CustomerType = 'Doanh nghiệp';
+        item.AvlAmt = numberWithCommas(item.AvlAmt);
+        item.BRegAmt = numberWithCommas(item.BRegAmt);
+        item.BRegRemain = numberWithCommas(item.BRegRemain);
         return item;
       }) ?? [];
 
@@ -163,6 +167,9 @@ export default function Example() {
       data.priceBoardHKD = priceBoardHKDResult.data.PriceBoardList?.PriceBoard.map(item => {
         item.key = item.RN;
         item.CustomerType = 'HKD';
+        item.AvlAmt = numberWithCommas(item.AvlAmt);
+        item.BRegAmt = numberWithCommas(item.BRegAmt);
+        item.BRegRemain = numberWithCommas(item.BRegRemain);
         return item;
       }) ?? [];
 

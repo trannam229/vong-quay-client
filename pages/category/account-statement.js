@@ -3,6 +3,7 @@ import { PageHeader, Row, Col, Descriptions, Card, Form, DatePicker, Table } fro
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import moment from 'moment';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
   const columns = [
@@ -48,7 +49,7 @@ export default function Example() {
           time: item.txdate,
           ref: item.txnum,
           description: item.txdesc,
-          amt: item.InitBalance
+          amt: numberWithCommas(item.InitBalance)
         };
       };
 
@@ -113,7 +114,7 @@ export default function Example() {
 
       <Row>
         <Col span={8}>
-          <p className="font-weight-bold">Số dư khả dụng: {state.loading ? '' : state?.accountInfo?.AvlAmt + ' VND'}</p>
+          <p className="font-weight-bold">Số dư khả dụng: {state.loading ? '' : numberWithCommas(state?.accountInfo?.AvlAmt) + ' VND'}</p>
         </Col>
         <Col span={10} offset={6}>
           <Form layout="horizontal">
@@ -129,17 +130,17 @@ export default function Example() {
           <Col span="6" offset="1" style={style.infoDetail}>
             Tổng phát sinh tăng
             <br />
-            <b>{(state?.accountInfo?.TotalAsset || 0) + ' VND'}</b>
+            <b>{(state?.accountInfo?.TotalAsset ? numberWithCommas(state?.accountInfo?.TotalAsset) : 0) + ' VND'}</b>
           </Col>
           <Col span="6" offset="2" style={style.infoDetail}>
             Tổng phát sinh giảm
             <br />
-            <b>{(state?.accountInfo?.AvlAmt || 0) + ' VND'}</b>
+            <b>{(state?.accountInfo?.TotalAsset? numberWithCommas(state?.accountInfo?.AvlAmt) : 0) + ' VND'}</b>
           </Col>
           <Col span="6" offset="2" style={style.infoDetail}>
             Số dư cuối kỳ
             <br />
-            <b>{(state?.accountInfo?.Invested || 0) + ' VND'}</b>
+            <b>{(state?.accountInfo?.TotalAsset ? numberWithCommas(state?.accountInfo?.Invested) : 0) + ' VND'}</b>
           </Col>
         </Row>
       </Card>

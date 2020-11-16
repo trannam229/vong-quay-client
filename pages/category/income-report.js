@@ -1,8 +1,9 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Row, Col, Descriptions, Input, Table } from 'antd';
+import { PageHeader, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import moment from 'moment';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
   const columns = [
@@ -48,20 +49,20 @@ export default function Example() {
           FromDate: moment().startOf('month').format('YYYY-MM-DD').toString(),
           ToDate: moment().format('YYYY-MM-DD').toString(),
         }
-        const monthInfoResult = await axios.get('/income-by-time', {params});
+        const monthInfoResult = await axios.get('/income-by-time', { params });
         if (monthInfoResult.data.Status.Code === '0') {
           monthInfo = monthInfoResult.data.IncomeInfo;
         } else {
           console.log(ciResult.data.Status.Message)
         }
         const calculatedAll = {
-          income: +allInfo.profits -  +allInfo.namt - +allInfo.namt + +allInfo.ReCommission + +allInfo.amountOvd,
-          allFee: +allInfo.fee - +allInfo.tax
+          income: +allInfo.profits - +allInfo.namt - +allInfo.namt + +allInfo.ReCommission + +allInfo.amountOvd,
+          allFee: +allInfo.fee + +allInfo.tax
         }
 
         const calculatedMonth = {
-          income: +monthInfo.profits -  +monthInfo.namt - +monthInfo.namt + +monthInfo.ReCommission + +monthInfo.amountOvd,
-          allFee: +monthInfo.fee - +monthInfo.tax,
+          income: +monthInfo.profits - +monthInfo.namt - +monthInfo.namt + +monthInfo.ReCommission + +monthInfo.amountOvd,
+          allFee: +monthInfo.fee + +monthInfo.tax,
         }
 
         data.dataTable = [
@@ -75,7 +76,13 @@ export default function Example() {
           { key: 'Phí dịch vụ', all: allInfo.fee, month: monthInfo.fee },
           { key: 'Thuế TNCN', all: allInfo.tax, month: monthInfo.tax },
           { key: 'Thu nhập ròng', all: +calculatedAll.income - +calculatedAll.allFee, month: +calculatedMonth.income - +calculatedMonth.allFee }
-        ];
+        ].map(item => {
+          return {
+            key: item.key,
+            all: numberWithCommas(item.all),
+            month: numberWithCommas(item.month)
+          };
+        });
 
         setState(data)
       } catch (e) {

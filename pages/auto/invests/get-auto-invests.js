@@ -1,8 +1,6 @@
 import MainLayout from '@layouts/main'
 import { PageHeader, Row, Col, Table, Descriptions } from 'antd';
 import { useEffect, useState } from 'react';
-import jwt from 'jsonwebtoken';
-import Cookies from 'js-cookie';
 import axios from '../../../configs/api-request';
 
 export default function GetAutoInvests() {
@@ -47,17 +45,6 @@ export default function GetAutoInvests() {
   });
 
   useEffect(() => {
-    async function getData(){
-      const dataResutl = {};
-      const { sectorsResult } = await axios.get('/sectors');
-      // if (sectorsResult.Status.Code === '0') {
-      //   dataResutl.sectors = sectorsResult.Sectors.SectorInfo;
-      // } else {
-      //   console.log(accountResult)
-      // }
-      console.log(sectorsResult.Status.Code)
-    }
-    getData();
     const setTableSource = item => {
       return {
         key: item.ID,
@@ -71,14 +58,15 @@ export default function GetAutoInvests() {
 
     async function fetchData() {
       try {
-        const decoded = jwt.decode(Cookies.get('access_token'));
-        const body = {
-          header: {
-            Sessionid: decoded.CfInfo.SessionID,
-          },
-          CustId: decoded.CfInfo.CustID,
-        };
-        const { data } = await axios.post("/get-auto-invests", body);
+        let sectors;
+        const sectorsResult = await axios.get('/sectors');
+        if (sectorsResult.data.Status.Code === '0') {
+          sectors = sectorsResult.data.Sectors.SectorInfo;
+        } else {
+          console.log(accountResult.data.Status.Message)
+        }
+
+        const data = await axios.get("/get-auto-invests");
         const result = data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function (investInfo) {
           return investInfo.hasOwnProperty('CustType');
         }).map(setTableSource) : [];

@@ -82,9 +82,14 @@ exports.getDealToSell = async (req, res) => {
 
 exports.getAutoInvests = async (req, res) => {
   try {
-    const payload = req.body;
-    const response = await soapTrading('GetAutoInvests', payload);
-    return successResponse(res, response);
+    const params = {
+      header: {
+        Sessionid: req.account.CfInfo.SessionID,
+      },
+      CustId: req.account.CfInfo.CustID,
+    };
+    const response = await soapTrading('GetAutoInvests', params);
+    return successResponse(res, response.GetAutoInvestsResult);
   } catch (e) {
     return errorResponse(res, e.message);
   }

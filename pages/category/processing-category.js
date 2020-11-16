@@ -2,6 +2,7 @@ import MainLayout from '@layouts/main'
 import { PageHeader, Row, Col, Descriptions, Card, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
   const columns = [
@@ -57,7 +58,7 @@ export default function Example() {
         time: item.IRegDate,
         class: item.CustClass,
         int: item.Int,
-        amt: item.IRegAmt,
+        amt: numberWithCommas(item.IRegAmt),
         term: item.Term + ' tháng'
       };
     };
@@ -125,7 +126,7 @@ export default function Example() {
             Khoản chờ khớp lệnh
           </Col>
           <Col span="6" offset="2" style={style.infoDetail}>
-            <b>{state.totalAmt + ' VND'}</b>
+            <b>{numberWithCommas(state.totalAmt) + ' VND'}</b>
             <br />
             Số dư chờ khớp lệnh
           </Col>

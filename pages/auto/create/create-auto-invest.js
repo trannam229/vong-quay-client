@@ -10,6 +10,8 @@ export default function createAutoInvestRule() {
     loading: true
   });
 
+  const [onOff, setOnOff] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -28,8 +30,8 @@ export default function createAutoInvestRule() {
     }
 
     fetchData();
-  }, []);
-  
+  }, [onOff]);
+
   const style = {
     label: {
       color: '#00007A'
@@ -80,9 +82,8 @@ export default function createAutoInvestRule() {
       const { data } = await axios.post("/create-auto-invest", { param: values });
       console.log(data);
       if (data.Status.Code !== '0') {
-        alert(data.Status.Message);
+        console.log(data.Status.Message);
       } else {
-        alert(data.Status.Message);
         route.push({ pathname: '/auto/invests/get-auto-invests' })
       }
     } catch (e) {
@@ -90,8 +91,8 @@ export default function createAutoInvestRule() {
     }
   };
   const switchButton = () => {
-    console.log('AAAAAAAAA')
-  }
+    setOnOff(!onOff);
+  };
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
@@ -112,7 +113,7 @@ export default function createAutoInvestRule() {
           <Switch onClick={switchButton} />
         </Form.Item>
       </Form>
-      <Card style={{ width: '100%', textAlign: "center" }}>
+      {onOff ? <Card style={{ width: '100%', textAlign: "center" }}>
         <Form
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
@@ -242,6 +243,8 @@ export default function createAutoInvestRule() {
 
         </Form>
       </Card>
+        : ''}
+
     </MainLayout>
   )
 }
