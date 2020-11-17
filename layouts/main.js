@@ -1,7 +1,5 @@
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../assets/style.less';
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie';
 import RouterConfigs from "../config-router";
