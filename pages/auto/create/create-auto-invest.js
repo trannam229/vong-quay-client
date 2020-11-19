@@ -5,44 +5,22 @@ import { useEffect, useState } from 'react';
 import axios from '../../../configs/api-request';
 
 export default function createAutoInvestRule() {
-  const [state, setState] = useState({
-    sectors: [],
-    loading: true
-  });
-
+  const [sectors, setSectors] = useState([]);
   const [onOff, setOnOff] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = {};
-        const sectorsResult = await axios.get('/sectors');
-        if (sectorsResult.data.Status.Code === '0') {
-          data.sectors = sectorsResult.data.Sectors.SectorInfo;
-        } else {
-          console.log(accountResult.data.Status.Message)
-        }
-        console.log(data.sectors)
-        setState(data)
-      } catch (e) {
-        console.log(e.message);
-      }
+  const fetchData = async () => {
+    try {
+      const sectorsResult = await axios.get('/sectors');
+      const sectors = sectorsResult.data.Sectors.SectorInfo;
+      setSectors(sectors);
+    } catch (e) {
+      console.log(e);
     }
+  }
 
+  useEffect(() => {
     fetchData();
   }, [onOff]);
-
-  const style = {
-    label: {
-      color: '#00007A'
-    },
-    submitButton: {
-      width: '100px'
-    },
-    selectInput: {
-      width: '100%'
-    }
-  };
 
   const descriptionCustType = [
     {
@@ -57,7 +35,6 @@ export default function createAutoInvestRule() {
       desc: 'Cá nhân',
       value: 'CN'
     },
-
   ];
 
   const descriptionSurplus = [
@@ -69,25 +46,18 @@ export default function createAutoInvestRule() {
       desc: 'Không',
       value: '0'
     }
-
-
   ];
 
-  const descriptionOptionSector = state.sectors.map(item => (<Select.Option value={item.Val} key={item.Val}>{item.Content}</Select.Option>))
+  const descriptionOptionSector = sectors.map(item => (<Select.Option value={item.Val} key={item.Val}>{item.Content}</Select.Option>))
   const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
   const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
   const route = useRouter();
   const onFinish = async (values) => {
     try {
       const { data } = await axios.post("/create-auto-invest", { param: values });
-      console.log(data);
-      if (data.Status.Code !== '0') {
-        console.log(data.Status.Message);
-      } else {
-        route.push({ pathname: '/auto/invests/get-auto-invests' })
-      }
+      route.push({ pathname: '/auto/invests/get-auto-invests' })
     } catch (e) {
-      alert(e.message);
+      console.log(e);
     }
   };
   const switchButton = () => {
@@ -95,6 +65,18 @@ export default function createAutoInvestRule() {
   };
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
+  };
+
+  const style = {
+    label: {
+      color: '#00007A'
+    },
+    submitButton: {
+      width: '100px'
+    },
+    selectInput: {
+      width: '100%'
+    }
   };
 
   return (
@@ -136,7 +118,7 @@ export default function createAutoInvestRule() {
                 label="Nhập số tiền tối thiểu"
                 name="soTienToiThieu"
               >
-                <Input suffix="VND" />
+                <Input type="number" suffix="VND" />
               </Form.Item>
               <Form.Item
                 label="Sử dụng hết số dư"
@@ -160,13 +142,13 @@ export default function createAutoInvestRule() {
                 label="Nhập số tiền tối đa"
                 name="soTienToiDa"
               >
-                <Input suffix="VND" />
+                <Input type="number" suffix="VND" />
               </Form.Item>
               <Form.Item
                 label="Hạn mức tối đa theo người gọi vốn"
                 name="hanMucToiDaTheoNguoiGoiVon"
               >
-                <Input suffix="VND" />
+                <Input type="number" suffix="VND" />
               </Form.Item>
             </Col>
           </Row>
@@ -185,7 +167,7 @@ export default function createAutoInvestRule() {
                       labelAlign="left"
                       name="kiHanDauTuTu"
                     >
-                      <Input suffix="tháng" />
+                      <Input type="number" suffix="tháng" />
                     </Form.Item>
                   </Col>
                   <Col span={12} className="pl-3">
@@ -195,7 +177,7 @@ export default function createAutoInvestRule() {
                       label="Đến"
                       labelAlign="left"
                       name="kiHanDauTuDen" >
-                      <Input suffix="tháng" />
+                      <Input type="number" suffix="tháng" />
                     </Form.Item>
                   </Col></Row>
               </Form.Item>
@@ -212,7 +194,7 @@ export default function createAutoInvestRule() {
                       labelAlign="left"
                       label="Từ"
                       name="loiTucDauTuTu" >
-                      <Input suffix="%" />
+                      <Input type="number" suffix="%" />
                     </Form.Item>
                   </Col>
                   <Col span={12} className="pl-3">
@@ -222,7 +204,7 @@ export default function createAutoInvestRule() {
                       labelAlign="left"
                       label="Đến"
                       name="loiTucDauTuDen" >
-                      <Input suffix="%" />
+                      <Input type="number" suffix="%" />
                     </Form.Item>
                   </Col>
                 </Row>

@@ -3,6 +3,7 @@ import { PageHeader, Row, Col, Descriptions, Input, Select, Table, Form } from '
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import moment from 'moment';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
   const columns = [
@@ -43,15 +44,12 @@ export default function Example() {
     sectors: [],
     loading: true
   });
+
   const fetchData = async (status) => {
     try {
       const data = {};
       const sectorsResult = await axios.get('/sectors');
-      if (sectorsResult.data.Status.Code === '0') {
-        data.sectors = sectorsResult.data.Sectors.SectorInfo;
-      } else {
-        console.log(accountResult.data.Status.Message)
-      }
+      data.sectors = sectorsResult.data.Sectors.SectorInfo;
 
       const params = {
         FromDate: moment().subtract(1, 'year').format('YYYY-MM-DD').toString(),
@@ -59,24 +57,20 @@ export default function Example() {
         Status: status || ''
       }
       const lnResult = await axios.get('/ln', { params });
-      if (lnResult.data.Status.Code === '0') {
-        data.lnInfo = lnResult.data.LNInfoList
-          ? lnResult.data.LNInfoList.LNInfo.map(item => {
-            return {
-              key: item.RN,
-              name: item.ShortName,
-              sector: data.sectors.find(sector => sector.Val === item.Sector).Content,
-              class: '?',
-              int: item.int,
-              amt: item.rlsamt,
-              term: item.term + ' tháng'
-            };
-          })
-          : [];
-        data.loading = false;
-      } else {
-        console.log(ciResult.data.Status.Message)
-      }
+      data.lnInfo = lnResult.data.LNInfoList
+        ? lnResult.data.LNInfoList.LNInfo.map(item => {
+          return {
+            key: item.RN,
+            name: item.ShortName,
+            sector: data.sectors.find(sector => sector.Val === item.Sector).Content,
+            class: '?',
+            int: item.int + '%',
+            amt: numberWithCommas(item.rlsamt),
+            term: item.term + ' tháng'
+          };
+        })
+        : [];
+      data.loading = false;
 
       setState(data)
     } catch (e) {
@@ -84,13 +78,15 @@ export default function Example() {
     }
   }
 
+  const filter = (status, customerType, sector) => {
+
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  const style = {};
-
-  const getStatusList =  [
+  const getStatusList = [
     'Trong hạn',
     'Đã hoàn thành',
     'Chậm trả có khả năng thu hồi',

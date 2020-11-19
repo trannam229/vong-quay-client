@@ -17,7 +17,10 @@ exports.account = async (req, res) => {
 // RE: reference
 exports.re = async (req, res) => {
   try {
-    const params = Object.assign(req.query, { header: { Sessionid: req.account.CfInfo.SessionID } });
+    const params = {
+      header: { Sessionid: req.account.CfInfo.SessionID },
+      pv_Custid: req.account.CfInfo.CustID
+    };
     const response = await soapTrading('GetRE', params);
     return successResponse(res, response.GetREResult);
   } catch (e) {

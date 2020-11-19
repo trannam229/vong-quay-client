@@ -1,5 +1,5 @@
 import MainLayout from '@layouts/main';
-import { PageHeader, Card, Button, Form, Input, Image } from 'antd';
+import { Card, Button, Form, Input, Image } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import axios from '../../configs/api-request';
 
@@ -11,12 +11,7 @@ export default function Example() {
         NewPassword: values.NewPassword,
       };
 
-      const { data } = await axios.post("/change-password", body);
-      if (data.Status.Code !== '0') {
-        console.log(data.Status.Message);
-      } else {
-        console.log('Congratulations! Your password has been changed successfully!');
-      }
+      await axios.post("/change-password", body);
     } catch (e) {
       console.log(e.message);
     }

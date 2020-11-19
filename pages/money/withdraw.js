@@ -34,16 +34,12 @@ export default function Withdraw() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get("/bank-account");
-        if (data.Status.Code === '0') {
-          bankAccountList = data.BankAccountList.BankAccount;
-          setState({
-            bankAccountList: data.BankAccountList.BankAccount,
-            bankAccountOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankAccountList) : [],
-            bankNameOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankNameList) : [],
-          });
-        } else {
-          console.log(data);
-        }
+        bankAccountList = data.BankAccountList.BankAccount;
+        setState({
+          bankAccountList: data.BankAccountList.BankAccount,
+          bankAccountOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankAccountList) : [],
+          bankNameOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankNameList) : [],
+        });
       } catch (e) {
         console.log(e.message);
       }
