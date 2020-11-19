@@ -3,6 +3,7 @@ import { PageHeader, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import { numberWithCommas } from '@configs/helper';
+import moment from 'moment';
 
 export default function Example() {
   const columns = [
@@ -52,7 +53,7 @@ export default function Example() {
       accountNumber: item.AccountNumber,
       fullName: item.FullName,
       bankName: item.BankName,
-      date: item.txDate,
+      date: moment(item.txDate).utc().format('DD/MM/YYYY'),
       amount: numberWithCommas(item.Amt),
     };
   };

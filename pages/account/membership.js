@@ -4,31 +4,31 @@ import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
-import {numberWithCommas} from "@configs/helper";
+import { numberWithCommas } from "@configs/helper";
 
 export default function Example() {
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({
-    loading: true,
     cfInfo: {},
     accountInfo: {}
   });
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const decoded = jwt.decode(Cookies.get('access_token'));
-        const { data } = await axios.get('/account');
+  const fetchData = async () => {
+    try {
+      const decoded = jwt.decode(Cookies.get('access_token'));
+      const { data } = await axios.get('/account');
 
-        setState({
-          loading: false,
-          cfInfo: decoded.CfInfo,
-          accountInfo: data.AccountInfo,
-        });
-      } catch (e) {
-        console.log(e);
-      }
+      setState({
+        cfInfo: decoded.CfInfo,
+        accountInfo: data.AccountInfo,
+      });
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
     }
+  }
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -67,7 +67,7 @@ export default function Example() {
         <Descriptions.Item>Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
       </Descriptions>
 
-      <Card style={style.card} loading={state.loading}>
+      <Card style={style.card} loading={loading}>
         <Row>
           <Col flex="100px">
             <Image width={100} src={`/${state.cfInfo.CustClass ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
@@ -77,7 +77,7 @@ export default function Example() {
             <Row style={style.custClass}>
               <Col flex="80px" style={style.custClassText}>{state.cfInfo.CustClass}</Col>
               <Col style={style.custClassText}>|</Col>
-              <Col flex="auto" style={style.custClassText}>{numberWithCommas(state?.accountInfo?.Point || 0)} ĐIỂM</Col>
+              <Col flex="auto" style={style.custClassText}>{numberWithCommas(state.accountInfo.Point || 0)} ĐIỂM</Col>
             </Row>
             <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>
           </Col>

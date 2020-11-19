@@ -4,8 +4,15 @@ import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
+import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
+  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState({
+    cfInfo: {},
+    reInfoList: []
+  });
+
   const columns = [
     {
       title: 'Tên nhà đầu tư',
@@ -45,43 +52,35 @@ export default function Example() {
     },
   ];
 
-  const [state, setState] = useState({
-    styleTable: {
-      loading: true
-    }
-  });
+  const setTableSource = item => {
+    return {
+      key: item.RN,
+      name: item.Fullname || 'No data',
+      openDate: '',
+      status: item.Status,
+      bonus: numberWithCommas(item.Accamt),
+      tempBonus: numberWithCommas(item.TotalEstAmt),
+      tax: numberWithCommas(item.Vatamt),
+      tempBonusAfterTax: numberWithCommas(item.EstAmt)
+    };
+  };
+
+  const fetchData = async () => {
+    try {
+      const decoded = jwt.decode(Cookies.get('access_token'));
+      const { data } = await axios.get("/re");
+
+      setState({
+        cfInfo: decoded.CfInfo,
+        reInfoList: data.REInfoList ? data.REInfoList.map(setTableSource) : [],
+      });
+      setLoading(false)
+    } catch (e) {
+      console.log(e);
+    };
+  };
 
   useEffect(() => {
-    const setTableSource = item => {
-      return {
-        key: item.RN,
-        name: item.Fullname,
-        openDate: '',
-        status: item.Status,
-        bonus: item.Accamt,
-        tempBonus: item.TotalEstAmt,
-        tax: item.Vatamt,
-        tempBonusAfterTax: item.EstAmt
-      };
-    };
-
-    async function fetchData() {
-      try {
-        const decoded = jwt.decode(Cookies.get('access_token'));
-        const params = { pv_Custid: decoded.CfInfo.CustID };
-        const { data } = await axios.get("/re", { params });
-
-        setState({
-          styleTable: {
-            loading: false
-          },
-          cfInfo: decoded.CfInfo,
-          reInfoList: data.REInfoList ? data.REInfoList.map(setTableSource) : [],
-        });
-      } catch (e) {
-        console.log(e);
-      };
-    };
     fetchData();
   }, []);
 
@@ -128,9 +127,9 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh sách các nhà đầu tư giới thiệu</p>
         <Table
           bordered="true"
-          loading={state.styleTable.loading}
-          dataSource={state.reInfoList}
+          loading={loading}
           columns={columns}
+          dataSource={state.reInfoList}
         />
       </div>
     </MainLayout>

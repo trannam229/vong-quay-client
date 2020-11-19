@@ -29,36 +29,27 @@ export default function Example() {
     },
   ];
 
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({
     accountInfo: {},
     ciInfo: [],
-    loading: true
   });
+  const setTableSource = item => {
+    return {
+      key: item.RN,
+      time: moment(item.txdate).utc().format('DD/MM/YYYY | HH:mm:ss'),
+      ref: item.txnum,
+      description: item.txdesc,
+      amt: numberWithCommas(item.InitBalance)
+    };
+  };
 
-
-
-  const fetchData = async function (date1, date2) {
+  const fetchData = async (date1, date2) => {
     try {
-      const data = {
-        loading: true
-      };
-
-      const setTableSource = item => {
-        return {
-          key: item.RN,
-          time: item.txdate,
-          ref: item.txnum,
-          description: item.txdesc,
-          amt: numberWithCommas(item.InitBalance)
-        };
-      };
+      const data = {};
 
       const accountResult = await axios.get('/account');
-      if (accountResult.data.Status.Code === '0') {
-        data.accountInfo = accountResult.data.AccountInfo;
-      } else {
-        console.log(accountResult.data.Status.Message)
-      }
+      data.accountInfo = accountResult.data.AccountInfo;
 
       const params = {
         OffsetNumber: '',
@@ -68,14 +59,10 @@ export default function Example() {
         ToDate: date2 || moment().format('YYYY-MM-DD').toString(),
       }
       const ciResult = await axios.get('/ci', { params });
-      if (ciResult.data.Status.Code === '0') {
-        data.ciInfo = ciResult.data.CIInfoList ? ciResult.data.CIInfoList.CIInfo.map(setTableSource) : [];
-        data.loading = false;
-      } else {
-        console.log(ciResult.data.Status.Message)
-      }
+      data.ciInfo = ciResult.data.CIInfoList ? ciResult.data.CIInfoList.CIInfo.map(setTableSource) : [];
 
-      setState(data)
+      setState(data);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -114,7 +101,7 @@ export default function Example() {
 
       <Row>
         <Col span={8}>
-          <p className="font-weight-bold">Số dư khả dụng: {state.loading ? '' : numberWithCommas(state?.accountInfo?.AvlAmt) + ' VND'}</p>
+          <p className="font-weight-bold">Số dư khả dụng: {loading ? '' : numberWithCommas(state?.accountInfo?.AvlAmt) + ' VND'}</p>
         </Col>
         <Col span={10} offset={6}>
           <Form layout="horizontal">
@@ -125,7 +112,7 @@ export default function Example() {
         </Col>
       </Row>
 
-      <Card size="small" loading={state.loading} style={style.info} className="mt-2">
+      <Card size="small" loading={loading} style={style.info} className="mt-2">
         <Row>
           <Col span="6" offset="1" style={style.infoDetail}>
             Tổng phát sinh tăng
@@ -149,7 +136,7 @@ export default function Example() {
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Sao kê chi tiết</p>
         <Table
           bordered="true"
-          loading={state.loading}
+          loading={loading}
           dataSource={state.ciInfo}
           columns={columns}
           className="account-statement"

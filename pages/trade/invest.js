@@ -87,6 +87,38 @@ export default function Example() {
   const [modal, setModal] = useState({ visible: false, itemDetail: null });
   const [confirmLoading, setConfirmLoading] = useState(false);
 
+  const fetchData = async () => {
+    try {
+      const data = {};
+      const priceBoardResult = await axios.get("/price-board");
+      data.priceBoard = priceBoardResult.data.PriceBoardList?.PriceBoard.map(item => {
+        item.key = item.RN;
+        item.CustomerType = 'Doanh nghiệp';
+        item.AvlAmt = numberWithCommas(item.AvlAmt);
+        item.BRegAmt = numberWithCommas(item.BRegAmt);
+        item.BRegRemain = numberWithCommas(item.BRegRemain);
+        return item;
+      }) ?? [];
+
+      const priceBoardHKDResult = await axios.get("/price-board-hkd");
+      data.priceBoardHKD = priceBoardHKDResult.data.PriceBoardList?.PriceBoard.map(item => {
+        item.key = item.RN;
+        item.CustomerType = 'HKD';
+        item.AvlAmt = numberWithCommas(item.AvlAmt);
+        item.BRegAmt = numberWithCommas(item.BRegAmt);
+        item.BRegRemain = numberWithCommas(item.BRegRemain);
+        return item;
+      }) ?? [];
+
+      setItems({
+        dataList: [...data.priceBoard, ...data.priceBoardHKD],
+        loading: false
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const showModal = (id) => {
     const itemDetail = items.dataList.find(item => item.ReqID === id);
     setModal({
@@ -139,48 +171,6 @@ export default function Example() {
   const handleCancel = () => {
     setModal({ visible: false });
   };
-
-  const fetchData = async () => {
-    try {
-      const data = {};
-      const priceBoardResult = await axios.get("/price-board");
-      if (priceBoardResult.data.Status.Code !== '0') {
-        console.log(priceBoardResult.data.Status.Message)
-        throw priceBoardResult.data.Status.Message;
-      }
-
-      data.priceBoard = priceBoardResult.data.PriceBoardList?.PriceBoard.map(item => {
-        item.key = item.RN;
-        item.CustomerType = 'Doanh nghiệp';
-        item.AvlAmt = numberWithCommas(item.AvlAmt);
-        item.BRegAmt = numberWithCommas(item.BRegAmt);
-        item.BRegRemain = numberWithCommas(item.BRegRemain);
-        return item;
-      }) ?? [];
-
-      const priceBoardHKDResult = await axios.get("/price-board-hkd");
-      if (priceBoardHKDResult.data.Status.Code !== '0') {
-        console.log(priceBoardHKDResult.data.Status.Message)
-        throw priceBoardHKDResult.data.Status.Message;
-      }
-
-      data.priceBoardHKD = priceBoardHKDResult.data.PriceBoardList?.PriceBoard.map(item => {
-        item.key = item.RN;
-        item.CustomerType = 'HKD';
-        item.AvlAmt = numberWithCommas(item.AvlAmt);
-        item.BRegAmt = numberWithCommas(item.BRegAmt);
-        item.BRegRemain = numberWithCommas(item.BRegRemain);
-        return item;
-      }) ?? [];
-
-      setItems({
-        dataList: [...data.priceBoard, ...data.priceBoardHKD],
-        loading: false
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   useEffect(() => { fetchData() }, []);
 

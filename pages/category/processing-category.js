@@ -3,8 +3,16 @@ import { PageHeader, Row, Col, Descriptions, Card, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import { numberWithCommas } from '@configs/helper';
+import moment from 'moment';
 
 export default function Example() {
+  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState({
+    orderBookInfo: [],
+    totalAmt: 0
+  });
+  let sectors = [];
+
   const columns = [
     {
       title: 'Tên chiến dịch',
@@ -43,55 +51,52 @@ export default function Example() {
     },
   ];
 
-  const [state, setState] = useState({
-    orderBookInfo: [],
-    loading: true,
-    totalAmt: 0
-  });
+  const getSectorName = sector => {
+    const sectorObj = sectors.find(item => item.Val === sector);
+    return sectorObj ? sectorObj.Content : 'No info';
+  }
+
+  const setTableSource = item => {
+    return {
+      key: item.ReqID,
+      name: item.ShortName || 'No data available',
+      sector: getSectorName(item.Sector),
+      time: moment(item.IRegDate).utc().format('DD/MM/YYYY'),
+      class: item.CustClass,
+      int: item.Int + '%',
+      amt: numberWithCommas(item.IRegAmt),
+      term: item.Term + ' tháng'
+    };
+  };
+
+  const fetchData = async () => {
+    try {
+      const sectorsResult = await axios.get('/sectors');
+      sectors = sectorsResult.data.Sectors.SectorInfo;
+
+      const params = {
+        OffsetNumber: '',
+        TotalItem: '',
+        CurrentIndex: '',
+        FromDate: '2019-10-22',
+        ToDate: '2020-10-22',
+      }
+      const orderBookResult = await axios.get('/order-book', { params });
+      const processingOrders = orderBookResult.data.OrderList ? orderBookResult.data.OrderList.OrderInfo.filter(item => item.OrdStatus === 'Chờ khớp') : [];
+      const orderBookInfo = processingOrders.map(setTableSource)
+      const totalAmt = processingOrders.reduce((accumulator, currentItem) => +accumulator + +currentItem.IRegAmt, 0);
+
+      setState({
+        orderBookInfo,
+        totalAmt,
+      });
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   useEffect(() => {
-    const setTableSource = item => {
-      return {
-        key: item.ReqID,
-        name: item.ShortName || 'No data available',
-        sector: item.Sector || 'No data available',
-        time: item.IRegDate,
-        class: item.CustClass,
-        int: item.Int,
-        amt: numberWithCommas(item.IRegAmt),
-        term: item.Term + ' tháng'
-      };
-    };
-
-    async function fetchData() {
-      try {
-        const params = {
-          OffsetNumber: '',
-          TotalItem: '',
-          CurrentIndex: '',
-          FromDate: '2019-10-22',
-          ToDate: '2020-10-22',
-        }
-        const orderBookResult = await axios.get('/order-book', { params });
-        if (orderBookResult.data.Status.Code === '0') {
-          const orderBookInfo = orderBookResult.data.OrderList
-            ? orderBookResult.data.OrderList.OrderInfo.filter(item => item.OrdStatus === 'Chờ khớp').map(setTableSource)
-            : [];
-          const totalAmt = orderBookInfo.reduce((accumulator, currentItem) => accumulator + currentItem.amt, 0);
-
-          setState({
-            orderBookInfo,
-            totalAmt,
-            loading: false
-          })
-        } else {
-          console.log(orderBookResult.data.Status.Message)
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
     fetchData();
   }, []);
 
@@ -118,7 +123,7 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Card size="small" loading={state.loading} style={style.info}>
+      <Card size="small" loading={loading} style={style.info}>
         <Row>
           <Col span="6" offset="3" style={style.infoDetail}>
             <b>{state.orderBookInfo.length}</b>
@@ -136,7 +141,7 @@ export default function Example() {
       <Table
         className="mt-4"
         bordered="true"
-        loading={state.loading}
+        loading={loading}
         dataSource={state.orderBookInfo}
         columns={columns}
       />

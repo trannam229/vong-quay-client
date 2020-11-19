@@ -8,12 +8,11 @@ import { Bar } from 'react-chartjs-2';
 import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({
     cfInfo: {},
     accountInfo: {},
-    chart: {},
     nar: 0,
-    loading: true
   });
 
   const fetchData = async function () {
@@ -24,23 +23,13 @@ export default function Example() {
       data.cfInfo = decoded.CfInfo;
 
       const accountResult = await axios.get('/account');
-      if (accountResult.data.Status.Code === '0') {
-        data.accountInfo = accountResult.data.AccountInfo;
-      } else {
-        console.log(accountResult.data.Status.Message)
-        throw accountResult.data.Status.Message;
-      }
+      data.accountInfo = accountResult.data.AccountInfo;
+
       const narResult = await axios.get('/nar');
-      if (narResult.data.Status.Code === '0') {
-        data.nar = narResult.data.Nar;
-      } else {
-        console.log(narResult.data.Status.Message)
-        throw narResult.data.Status.Message;
-      }
+      data.nar = narResult.data.Nar;
 
       const chartResult = await axios.get('/chart-info');
       if (chartResult.data.ProductInfoResult.Status.Code === '0') {
-        data.chart = {};
         const rank = chartResult.data.RankInfoResult.RankInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
         const term = chartResult.data.TermInfoResult.TermInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
         const productInfo = chartResult.data.ProductInfoResult.ProductInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
@@ -84,13 +73,12 @@ export default function Example() {
         data.chartRank = chartRank;
         data.chartTerm = chartTerm;
         data.chartProduct = chartProduct;
-      }
-
-      else {
+      } else {
         throw chartResult.data.ProductInfoResult.Status.Message;
       };
 
-      setState({ ...data, loading: false });
+      setState({ ...data });
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -136,31 +124,31 @@ export default function Example() {
         style={style.header}
       />
       <Descriptions column={1} style={style.headerInfo} className="category-dashboard-header">
-        <Descriptions.Item label="· Hạng thành viên">{state?.cfInfo?.CustClass ?? '-'}</Descriptions.Item>
-        <Descriptions.Item label="· Số điểm hiện tại">{state?.accountInfo?.Point || '0'}</Descriptions.Item>
+        <Descriptions.Item label="· Hạng thành viên">{state.cfInfo.CustClass || '-'}</Descriptions.Item>
+        <Descriptions.Item label="· Số điểm hiện tại">{state.accountInfo.Point || '0'}</Descriptions.Item>
       </Descriptions>
 
-      <Card loading={state.loading} style={style.info} className="mt-3 category-dashboard mb-3">
+      <Card loading={loading} style={style.info} className="mt-3 category-dashboard mb-3">
         <Row>
           <Col span={11} style={style.col}>
             <Descriptions column={1} bordered>
               <Descriptions.Item label="Tổng tài sản">{state.accountInfo.TotalAsset ? numberWithCommas(state.accountInfo.TotalAsset) + ' VND' : '-'}</Descriptions.Item>
-              <Descriptions.Item label="Số dư có thể đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.AvlAmt) + ' VND'}</Descriptions.Item>
-              <Descriptions.Item label="Số dư đã đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.Invested) + ' VND'}</Descriptions.Item>
-              <Descriptions.Item label="Số dư chờ khớp lệnh">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.BlockAmt)}</Descriptions.Item>
+              <Descriptions.Item label="Số dư có thể đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.AvlAmt) + ' VND'}</Descriptions.Item>
+              <Descriptions.Item label="Số dư đã đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.Invested) + ' VND'}</Descriptions.Item>
+              <Descriptions.Item label="Số dư chờ khớp lệnh">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.BlockAmt)}</Descriptions.Item>
             </Descriptions>
           </Col>
           <Col offset={2} span={11} style={style.col}>
             <Descriptions column={1} bordered>
-              <Descriptions.Item label="Khoản đầu tư">??? {state?.accountInfo?.BlockAmt ?? '-'}</Descriptions.Item>
-              <Descriptions.Item label="Thu thập ròng">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo?.EstProfit) + ' VND'}</Descriptions.Item>
-              <Descriptions.Item label="Tỷ suất sinh lời bình quân">{state?.nar + '%'}</Descriptions.Item>
+              <Descriptions.Item label="Khoản đầu tư">??? {state.accountInfo.BlockAmt ?? '-'}</Descriptions.Item>
+              <Descriptions.Item label="Thu thập ròng">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.EstProfit) + ' VND'}</Descriptions.Item>
+              <Descriptions.Item label="Tỷ suất sinh lời bình quân">{state.nar + '%'}</Descriptions.Item>
             </Descriptions>
           </Col>
         </Row>
       </Card>
 
-      <Card loading={state.loading} style={style.chart} className="mt-5">
+      <Card loading={loading} style={style.chart} className="mt-5">
         <Row>
           <Col span={7}>
             <Bar

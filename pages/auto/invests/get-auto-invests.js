@@ -2,8 +2,13 @@ import MainLayout from '@layouts/main'
 import { PageHeader, Row, Col, Table, Descriptions } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../../configs/api-request';
+import { numberWithCommas } from '@configs/helper';
 
 export default function GetAutoInvests() {
+  const [loading, setLoading] = useState(true);
+  const [autoInvests, setAutoInvests] = useState([]);
+  let sectors = [];
+
   const columns = [
     {
       title: 'Loại khác hàng',
@@ -32,57 +37,38 @@ export default function GetAutoInvests() {
     }
   ];
 
-  const styleTable = {
-    bordered: true,
-    loading: true
+  const getSectorName = sector => {
+    const sectorObj = sectors.find(item => item.Val === sector);
+    return sectorObj ? sectorObj.Content : 'No info';
   }
 
-  const [state, setState] = useState({
-    styleTable: {
-      bordered: true,
-      loading: true
-    }
-  });
+  const setTableSource = item => {
+    return {
+      key: item.ID,
+      typeCustomer: item.CustType || 'No info',
+      career: getSectorName(item.Sector),
+      investmentReturn: item.MinRate + " - " + item.MaxRate + '%',
+      investmentTerm: item.MinTerm + " - " + item.MaxTerm + ' tháng',
+      investmentAmount: numberWithCommas(item.MinAmt) + " - " + numberWithCommas(item.MaxAmt) + ' VND'
+    };
+  };
+
+  const fetchData = async () => {
+    try {
+      const sectorsResult = await axios.get('/sectors');
+      sectors = sectorsResult.data.Sectors.SectorInfo;
+
+      const autoInvestsResult = await axios.get("/get-auto-invests");
+      const autoInvestList = autoInvestsResult.data.AutoInvestList.AutoInvestInfo ? autoInvestsResult.data.AutoInvestList.AutoInvestInfo.map(setTableSource) : [];
+      setAutoInvests(autoInvestList);
+
+      setLoading(false)
+    } catch (e) {
+      console.log(e);
+    };
+  };
 
   useEffect(() => {
-    const setTableSource = item => {
-      return {
-        key: item.ID,
-        typeCustomer: item.CustType,
-        career: item.Sector,
-        investmentReturn: item.MinRate + " - " + item.MaxRate,
-        investmentTerm: item.MinTerm + " - " + item.MaxTerm,
-        investmentAmount: item.MinAmt + " - " + item.MaxAmt
-      };
-    };
-
-    async function fetchData() {
-      try {
-        let sectors;
-        const sectorsResult = await axios.get('/sectors');
-        if (sectorsResult.data.Status.Code === '0') {
-          sectors = sectorsResult.data.Sectors.SectorInfo;
-        } else {
-          console.log(accountResult.data.Status.Message)
-        }
-
-        const data = await axios.get("/get-auto-invests");
-        const result = data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo ? data.GetAutoInvestsResult.AutoInvestList.AutoInvestInfo.filter(function (investInfo) {
-          return investInfo.hasOwnProperty('CustType');
-        }).map(setTableSource) : [];
-        setState({
-          styleTable: {
-            bordered: true,
-            loading: false
-          },
-          cfInfo: decoded.CfInfo,
-          reInfoList: result,
-
-        });
-      } catch (e) {
-        console.log(e);
-      };
-    };
     fetchData();
   }, []);
 
@@ -97,8 +83,9 @@ export default function GetAutoInvests() {
       <Descriptions title="Các Robot đang hoạt động">
         <div className="mt-5">
           <Table
-            {...state.styleTable}
-            dataSource={state.reInfoList}
+            bordered
+            loading={loading}
+            dataSource={autoInvests}
             columns={columns}
           />
         </div>
