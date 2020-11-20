@@ -160,7 +160,6 @@ exports.createAutoInvestRule = async (req, res) => {
     const response = await soapTrading('CreateAutoInvestRule', params);
     return successResponse(res, response.CreateAutoInvestRuleResult);
   } catch (e) {
-    console.log(e)
     return errorResponse(res, e.message);
   }
 };
@@ -341,7 +340,6 @@ exports.iRegToSell = async (req, res) => {
       pv_Amt: req.body.Amt
     };
 
-    console.log(payload)
     const response = await soapTrading('IRegToSell', payload);
     return successResponse(res, response.IRegToSellResult);
   } catch (e) {
