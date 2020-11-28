@@ -85,7 +85,7 @@ export default function Example() {
     },
     infoDetail: {
       borderRadius: 5,
-      backgroundColor: '#D9F5FF',
+      backgroundColor: '#c2f1ff',
       padding: '20px 20px',
       textAlign: 'center'
     }

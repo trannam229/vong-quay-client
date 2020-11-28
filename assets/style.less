@@ -4,7 +4,7 @@
 @color-4: #D9F5FF;
 @color-5: #B2E4FF;
 @color-6: #F4F4F4;
-@color-7: #e9e6e6;
+@color-7: #f4f4f4;
 @color-8: #00007A;
 
 .ant-layout{
@@ -53,12 +53,39 @@ header .d-flex.justify-content-end{
   color: white;
 }
 
+.hello-user {
+  font-size: 16px !important;
+}
 
+.ant-layout-content {
+  margin-left: 50px !important;
+  margin-right: 50px !important;
+}
+
+body {
+  color: black !important;
+}
+
+.ant-card {
+  color: black !important;
+}
+
+.ant-page-header-heading-title {
+  color: black !important;
+}
+
+.ant-picker-input > input {
+  color: black !important;
+}
+
+.ant-table {
+  color: black !important;
+}
 
 .ant-table-thead > tr > th {
   background-color: #03b1fe !important;
   color: @color-6 !important;
-  text-align: center;
+  text-align: center !important;
 
   &:first-child {
     border-top-left-radius: 0px !important;
@@ -106,12 +133,12 @@ header .d-flex.justify-content-end{
   }
 
   .ant-col {
-    background-color: @color-4;
+    background-color: #c2f1ff;
   }
 
   .ant-descriptions-view{
     border-style: none !important;
-    padding: 5px 20px;
+    padding: 5px 30px;
 
     .ant-descriptions-row {
       border-bottom: 1px #a2adb0 solid;
@@ -145,6 +172,7 @@ header .d-flex.justify-content-end{
   
       th {
         width: 33%;
+        text-align: center;
       }
     }
 
@@ -154,7 +182,8 @@ header .d-flex.justify-content-end{
     }
 
     td:not(:first-child) {
-      text-align: center;
+      padding-right: 14%;
+      text-align: right;
     }
   }
 }
@@ -164,4 +193,18 @@ header .d-flex.justify-content-end{
   .ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
     padding: 10px 10px !important;
   }
+
+  tbody tr {
+    td {
+      text-align: center !important;
+    }
+
+    td:nth-child(3) {
+      text-align: left !important;
+    }
+
+    td:last-child {
+      text-align: right !important;
+    }
+}
 }

@@ -109,7 +109,7 @@ export default function Example() {
     },
     infoDetail: {
       borderRadius: 50,
-      backgroundColor: '#D9F5FF',
+      backgroundColor: '#c2f1ff',
       padding: '20px 20px',
       textAlign: 'center'
     }

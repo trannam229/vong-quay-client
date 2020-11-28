@@ -91,7 +91,7 @@ export default function Example() {
   const style = {
     info: {
       backgroundColor: 'none',
-      width: 900,
+      width: '80%',
       margin: '0 auto',
       borderStyle: 'none'
     },
@@ -107,7 +107,7 @@ export default function Example() {
     },
     headerInfo: {
       marginTop: -45,
-      marginLeft: 255,
+      marginLeft: 150,
       fontWeight: 'bold'
     },
     chart: {
@@ -130,7 +130,7 @@ export default function Example() {
 
       <Card loading={loading} style={style.info} className="mt-3 category-dashboard mb-3">
         <Row>
-          <Col span={11} style={style.col}>
+          <Col span={10} style={style.col}>
             <Descriptions column={1} bordered>
               <Descriptions.Item label="Tổng tài sản">{state.accountInfo.TotalAsset ? numberWithCommas(state.accountInfo.TotalAsset) + ' VND' : '-'}</Descriptions.Item>
               <Descriptions.Item label="Số dư có thể đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.AvlAmt) + ' VND'}</Descriptions.Item>
@@ -138,7 +138,7 @@ export default function Example() {
               <Descriptions.Item label="Số dư chờ khớp lệnh">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.BlockAmt)}</Descriptions.Item>
             </Descriptions>
           </Col>
-          <Col offset={2} span={11} style={style.col}>
+          <Col offset={4} span={10} style={style.col}>
             <Descriptions column={1} bordered>
               <Descriptions.Item label="Khoản đầu tư">??? {state.accountInfo.BlockAmt ?? '-'}</Descriptions.Item>
               <Descriptions.Item label="Thu thập ròng">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.EstProfit) + ' VND'}</Descriptions.Item>
