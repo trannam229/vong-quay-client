@@ -27,7 +27,7 @@ const headerRender = () => {
   return (
     <div className="d-flex hello-user justify-content-end mr-5">
       Xin chào nhà đầu tư {user}
-      <img src="/Vietnam.svg" className="ml-3" width="32"/>
+      <img src="/vietnam.svg" className="ml-3" width="32"/>
       <img src="/united-kingdom.svg" className="ml-3" width="32"/>
     </div>
   )
