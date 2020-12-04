@@ -88,6 +88,7 @@ export default function Example() {
       <Table
         bordered="true"
         className="income-report"
+        pagination={false}
         loading={loading}
         dataSource={data}
         columns={columns}

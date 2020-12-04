@@ -110,7 +110,7 @@ export default function Example() {
     infoDetail: {
       borderRadius: 50,
       backgroundColor: '#c2f1ff',
-      padding: '20px 20px',
+      padding: '15px 0',
       textAlign: 'center'
     }
   }
@@ -125,25 +125,30 @@ export default function Example() {
 
       <Card size="small" loading={loading} style={style.info}>
         <Row>
-          <Col span="6" offset="3" style={style.infoDetail}>
-            <b>{state.orderBookInfo.length}</b>
-            <br />
+          <Col span="7" offset="3" style={style.infoDetail}>
+            <p class="mb-0">
+              <b class="font-size-16">{state.orderBookInfo.length}</b>
+              <br />
             Khoản chờ khớp lệnh
+            </p>
           </Col>
-          <Col span="6" offset="2" style={style.infoDetail}>
-            <b>{numberWithCommas(state.totalAmt) + ' VND'}</b>
-            <br />
+          <Col span="7" offset="2" style={style.infoDetail}>
+            <p class="mb-0">
+              <b class="font-size-16">{numberWithCommas(state.totalAmt) + ' VND'}</b>
+              <br />
             Số dư chờ khớp lệnh
+            </p>
           </Col>
         </Row>
       </Card>
 
       <Table
-        className="mt-4"
+        className="mt-4 processing-category"
         bordered="true"
         loading={loading}
         dataSource={state.orderBookInfo}
         columns={columns}
+        pagination={{ defaultPageSize: 9 }}
       />
     </MainLayout>
   )

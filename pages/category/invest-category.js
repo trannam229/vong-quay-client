@@ -139,13 +139,18 @@ export default function Example() {
         </Row>
       </Form>
 
-      <Table
-        bordered="true"
-        loading={state.loading}
-        dataSource={state.lnInfo}
-        columns={columns}
-        className="mt-4"
-      />
+      <div className="mt-2">
+        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh mục đầu tư chi tiết</p>
+        <Table
+          bordered="true"
+          loading={state.loading}
+          dataSource={state.lnInfo}
+          columns={columns}
+          className="mt-4 invest-category"
+          pagination={{ defaultPageSize: 6 }}
+        />
+      </div>
+
     </MainLayout>
   )
 }

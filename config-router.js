@@ -67,10 +67,6 @@ export default {
         {
           path: '/auto/create/create-auto-invest',
           name: 'Cài đặt',
-        },
-        {
-          path: '/auto/invests/get-auto-invests',
-          name: 'Danh sách',
         }
       ],
     },

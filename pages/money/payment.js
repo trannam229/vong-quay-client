@@ -84,6 +84,7 @@ export default function Example() {
       />
 
         <Table
+          className="payment"
           bordered="true"
           loading={state.styleTable.loading}
           dataSource={state.transferMoneyList}

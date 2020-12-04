@@ -19,7 +19,7 @@ export default function Example() {
       dataIndex: 'InfoURL',
       render: (item) => {
         return (
-          <a href={item} target="_blank">Xem thông tin</a>);
+          <a href={item} target="_blank">Xem thêm</a>);
       }
     },
     {

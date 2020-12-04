@@ -114,6 +114,10 @@ body {
   margin-bottom: 0;
 }
 
+.font-size-16 {
+  font-size: 16px !important;
+}
+
 //Category
 .category-dashboard-header {
   .ant-descriptions-item-label {
@@ -173,12 +177,13 @@ body {
       th {
         width: 33%;
         text-align: center;
+        font-size: 16px;
       }
     }
 
     tr[data-row-key="Thu nhập"],tr[data-row-key="Chi phí"],tr[data-row-key="Thu nhập ròng"] {
       font-weight: bold;
-      background-color: @color-4 !important; 
+      background-color: @color-4 !important;
     }
 
     td:not(:first-child) {
@@ -206,5 +211,43 @@ body {
     td:last-child {
       text-align: right !important;
     }
+  }
 }
+
+// Invest category
+.invest-category {
+  tbody tr {
+    td {
+      text-align: center !important;
+    }
+
+    td:first-child {
+      text-align: left !important;
+    }
+  }
+}
+
+.processing-category {
+  tbody tr {
+    td {
+      text-align: center !important;
+    }
+
+    td:first-child, td:nth-child(2) {
+      text-align: left !important;
+    }
+  }
+}
+
+// Payment
+.payment {
+  tbody tr {
+    td {
+      text-align: center !important;
+    }
+
+    td:nth-child(3) {
+      text-align: left !important;
+    }
+  }
 }
