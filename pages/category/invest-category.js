@@ -6,43 +6,13 @@ import moment from 'moment';
 import { numberWithCommas } from '@configs/helper';
 
 export default function Example() {
-  const columns = [
-    {
-      title: 'Tên chiến dịch',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Ngành',
-      dataIndex: 'sector',
-      key: 'sector',
-    },
-    {
-      title: 'Hạng',
-      dataIndex: 'class',
-      key: 'class',
-    },
-    {
-      title: 'Lợi suất',
-      key: 'int',
-      dataIndex: 'int',
-    },
-    {
-      title: 'Số tiền',
-      key: 'amt',
-      dataIndex: 'amt',
-    },
-    {
-      title: 'Kỳ hạn',
-      key: 'term',
-      dataIndex: 'term',
-    },
-  ];
+
 
   const [state, setState] = useState({
     lnInfo: [],
     sectors: [],
-    loading: true
+    loading: true,
+    columns: [],
   });
 
   const fetchData = async (status) => {
@@ -70,6 +40,38 @@ export default function Example() {
           };
         })
         : [];
+      data.columns = [
+        {
+          title: 'Tên chiến dịch',
+          dataIndex: 'name',
+          key: 'name',
+        },
+        {
+          title: 'Ngành',
+          dataIndex: 'sector',
+          key: 'sector',
+        },
+        {
+          title: 'Hạng',
+          dataIndex: 'class',
+          key: 'class',
+        },
+        {
+          title: 'Lợi suất',
+          key: 'int',
+          dataIndex: 'int',
+        },
+        {
+          title: 'Số tiền',
+          key: 'amt',
+          dataIndex: 'amt',
+        },
+        {
+          title: 'Kỳ hạn',
+          key: 'term',
+          dataIndex: 'term',
+        },
+      ];
       data.loading = false;
 
       setState(data)
@@ -145,7 +147,7 @@ export default function Example() {
           bordered="true"
           loading={state.loading}
           dataSource={state.lnInfo}
-          columns={columns}
+          columns={state.columns}
           className="mt-4 invest-category"
           pagination={{ defaultPageSize: 6 }}
         />
