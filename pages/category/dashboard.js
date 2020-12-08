@@ -38,11 +38,10 @@ export default function Example() {
           labels: rank.map(item => item.Val),
           datasets: [{
             label: "Theo hạng khách hàng",
-            backgroundColor: '#B2E4FF',
-            borderColor: '#B2E4FF',
-            borderWidth: 1,
+            backgroundColor: '#0098FF',
             hoverBackgroundColor: '#00007A',
             hoverBorderColor: '#B2E4FF',
+            barThickness: 10,
             data: rank.map(item => (item.Amount)),
           }]
         }
@@ -50,11 +49,10 @@ export default function Example() {
           labels: term.map(item => item.Val),
           datasets: [{
             label: "Theo thời gian đầu tư còn lại",
-            backgroundColor: '#B2E4FF',
-            borderColor: '#B2E4FF',
-            borderWidth: 1,
+            backgroundColor: '#0098FF',
             hoverBackgroundColor: '#00007A',
             hoverBorderColor: '#B2E4FF',
+            barThickness: 10,
             data: term.map(item => (item.Amount)),
           }]
         }
@@ -62,11 +60,10 @@ export default function Example() {
           labels: productInfo.map(item => item.Val),
           datasets: [{
             label: "Theo sản phẩm",
-            backgroundColor: '#B2E4FF',
-            borderColor: '#B2E4FF',
-            borderWidth: 1,
+            backgroundColor: '#0098FF',
             hoverBackgroundColor: '#00007A',
             hoverBorderColor: '#B2E4FF',
+            barThickness: 10,
             data: productInfo.map(item => (item.Amount)),
           }]
         }
