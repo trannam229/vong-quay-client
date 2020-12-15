@@ -15,7 +15,7 @@ export default function Example() {
       }
     },
     {
-      title: 'Thông tin khách hàng',
+      title: 'Thông tin KH',
       dataIndex: 'InfoURL',
       render: (item) => {
         return (
@@ -79,7 +79,7 @@ export default function Example() {
       key: 'action',
       dataIndex: 'ReqID',
       render: (id) => {
-        return <Button onClick={() => showModal(id)}>Đầu tư ngay</Button>
+        return <Button onClick={() => showModal(id)}>Đầu tư</Button>
       }
     },
   ];
@@ -94,6 +94,7 @@ export default function Example() {
       data.priceBoard = priceBoardResult.data.PriceBoardList?.PriceBoard.map(item => {
         item.key = item.RN;
         item.CustomerType = 'Doanh nghiệp';
+        item.invested = numberWithCommas(item.BRegAmt - item.BRegRemain);
         item.AvlAmt = numberWithCommas(item.AvlAmt);
         item.BRegAmt = numberWithCommas(item.BRegAmt);
         item.BRegRemain = numberWithCommas(item.BRegRemain);
@@ -104,6 +105,7 @@ export default function Example() {
       data.priceBoardHKD = priceBoardHKDResult.data.PriceBoardList?.PriceBoard.map(item => {
         item.key = item.RN;
         item.CustomerType = 'HKD';
+        item.invested = numberWithCommas(item.BRegAmt - item.BRegRemain);
         item.AvlAmt = numberWithCommas(item.AvlAmt);
         item.BRegAmt = numberWithCommas(item.BRegAmt);
         item.BRegRemain = numberWithCommas(item.BRegRemain);
@@ -133,7 +135,7 @@ export default function Example() {
     return (
       <Card title={`Số dư có thể đầu tư: ` + modal.itemDetail.BRegRemain}>
         <Descriptions column={1} className="category-dashboard-header" title={modal.itemDetail.ShortName || modal.itemDetail.FullName}>
-          <Descriptions.Item label="Đã đăng ký">{modal.itemDetail.BRegAmt - modal.itemDetail.BRegRemain}</Descriptions.Item>
+          <Descriptions.Item label="Đã đăng ký">{modal.itemDetail.invested}</Descriptions.Item>
           <Descriptions.Item label="Mục tiêu">{modal.itemDetail.BRegAmt}</Descriptions.Item>
           <Descriptions.Item label="Lợi tức">{modal.itemDetail.Int}%</Descriptions.Item>
           <Descriptions.Item label="Thời gian">{modal.itemDetail.Term} tháng</Descriptions.Item>
@@ -182,7 +184,7 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Table bordered dataSource={items.dataList} columns={columns} loading={items.loading} />
+      <Table bordered dataSource={items.dataList} columns={columns} loading={items.loading} className="trade-invest"/>
       <Modal
         visible={modal.visible}
         onOk={handleOk}
