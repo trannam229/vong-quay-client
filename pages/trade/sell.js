@@ -4,89 +4,11 @@ import axios from '../../configs/api-request';
 import { PageHeader, Table, Button, Modal, Card, Descriptions, Input, Form } from 'antd';
 import moment from 'moment';
 import { numberWithCommas, getSectorName } from "@configs/helper";
-
+import { unionBy } from 'lodash';
 export default function Example() {
-  const columns = [
-    {
-      title: 'Tên chiến dịch',
-      dataIndex: 'ShortName',
-      key: 'ShortName',
-      render: (item) => {
-        return (item || 'No info');
-      }
-    },
-    {
-      title: 'Loại KH',
-      dataIndex: 'CustomerType',
-      key: 'CustomerType',
-      render: (item) => {
-        return (item || 'No info')
-      }
-    },
-    {
-      title: 'Hạng',
-      dataIndex: 'CustClass',
-      key: 'CustClass',
-    },
-    {
-      title: 'Lợi suất',
-      dataIndex: 'Int',
-      key: 'Int',
-      render: (int) => {
-        return (int + '%');
-      }
-    },
-    {
-      title: 'Vốn đầu tư ban đầu',
-      dataIndex: 'OrgAmt',
-      key: 'OrgAmt',
-      render: (item) => {
-        return (<p>{numberWithCommas(item)}</p>);
-      }
-    },
-    {
-      title: 'Vốn gốc còn lại',
-      dataIndex: 'RemainAmt',
-      key: 'RemainAmt',
-      render: (item) => {
-        return (<p>{numberWithCommas(item)}</p>);
-      },
-    },
-    {
-      title: 'Ngày tất toán',
-      dataIndex: 'ClsDate',
-      key: 'ClsDate',
-      render: (item) => {
-        return moment(item).format('DD.MM.YYYY');
-      }
-    },
-    {
-      title: 'Lendbiz đánh giá',
-      dataIndex: 'EstAmt',
-      key: 'EstAmt',
-      render: (item) => {
-        return (<p>{numberWithCommas(item)}</p>);
-      }
-    },
-    {
-      title: 'Phí giao dịch',
-      dataIndex: 'FeeAmt',
-      key: 'FeeAmt',
-      render: (item) => {
-        return (<p>{numberWithCommas(item)}</p>);
-      }
-    },
-    {
-      title: '',
-      key: 'action',
-      dataIndex: 'DealID',
-      render: (id) => {
-        return <Button onClick={() => showModal(id)}>Thoái vốn</Button>
-      }
-    },
-  ];
+  const [columns, setColumns] = useState([]);
   const [items, setItems] = useState({ loading: true });
-  const [modal, setModal] = useState({visible: false, itemDetail: null});
+  const [modal, setModal] = useState({ visible: false, itemDetail: null });
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const showModal = (id) => {
@@ -98,7 +20,7 @@ export default function Example() {
   };
 
   const renderModal = () => {
-    if(!modal.itemDetail) return;
+    if (!modal.itemDetail) return;
 
     return (
       <Card title={`Thời gian đầu tư: ` + moment().format('h a DD.MM.YYYY')}>
@@ -115,7 +37,7 @@ export default function Example() {
         </Descriptions>
         <Form layout="vertical">
           <Form.Item label="Nhập số tiền bán">
-            <Input type="number" suffix="VND" onChange={(e) => setModal({...modal, input: e.target.value})}/>
+            <Input type="number" suffix="VND" onChange={(e) => setModal({ ...modal, input: e.target.value })} />
           </Form.Item>
         </Form>
       </Card>
@@ -134,7 +56,7 @@ export default function Example() {
         setConfirmLoading(false);
         throw iRegResult.data.Status.Message;
       };
-      setModal({visible: false});
+      setModal({ visible: false });
       setConfirmLoading(false);
     } catch (e) {
       console.log(e);
@@ -147,21 +69,106 @@ export default function Example() {
 
   const fetchData = async () => {
     try {
-      const data = {};
       const dealToSellResult = await axios.get("/deal-to-sell");
       if (dealToSellResult.data.Status.Code !== '0') {
         console.log(dealToSellResult.data.Status.Message)
         throw dealToSellResult.data.Status.Message;
       }
 
-      data.dealToSell = dealToSellResult.data.DealInfoList?.DealInfo.map(item => {
+      const dealToSell = dealToSellResult.data.DealInfoList?.DealInfo.map(item => {
         item.key = item.DealID;
         item.CustomerType = '';
         return item;
       }) ?? [];
-
+      const cols = [
+        {
+          title: 'Tên chiến dịch',
+          dataIndex: 'ShortName',
+          key: 'ShortName',
+          render: (item) => {
+            return (item || 'No info');
+          }
+        },
+        {
+          title: 'Loại KH',
+          dataIndex: 'CustomerType',
+          key: 'CustomerType',
+          filters: unionBy(dealToSell, 'CustomerType').map(({ CustomerType }) => ({ text: CustomerType, value: CustomerType })),
+          onFilter: (value, record) => record.CustomerType.indexOf(value) === 0,
+          render: (item) => {
+            return (item || 'No info')
+          }
+        },
+        {
+          title: 'Hạng',
+          dataIndex: 'CustClass',
+          key: 'CustClass',
+          filters: unionBy(dealToSell, 'CustClass').map(({ CustClass }) => ({ text: CustClass, value: CustClass })),
+          onFilter: (value, record) => record.CustClass.indexOf(value) === 0,
+        },
+        {
+          title: 'Lợi suất',
+          dataIndex: 'Int',
+          key: 'Int',
+          filters: unionBy(dealToSell, 'Int').map(({ Int }) => ({ text: Int, value: Int })),
+          onFilter: (value, record) => record.Int.indexOf(value) === 0,
+          render: (int) => {
+            return (int + '%');
+          }
+          
+        },
+        {
+          title: 'Vốn đầu tư ban đầu',
+          dataIndex: 'OrgAmt',
+          key: 'OrgAmt',
+          render: (item) => {
+            return (<p>{numberWithCommas(item)}</p>);
+          }
+        },
+        {
+          title: 'Vốn gốc còn lại',
+          dataIndex: 'RemainAmt',
+          key: 'RemainAmt',
+          render: (item) => {
+            return (<p>{numberWithCommas(item)}</p>);
+          },
+        },
+        {
+          title: 'Ngày tất toán',
+          dataIndex: 'ClsDate',
+          key: 'ClsDate',
+          render: (item) => {
+            return moment(item).format('DD.MM.YYYY');
+          }
+        },
+        {
+          title: 'Lendbiz đánh giá',
+          dataIndex: 'EstAmt',
+          key: 'EstAmt',
+          render: (item) => {
+            return (<p>{numberWithCommas(item)}</p>);
+          }
+        },
+        {
+          title: 'Phí giao dịch',
+          dataIndex: 'FeeAmt',
+          key: 'FeeAmt',
+          render: (item) => {
+            return (<p>{numberWithCommas(item)}</p>);
+          }
+        },
+        {
+          title: '',
+          key: 'action',
+          dataIndex: 'DealID',
+          render: (id) => {
+            return <Button onClick={() => showModal(id)}>Thoái vốn</Button>
+          }
+        },
+      ];
+      setColumns(cols);
       setItems({
-        dataList: data.dealToSell,
+        dataList: dealToSell,
         loading: false
       });
     } catch (e) {

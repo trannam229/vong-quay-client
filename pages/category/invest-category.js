@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import moment from 'moment';
 import { numberWithCommas } from '@configs/helper';
+import { unionBy } from 'lodash';
 
 export default function Example() {
 
@@ -50,11 +51,15 @@ export default function Example() {
           title: 'Ngành',
           dataIndex: 'sector',
           key: 'sector',
+          filters: unionBy(data.lnInfo, 'sector').map(({ sector }) => ({ text: sector, value: sector })),
+          onFilter: (value, record) => record.sector.indexOf(value) === 0
         },
         {
           title: 'Hạng',
           dataIndex: 'class',
           key: 'class',
+          filters: unionBy(data.lnInfo, 'class').map(({ class: cl }) => ({ text: cl, value: cl })),
+          onFilter: (value, record) => record.class.indexOf(value) === 0
         },
         {
           title: 'Lợi suất',
@@ -70,6 +75,8 @@ export default function Example() {
           title: 'Kỳ hạn',
           key: 'term',
           dataIndex: 'term',
+          filters: unionBy(data.lnInfo, 'term').map(({ term }) => ({ text: term, value: term })),
+          onFilter: (value, record) => record.term.indexOf(value) === 0
         },
       ];
       data.loading = false;

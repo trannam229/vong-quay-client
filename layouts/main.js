@@ -51,6 +51,7 @@ export default function Main({ children }) {
       menuItemRender={menuItemRender}
       menuHeaderRender={menuHeaderRender}
       headerRender={headerRender}
+      title="Lendbiz"
     >
       {children}
     </ProLayout>
