@@ -23,7 +23,7 @@ export default function Example() {
     if (!modal.itemDetail) return;
 
     return (
-      <Card title={`Thời gian đầu tư: ` + moment().format('h a DD.MM.YYYY')}>
+      <Card className="invest-modal-card" title={`Thời gian đầu tư: ` + moment().format('h a DD.MM.YYYY')}>
         <Descriptions column={1} className="category-dashboard-header" title={modal.itemDetail.ShortName || modal.itemDetail.FullName}>
           <Descriptions.Item label="Ngành">{modal.itemDetail.Sector}</Descriptions.Item>
           <Descriptions.Item label="Vốn gốc">{numberWithCommas(modal.itemDetail.OrgAmt)}</Descriptions.Item>
@@ -59,6 +59,7 @@ export default function Example() {
       setModal({ visible: false });
       setConfirmLoading(false);
     } catch (e) {
+      setConfirmLoading(false);
       console.log(e);
     }
   };

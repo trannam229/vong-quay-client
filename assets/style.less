@@ -219,10 +219,14 @@ body {
   tbody tr {
     td {
       text-align: center !important;
-    }
 
-    td:first-child {
-      text-align: left !important;
+      &:first-child, &:nth-child(2) {
+        text-align: left !important;
+      }
+  
+      &:nth-child(5) {
+        text-align: right !important;
+      }
     }
   }
 }
@@ -253,11 +257,11 @@ body {
 }
 
 //trade-invest
-.trade-invest{
+.trade-invest {
   th {
-    padding: 10px !important;
+    padding: 10px 20px !important;
 
-    &:nth-child(2), &:nth-child(6) {
+    &:nth-child(1), &:nth-child(2), &:nth-child(6) {
       white-space: nowrap;
     }
   }
@@ -280,6 +284,89 @@ body {
   
     &:nth-child(5), &:nth-child(8), &:nth-child(10) {
       text-align: right;
+    }
+  }
+}
+
+.ant-modal-content {
+  border-radius: 10px !important;
+}
+
+.invest-modal-card {
+  border: none !important;
+
+  .ant-card-head {
+    border: none !important;
+
+    .ant-card-head-title {
+      color: #03b1fe !important;
+      font-weight: bold !important;
+      text-align: center !important;
+    }
+  }
+
+  .ant-card-body {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+
+    .ant-descriptions {
+      border-radius: 5px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+      .ant-descriptions-header {
+        padding: 5px !important;
+        border-radius: 5px 5px 0 0 !important;
+        background-color: #03b1fe !important;
+        margin-bottom: 0px !important;
+
+        .ant-descriptions-title {
+          text-align: center;
+          color: white !important;
+          font-weight: 500 !important;
+        }
+      }
+
+      .ant-descriptions-view {
+        border-style: none !important;
+        padding: 5px 30px;
+    
+        .ant-descriptions-row {
+          border-bottom: 1px #a2adb0 solid;
+          &:last-child {
+            border-style: none;
+          }
+        }
+    
+        .ant-descriptions-item-label{
+          background-color: transparent !important;
+          padding: 7px 0 !important;
+          border-style: none;
+          color: black;
+          font-weight: normal;
+        }
+    
+        .ant-descriptions-item-content {
+          padding: 0 !important;
+          text-align: right;
+          border-style: none;
+          color: black;
+          font-weight: normal;
+        }
+      }
+    }
+
+    .ant-form {
+      margin-top: 20px !important;
+
+      .ant-form-item-label {
+        label {
+          font-weight: bold !important;
+        }
+      }
+
+      .ant-row {
+        margin-bottom: 0px !important;
+      }
     }
   }
 }

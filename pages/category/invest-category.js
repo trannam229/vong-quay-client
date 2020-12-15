@@ -1,5 +1,5 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Row, Col, Descriptions, Input, Select, Table, Form } from 'antd';
+import { PageHeader, Row, Col, Descriptions, Input, Select, Table, Form, DatePicker } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../configs/api-request';
 import moment from 'moment';
@@ -16,15 +16,15 @@ export default function Example() {
     columns: [],
   });
 
-  const fetchData = async (status) => {
+  const fetchData = async (date1, date2) => {
     try {
       const data = {};
       const sectorsResult = await axios.get('/sectors');
       data.sectors = sectorsResult.data.Sectors.SectorInfo;
 
       const params = {
-        FromDate: moment().subtract(1, 'year').format('YYYY-MM-DD').toString(),
-        ToDate: moment().format('YYYY-MM-DD').toString(),
+        FromDate: date1 || moment().subtract(1, 'year').format('YYYY-MM-DD').toString(),
+        ToDate: date2 || moment().format('YYYY-MM-DD').toString(),
         Status: status || ''
       }
       const lnResult = await axios.get('/ln', { params });
@@ -110,6 +110,10 @@ export default function Example() {
 
   const getSectorsList = state.sectors.map(item => (<Select.Option value={item.Val} key={item.Val}>{item.Content}</Select.Option>));
 
+  const handleDateChange = dates => {
+    fetchData(dates[0].format('YYYY-MM-DD'), dates[1].format('YYYY-MM-DD'))
+  };
+
   return (
     <MainLayout>
       <PageHeader
@@ -138,11 +142,8 @@ export default function Example() {
             </Form.Item>
           </Col>
           <Col span="7" offset="1">
-            <Form.Item label="Lọc theo ngành nghề" name="sector">
-              <Select>
-                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
-                {getSectorsList}
-              </Select>
+            <Form.Item label="Thời gian" name="dateRange" style={{ color: '#03b1fe' }}>
+              <DatePicker.RangePicker style={{ width: '100%' }} onChange={handleDateChange} defaultValue={[moment().subtract(1, 'year'), moment()]} />
             </Form.Item>
           </Col>
         </Row>

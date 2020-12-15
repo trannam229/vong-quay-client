@@ -35,8 +35,18 @@ export default function Example() {
         item.BRegRemain = numberWithCommas(item.BRegRemain);
         return item;
       }) ?? [];
+
+      const autoInvests = await axios.get("/get-auto-invests");
+      const autoInvest = autoInvests.data.AutoInvestList ? autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0] : null;
       const dataList = priceBoard.concat(priceBoardHKD);
-      console.log(dataList);
+
+      const showModal = (id) => {
+        const itemDetail = dataList.find(item => item.ReqID === id);
+        setModal({
+          visible: true,
+          itemDetail: itemDetail
+        });
+      };
       const cols = [
         {
           title: 'Tên chiến dịch',
@@ -127,6 +137,7 @@ export default function Example() {
       ];
       setItems({
         dataList,
+        autoInvest: autoInvest,
         loading: false
       });
       setColumns(cols);
@@ -134,31 +145,32 @@ export default function Example() {
       console.log(e);
     }
   }
-
-  const showModal = (id) => {
-    const itemDetail = items.dataList.find(item => item.ReqID === id);
-    setModal({
-      visible: true,
-      itemDetail: itemDetail
-    });
-  };
+  useEffect(() => { fetchData() }, []);
 
   const renderModal = () => {
     if (!modal.itemDetail) return;
-
     return (
-      <Card title={`Số dư có thể đầu tư: ` + modal.itemDetail.BRegRemain}>
-        <Descriptions column={1} className="category-dashboard-header" title={modal.itemDetail.ShortName || modal.itemDetail.FullName}>
+      <Card className="invest-modal-card" title={`Số dư có thể đầu tư: ` + modal.itemDetail.BRegRemain}>
+        <Descriptions column={1} className="category-dashboard-header" bordered title={modal.itemDetail.ShortName || modal.itemDetail.FullName}>
           <Descriptions.Item label="Đã đăng ký">{modal.itemDetail.invested}</Descriptions.Item>
           <Descriptions.Item label="Mục tiêu">{modal.itemDetail.BRegAmt}</Descriptions.Item>
           <Descriptions.Item label="Lợi tức">{modal.itemDetail.Int}%</Descriptions.Item>
           <Descriptions.Item label="Thời gian">{modal.itemDetail.Term} tháng</Descriptions.Item>
-          <Descriptions.Item label="Số tiền đầu tư tối thiểu">{50000}</Descriptions.Item>
-          <Descriptions.Item label="Số tiền đầu tư tối đa">{50000}</Descriptions.Item>
+          {
+            !items.autoInvest ? '' :
+              <>
+                <Descriptions.Item label="Số tiền đầu tư tối thiểu">{numberWithCommas(items.autoInvest.MinAmt)}</Descriptions.Item>
+                <Descriptions.Item label="Số tiền đầu tư tối đa">{numberWithCommas(items.autoInvest.MaxAmt)}</Descriptions.Item>
+              </>
+          }
         </Descriptions>
         <Form layout="vertical">
           <Form.Item label="Nhập số tiền đầu tư">
-            <Input type="number" suffix="VND" onChange={(e) => setModal({ ...modal, input: e.target.value })} />
+            {
+              !items.autoInvest
+                ? <Input type="number" suffix="VND" min={items.autoInvest.MinAmt} max={items.autoInvest.MaxAmt} onChange={(e) => setModal({ ...modal, input: e.target.value })} />
+                : <Input type="number" suffix="VND" onChange={(e) => setModal({ ...modal, input: e.target.value })} />
+            }
           </Form.Item>
         </Form>
       </Card>
@@ -170,7 +182,7 @@ export default function Example() {
     try {
       const iRegResult = await axios.post("/ireg", {
         ReqID: modal.itemDetail.ReqID,
-        Amt: +modal.input
+        Amt: +modal.input || 0
       });
       if (iRegResult.data.Status.Code !== '0') {
         console.log(iRegResult.data.Status.Message);
@@ -180,6 +192,7 @@ export default function Example() {
       setModal({ visible: false });
       setConfirmLoading(false);
     } catch (e) {
+      setConfirmLoading(false);
       console.log(e);
     }
   };
@@ -187,8 +200,6 @@ export default function Example() {
   const handleCancel = () => {
     setModal({ visible: false });
   };
-
-  useEffect(() => { fetchData() }, []);
 
   return (
     <MainLayout>

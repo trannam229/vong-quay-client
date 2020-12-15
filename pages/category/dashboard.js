@@ -30,9 +30,13 @@ export default function Example() {
 
       const chartResult = await axios.get('/chart-info');
       if (chartResult.data.ProductInfoResult.Status.Code === '0') {
-        const rank = chartResult.data.RankInfoResult.RankInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
-        const term = chartResult.data.TermInfoResult.TermInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
-        const productInfo = chartResult.data.ProductInfoResult.ProductInfo.Info.map(item => { return { Val: item.Val, Amount: item.Amount } });
+        const rankInfo = chartResult.data.RankInfoResult.RankInfo ? chartResult.data.RankInfoResult.RankInfo.Info : [];
+        const termInfo = chartResult.data.TermInfoResult.TermInfo ? chartResult.data.TermInfoResult.TermInfo.Info : [];
+        const productInfo = chartResult.data.ProductInfoResult.ProductInfo ? chartResult.data.ProductInfoResult.ProductInfo.Info : [];
+
+        const rank = rankInfo.map(item => { return { Val: item.Val, Amount: item.Amount } });
+        const term = termInfo.map(item => { return { Val: item.Val, Amount: item.Amount } });
+        const product = productInfo.map(item => { return { Val: item.Val, Amount: item.Amount } });
 
         const chartRank = {
           labels: rank.map(item => item.Val),
@@ -57,14 +61,14 @@ export default function Example() {
           }]
         }
         const chartProduct = {
-          labels: productInfo.map(item => item.Val),
+          labels: product.map(item => item.Val),
           datasets: [{
             label: "Theo sản phẩm",
             backgroundColor: '#0098FF',
             hoverBackgroundColor: '#00007A',
             hoverBorderColor: '#B2E4FF',
             barThickness: 20,
-            data: productInfo.map(item => (item.Amount)),
+            data: product.map(item => (item.Amount)),
           }]
         }
         data.chartRank = chartRank;
