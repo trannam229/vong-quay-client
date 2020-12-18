@@ -11,63 +11,6 @@ export default function Example() {
   const [modal, setModal] = useState({ visible: false, itemDetail: null });
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const showModal = (id) => {
-    const itemDetail = items.dataList.find(item => item.DealID === id);
-    setModal({
-      visible: true,
-      itemDetail: itemDetail
-    });
-  };
-
-  const renderModal = () => {
-    if (!modal.itemDetail) return;
-
-    return (
-      <Card className="invest-modal-card" title={`Thời gian đầu tư: ` + moment().format('h a DD.MM.YYYY')}>
-        <Descriptions column={1} className="category-dashboard-header" title={modal.itemDetail.ShortName || modal.itemDetail.FullName}>
-          <Descriptions.Item label="Ngành">{modal.itemDetail.Sector}</Descriptions.Item>
-          <Descriptions.Item label="Vốn gốc">{numberWithCommas(modal.itemDetail.OrgAmt)}</Descriptions.Item>
-          <Descriptions.Item label="Gốc đã thu">{numberWithCommas(modal.itemDetail.OrgAmt - modal.itemDetail.RemainAmt)}</Descriptions.Item>
-          <Descriptions.Item label="Lợi tức">{modal.itemDetail.Int}%</Descriptions.Item>
-          <Descriptions.Item label="Lãi đã thu">{numberWithCommas(modal.itemDetail.IntPaid)}???</Descriptions.Item>
-          <Descriptions.Item label="Xếp hạng">{modal.itemDetail.CustClass}</Descriptions.Item>
-          <Descriptions.Item label="% sinh lời">{modal.itemDetail.Rate}%???</Descriptions.Item>
-          <Descriptions.Item label="Tháng đầu tư">{modal.itemDetail.Term} tháng</Descriptions.Item>
-          <Descriptions.Item label="Tháng còn lại">{modal.itemDetail.RemainNoTerm} tháng</Descriptions.Item>
-        </Descriptions>
-        <Form layout="vertical">
-          <Form.Item label="Nhập số tiền bán">
-            <Input type="number" suffix="VND" onChange={(e) => setModal({ ...modal, input: e.target.value })} />
-          </Form.Item>
-        </Form>
-      </Card>
-    )
-  }
-
-  const handleOk = async () => {
-    setConfirmLoading(true);
-    try {
-      const iRegResult = await axios.post("/ireg-to-sell", {
-        DealID: modal.itemDetail.DealID,
-        Amt: +modal.input
-      });
-      if (iRegResult.data.Status.Code !== '0') {
-        console.log(iRegResult.data.Status.Message);
-        setConfirmLoading(false);
-        throw iRegResult.data.Status.Message;
-      };
-      setModal({ visible: false });
-      setConfirmLoading(false);
-    } catch (e) {
-      setConfirmLoading(false);
-      console.log(e);
-    }
-  };
-
-  const handleCancel = () => {
-    setModal({ visible: false });
-  };
-
   const fetchData = async () => {
     try {
       const dealToSellResult = await axios.get("/deal-to-sell");
@@ -76,11 +19,24 @@ export default function Example() {
         throw dealToSellResult.data.Status.Message;
       }
 
+      const sectorsResult = await axios.get('/sectors');
+      const sectors = sectorsResult.data.Sectors.SectorInfo;
+
       const dealToSell = dealToSellResult.data.DealInfoList?.DealInfo.map(item => {
         item.key = item.DealID;
         item.CustomerType = '';
+        item.sector = sectors.find(sector => sector.Val === item.Sector).Content;
         return item;
       }) ?? [];
+
+      const showModal = (id) => {
+        const itemDetail = dealToSell.find(item => item.DealID === id);
+        setModal({
+          visible: true,
+          itemDetail: itemDetail
+        });
+      };
+
       const cols = [
         {
           title: 'Tên chiến dịch',
@@ -167,17 +123,66 @@ export default function Example() {
           }
         },
       ];
-      setColumns(cols);
       setItems({
         dataList: dealToSell,
         loading: false
       });
+      setColumns(cols);
     } catch (e) {
       console.log(e);
     }
   }
 
   useEffect(() => { fetchData() }, []);
+
+  const renderModal = () => {
+    if (!modal.itemDetail) return;
+
+    return (
+      <Card className="invest-modal-card" title={`Thời gian đầu tư: ` + moment().format('h a DD.MM.YYYY')}>
+        <Descriptions column={1} className="category-dashboard-header" bordered title={modal.itemDetail.ShortName || modal.itemDetail.FullName}>
+          <Descriptions.Item label="Ngành">{modal.itemDetail.sector}</Descriptions.Item>
+          <Descriptions.Item label="Vốn gốc">{numberWithCommas(modal.itemDetail.OrgAmt)}</Descriptions.Item>
+          <Descriptions.Item label="Gốc đã thu">{numberWithCommas(modal.itemDetail.OrgAmt - modal.itemDetail.RemainAmt)}</Descriptions.Item>
+          <Descriptions.Item label="Lợi tức">{modal.itemDetail.Int}%</Descriptions.Item>
+          <Descriptions.Item label="Lãi đã thu">{numberWithCommas(modal.itemDetail.IntPaid)}???</Descriptions.Item>
+          <Descriptions.Item label="Xếp hạng">{modal.itemDetail.CustClass}</Descriptions.Item>
+          <Descriptions.Item label="% sinh lời">{modal.itemDetail.Rate}%???</Descriptions.Item>
+          <Descriptions.Item label="Tháng đầu tư">{modal.itemDetail.Term} tháng</Descriptions.Item>
+          <Descriptions.Item label="Tháng còn lại">{modal.itemDetail.RemainNoTerm} tháng</Descriptions.Item>
+        </Descriptions>
+        <Form layout="vertical">
+          <Form.Item label="Nhập số tiền bán">
+            <Input type="number" suffix="VND" defaultValue={0} onChange={(e) => setModal({ ...modal, input: e.target.value })} />
+          </Form.Item>
+        </Form>
+      </Card>
+    )
+  }
+
+  const handleOk = async () => {
+    setConfirmLoading(true);
+    try {
+      const iRegResult = await axios.post("/ireg-to-sell", {
+        DealID: modal.itemDetail.DealID,
+        Amt: +modal.input || 0
+      });
+      if (iRegResult.data.Status.Code !== '0') {
+        console.log(iRegResult.data.Status.Message);
+        setConfirmLoading(false);
+        throw iRegResult.data.Status.Message;
+      };
+      setModal({ visible: false });
+      setConfirmLoading(false);
+    } catch (e) {
+      setConfirmLoading(false);
+      console.log(e);
+    }
+  };
+
+  const handleCancel = () => {
+    setModal({ visible: false });
+  };
 
   return (
     <MainLayout>
@@ -187,7 +192,7 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Table bordered dataSource={items.dataList} columns={columns} loading={items.loading} />
+      <Table bordered dataSource={items.dataList} columns={columns} loading={items.loading} className="sell-table" scroll={{ x: true }} />
       <Modal
         visible={modal.visible}
         onOk={handleOk}

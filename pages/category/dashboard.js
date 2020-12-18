@@ -129,8 +129,11 @@ export default function Example() {
           gridLines: {
             display: false
           },
+        }],
+        yAxes: [{
           ticks: {
-            stepSize: 10,
+            autoSkip: true,
+            autoSkipPadding: 65
           },
         }]
       }
@@ -161,7 +164,7 @@ export default function Example() {
           </Col>
           <Col offset={4} span={10} style={style.col}>
             <Descriptions column={1} bordered>
-              <Descriptions.Item label="Khoản đầu tư">??? {state.accountInfo.BlockAmt ?? '-'}</Descriptions.Item>
+              <Descriptions.Item label="Khoản đầu tư">{state.accountInfo.numInvest ?? '-'}</Descriptions.Item>
               <Descriptions.Item label="Thu thập ròng">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.EstProfit) + ' VND'}</Descriptions.Item>
               <Descriptions.Item label="Tỷ suất sinh lời bình quân">{state.nar + '%'}</Descriptions.Item>
             </Descriptions>

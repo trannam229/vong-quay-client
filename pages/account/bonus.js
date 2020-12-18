@@ -72,7 +72,7 @@ export default function Example() {
 
       setState({
         cfInfo: decoded.CfInfo,
-        reInfoList: data.REInfoList ? data.REInfoList.map(setTableSource) : [],
+        reInfoList: data.REInfoList ? data.REInfoList.REInfo.map(setTableSource) : [],
       });
       setLoading(false)
     } catch (e) {
@@ -93,7 +93,7 @@ export default function Example() {
       />
 
       <Descriptions title="Chương trình phát triển đối tác">
-        <Descriptions.Item>Bạn sẽ nhận được tiền thưởng mỗi khi người được bạn giới thiệu mở tài khoản và đầu tư trong 3 tháng đầu tiên. Thưởng sẽ được trả vào tháng kế tiếp.
+        <Descriptions.Item className="pb-0">Bạn sẽ nhận được tiền thưởng mỗi khi người được bạn giới thiệu mở tài khoản và đầu tư trong 3 tháng đầu tiên. Thưởng sẽ được trả vào tháng kế tiếp.
 Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận thưởng hấp dẫn.</Descriptions.Item>
       </Descriptions>
 
@@ -102,22 +102,23 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
         <Row>
           <Col
             span={10}
-            style={{ backgroundColor: "#A4EAFF", padding: "10px" }}
-            className="p-2"
+            style={{ backgroundColor: "#A4EAFF" }}
+            className="p-2 pr-4 pl-4"
           >
             <Row>
-              <Col span={16}>Tiền thưởng đã trả lũy kế</Col>
-              <Col span={8}>10,000,000 VND</Col>
+              <Col span={16}>Tổng số tiền thưởng lũy kế</Col>
+              <Col span={8} className="font-weight-bold" style={{ textAlign: "right" }}>{loading ? '' : (state.reInfoList[state.reInfoList.length - 1].bonus + ' VND')}</Col>
             </Row>
           </Col>
           <Col
             span={10}
-            style={{ backgroundColor: "#A4EAFF", padding: "10px" }}
+            style={{ backgroundColor: "#A4EAFF" }}
             offset={4}
+            className="p-2 pr-4 pl-4"
           >
             <Row>
-              <Col span={16}>Tiền thưởng đã trả lũy kế</Col>
-              <Col span={8}>10,000,000 VND</Col>
+              <Col span={16}>Tiền thưởng dự kiến tháng này</Col>
+              <Col span={8} className="font-weight-bold" style={{ textAlign: "right" }}>{loading ? '' : (state.reInfoList[state.reInfoList.length - 1].tempBonusAfterTax + ' VND')}</Col>
             </Row>
           </Col>
         </Row>
@@ -126,6 +127,7 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
       <div className="mt-5">
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh sách các nhà đầu tư giới thiệu</p>
         <Table
+          className="bonus-table"
           bordered="true"
           loading={loading}
           columns={columns}

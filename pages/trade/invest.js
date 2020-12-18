@@ -13,7 +13,6 @@ export default function Example() {
 
   const fetchData = async () => {
     try {
-      const data = {};
       const priceBoardResult = await axios.get("/price-board");
       const priceBoard = priceBoardResult.data.PriceBoardList?.PriceBoard.map(item => {
         item.key = item.RN;
@@ -37,7 +36,9 @@ export default function Example() {
       }) ?? [];
 
       const autoInvests = await axios.get("/get-auto-invests");
-      const autoInvest = autoInvests.data.AutoInvestList ? autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0] : null;
+      const autoInvest = (autoInvests.data.AutoInvestList && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A')
+                       ? autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0] 
+                       : null;
       const dataList = priceBoard.concat(priceBoardHKD);
 
       const showModal = (id) => {
@@ -168,8 +169,8 @@ export default function Example() {
           <Form.Item label="Nhập số tiền đầu tư">
             {
               !items.autoInvest
-                ? <Input type="number" suffix="VND" min={items.autoInvest.MinAmt} max={items.autoInvest.MaxAmt} onChange={(e) => setModal({ ...modal, input: e.target.value })} />
-                : <Input type="number" suffix="VND" onChange={(e) => setModal({ ...modal, input: e.target.value })} />
+                ? <Input type="number" defaultValue={0} suffix="VND" min={items.autoInvest.MinAmt} max={items.autoInvest.MaxAmt} onChange={(e) => setModal({ ...modal, input: e.target.value })} />
+                : <Input type="number" defaultValue={0} suffix="VND" onChange={(e) => setModal({ ...modal, input: e.target.value })} />
             }
           </Form.Item>
         </Form>
@@ -209,7 +210,7 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Table bordered dataSource={items.dataList} columns={columns} loading={items.loading} className="trade-invest" />
+      <Table bordered dataSource={items.dataList} columns={columns} loading={items.loading} className="trade-invest" scroll={{ x: true }} />
       <Modal
         visible={modal.visible}
         onOk={handleOk}

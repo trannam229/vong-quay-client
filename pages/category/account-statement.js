@@ -40,7 +40,7 @@ export default function Example() {
       time: moment(item.txdate).utc().format('DD/MM/YYYY | HH:mm:ss'),
       ref: item.txnum,
       description: item.txdesc,
-      amt: numberWithCommas(item.InitBalance)
+      amt: item.Credit ? numberWithCommas(item.Credit) : numberWithCommas(-item.Debit)
     };
   };
 

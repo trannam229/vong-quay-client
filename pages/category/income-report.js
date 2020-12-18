@@ -39,7 +39,7 @@ export default function Example() {
       const monthInfo = monthInfoResult.data.IncomeInfo;
 
       const calculatedAll = {
-        income: +allInfo.profits - +allInfo.namt - +allInfo.namt + +allInfo.ReCommission + +allInfo.amountOvd,
+        income: +allInfo.profits - +allInfo.namt - +allInfo.amountOvd + +allInfo.ReCommission,
         allFee: +allInfo.fee + +allInfo.tax
       }
 
@@ -52,9 +52,8 @@ export default function Example() {
         { key: 'Thu nhập', all: calculatedAll.income, month: calculatedMonth.income },
         { key: 'Lợi tức đã nhận', all: allInfo.profits, month: monthInfo.profits },
         { key: 'Phạt thanh toán trước hạn', all: allInfo.namt, month: monthInfo.namt },
-        { key: 'Phạt chậm trả', all: allInfo.namt, month: monthInfo.namt },
-        { key: 'Hoa hồng', all: allInfo.amountOvd, month: monthInfo.amountOvd },
-        { key: 'Thưởng', all: allInfo.ReCommission, month: monthInfo.ReCommission },
+        { key: 'Phạt chậm trả', all: allInfo.amountOvd, month: monthInfo.amountOvd },
+        { key: 'Hoa hồng', all: allInfo.ReCommission, month: monthInfo.ReCommission },
         { key: 'Chi phí', all: calculatedAll.allFee, month: calculatedMonth.allFee },
         { key: 'Phí dịch vụ', all: allInfo.fee, month: monthInfo.fee },
         { key: 'Thuế TNCN', all: allInfo.tax, month: monthInfo.tax },
