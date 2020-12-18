@@ -34,7 +34,7 @@ export default function Example() {
             key: item.RN,
             name: item.ShortName,
             sector: data.sectors.find(sector => sector.Val === item.Sector).Content,
-            class: '?',
+            class: item.ClassCf,
             int: item.int + '%',
             amt: numberWithCommas(item.rlsamt),
             term: item.term + ' tháng'

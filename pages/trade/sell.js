@@ -145,9 +145,9 @@ export default function Example() {
           <Descriptions.Item label="Vốn gốc">{numberWithCommas(modal.itemDetail.OrgAmt)}</Descriptions.Item>
           <Descriptions.Item label="Gốc đã thu">{numberWithCommas(modal.itemDetail.OrgAmt - modal.itemDetail.RemainAmt)}</Descriptions.Item>
           <Descriptions.Item label="Lợi tức">{modal.itemDetail.Int}%</Descriptions.Item>
-          <Descriptions.Item label="Lãi đã thu">{numberWithCommas(modal.itemDetail.IntPaid)}???</Descriptions.Item>
+          <Descriptions.Item label="Lãi đã thu">{numberWithCommas(modal.itemDetail.IntPaid)}</Descriptions.Item>
           <Descriptions.Item label="Xếp hạng">{modal.itemDetail.CustClass}</Descriptions.Item>
-          <Descriptions.Item label="% sinh lời">{modal.itemDetail.Rate}%???</Descriptions.Item>
+          <Descriptions.Item label="% sinh lời">{modal.itemDetail.Rate}%</Descriptions.Item>
           <Descriptions.Item label="Tháng đầu tư">{modal.itemDetail.Term} tháng</Descriptions.Item>
           <Descriptions.Item label="Tháng còn lại">{modal.itemDetail.RemainNoTerm} tháng</Descriptions.Item>
         </Descriptions>

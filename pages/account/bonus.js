@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import axios from '../../configs/api-request';
 import { numberWithCommas } from '@configs/helper';
+import moment from 'moment';
 
 export default function Example() {
   const [loading, setLoading] = useState(true);
@@ -56,7 +57,7 @@ export default function Example() {
     return {
       key: item.RN,
       name: item.Fullname || 'No data',
-      openDate: '',
+      openDate: item.OpnDate ? moment(item.OpnDate).format('DD.MM.YYYY') : '',
       status: item.Status,
       bonus: numberWithCommas(item.Accamt),
       tempBonus: numberWithCommas(item.TotalEstAmt),

@@ -7,12 +7,24 @@ import axios from '../../../configs/api-request';
 export default function createAutoInvestRule() {
   const [sectors, setSectors] = useState([]);
   const [onOff, setOnOff] = useState(false);
+  const [autoInvest, setAutoInvest] = useState(null);
 
   const fetchData = async () => {
     try {
-      const sectorsResult = await axios.get('/sectors');
-      const sectors = sectorsResult.data.Sectors.SectorInfo;
-      setSectors(sectors);
+      if(sectors.length !== 0) {
+        const sectorsResult = await axios.get('/sectors');
+        const sectors = sectorsResult.data.Sectors.SectorInfo;
+        setSectors(sectors);
+      }
+
+      const autoInvests = await axios.get("/get-auto-invests");
+      const autoInvest = (autoInvests.data.AutoInvestList && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A')
+                       ? autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0] 
+                       : null;
+
+      if(autoInvest && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A') {
+        setOnOff(true)
+      }
     } catch (e) {
       console.log(e);
     }
@@ -60,7 +72,12 @@ export default function createAutoInvestRule() {
       console.log(e);
     }
   };
-  const switchButton = () => {
+  const switchButton = async () => {
+    if(onOff === true && autoInvest && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A') {
+      const autoInvests = await axios.get("/get-auto-invests");
+
+    }
+
     setOnOff(!onOff);
   };
   const onFinishFailed = errorInfo => {
@@ -92,7 +109,7 @@ export default function createAutoInvestRule() {
           wrapperCol={{ span: 8 }}
           style={{ fontWeight: "bold" }}
         >
-          <Switch onClick={switchButton} />
+          <Switch onClick={switchButton} defaultChecked={{onOff}}/>
         </Form.Item>
       </Form>
       {onOff ? <Card style={{ width: '100%', textAlign: "center" }}>
