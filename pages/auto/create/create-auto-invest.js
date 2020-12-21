@@ -1,30 +1,42 @@
 import MainLayout from '@layouts/main'
 import { PageHeader, Card, Input, Select, Button, Form, Row, Col, Switch } from 'antd';
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import axios from '../../../configs/api-request';
 
 export default function createAutoInvestRule() {
   const [sectors, setSectors] = useState([]);
   const [onOff, setOnOff] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [switchLoading, setSwitchLoading] = useState(true);
   const [autoInvest, setAutoInvest] = useState(null);
+
+  const getAutoInvest = async () => {
+    try {
+      const autoInvests = await axios.get("/get-auto-invests");
+      const autoInvest = (autoInvests.data.AutoInvestList)
+        ? autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0]
+        : null;
+      return autoInvest;
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   const fetchData = async () => {
     try {
-      if(sectors.length !== 0) {
-        const sectorsResult = await axios.get('/sectors');
-        const sectors = sectorsResult.data.Sectors.SectorInfo;
-        setSectors(sectors);
-      }
+      setLoading(true);
+      setSwitchLoading(true);
+      const sectorsResult = await axios.get('/sectors');
+      const sectors = sectorsResult.data.Sectors.SectorInfo;
+      setSectors(sectors);
 
-      const autoInvests = await axios.get("/get-auto-invests");
-      const autoInvest = (autoInvests.data.AutoInvestList && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A')
-                       ? autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0] 
-                       : null;
-
-      if(autoInvest && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A') {
+      const autoInvest = await getAutoInvest();
+      setAutoInvest(autoInvest);
+      if(autoInvest && autoInvest.Status === 'A') {
         setOnOff(true)
       }
+      setLoading(false);
+      setSwitchLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -32,7 +44,41 @@ export default function createAutoInvestRule() {
 
   useEffect(() => {
     fetchData();
-  }, [onOff]);
+  }, []);
+
+  const switchButton = async () => {
+    try {
+      setOnOff(!onOff);
+      setLoading(true);
+      const autoInvest = await getAutoInvest();
+      setAutoInvest(autoInvest);
+      if (onOff === true && autoInvest && autoInvest.Status === 'A') {
+        await axios.post("/update-auto-invest", { param: { ...autoInvest, Id: autoInvest.ID, Status: 'C'} });
+      }
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onFinish = async (values) => {
+    try {
+      const autoInvest = await getAutoInvest();
+      if (autoInvest) {
+        values.Id = autoInvest.ID;
+        values.Status = 'A';
+        await axios.post("/update-auto-invest", { param: values });
+      } else {
+        await axios.post("/create-auto-invest", { param: values });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+  };
 
   const descriptionCustType = [
     {
@@ -48,7 +94,6 @@ export default function createAutoInvestRule() {
       value: 'CN'
     },
   ];
-
   const descriptionSurplus = [
     {
       desc: 'Có',
@@ -59,30 +104,9 @@ export default function createAutoInvestRule() {
       value: '0'
     }
   ];
-
   const descriptionOptionSector = sectors.map(item => (<Select.Option value={item.Val} key={item.Val}>{item.Content}</Select.Option>))
-  const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
-  const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des.value}>{des.desc}</Select.Option>))
-  const route = useRouter();
-  const onFinish = async (values) => {
-    try {
-      const { data } = await axios.post("/create-auto-invest", { param: values });
-      route.push({ pathname: '/auto/invests/get-auto-invests' })
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const switchButton = async () => {
-    if(onOff === true && autoInvest && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A') {
-      const autoInvests = await axios.get("/get-auto-invests");
-
-    }
-
-    setOnOff(!onOff);
-  };
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-  };
+  const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des.value} key={des.value}>{des.desc}</Select.Option>))
+  const descriptionOptionSurplus = descriptionSurplus.map(des => (<Select.Option value={des.value} key={des.value}>{des.desc}</Select.Option>))
 
   const style = {
     label: {
@@ -92,7 +116,8 @@ export default function createAutoInvestRule() {
       width: '100px'
     },
     selectInput: {
-      width: '100%'
+      width: '100%',
+      textAlign: 'left'
     }
   };
 
@@ -103,28 +128,43 @@ export default function createAutoInvestRule() {
         title="Cài đặt"
         style={{ paddingLeft: 0 }}
       />
-      <Form>
-        <Form.Item
-          label="Cài đặt đầu tư tự động"
-          wrapperCol={{ span: 8 }}
-          style={{ fontWeight: "bold" }}
-        >
-          <Switch onClick={switchButton} defaultChecked={{onOff}}/>
-        </Form.Item>
-      </Form>
-      {onOff ? <Card style={{ width: '100%', textAlign: "center" }}>
+      <Card className="create-auto-invest-switch" bordered={false} loading={switchLoading}>
+        <Form>
+          <Form.Item
+            label="Cài đặt đầu tư tự động"
+            wrapperCol={{ span: 8 }}
+            style={{ fontWeight: "bold" }}
+          >
+            <Switch onClick={switchButton} defaultChecked={onOff} />
+          </Form.Item>
+        </Form>
+      </Card>
+      
+      {onOff ? <Card className="create-auto-invest-form" loading={loading} bordered={false} style={{ width: '100%', textAlign: "center" }}>
         <Form
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
-          formLayout="vertical"
+          layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          initialValues={{
+            CustType: autoInvest.CustType,
+            Sector: autoInvest.Sector,
+            MinAmt: autoInvest.MinAmt,
+            MaxAmt: autoInvest.MaxAmt,
+            ExhaustBalance: autoInvest.ExhaustBalance,
+            MaxPercent: autoInvest.MaxPercent,
+            MinTerm: autoInvest.MinTerm,
+            MaxTerm: autoInvest.MaxTerm,
+            MinRate: autoInvest.MinRate,
+            MaxRate: autoInvest.MaxRate
+          }}
         >
           <Row gutter={48, 48}>
             <Col span="12">
               <Form.Item
                 label="Chọn loại khách hàng"
-                name="loaiKhachHang"
+                name="CustType"
               >
                 <Select style={style.selectInput}>
                   {descriptionOptionCustType}
@@ -133,13 +173,13 @@ export default function createAutoInvestRule() {
               <Form.Item
                 title="Hạn mức tối đa theo số tiền đầu tư"
                 label="Nhập số tiền tối thiểu"
-                name="soTienToiThieu"
+                name="MinAmt"
               >
                 <Input type="number" suffix="VND" />
               </Form.Item>
               <Form.Item
                 label="Sử dụng hết số dư"
-                name="suDungHetSoDu"
+                name="ExhaustBalance"
               >
                 <Select style={style.selectInput}>
                   {descriptionOptionSurplus}
@@ -149,7 +189,7 @@ export default function createAutoInvestRule() {
             <Col span="12">
               <Form.Item
                 label="Chọn ngành nghề"
-                name="chonNganhNghe"
+                name="Sector"
               >
                 <Select style={style.selectInput}>
                   {descriptionOptionSector}
@@ -157,20 +197,20 @@ export default function createAutoInvestRule() {
               </Form.Item>
               <Form.Item
                 label="Nhập số tiền tối đa"
-                name="soTienToiDa"
+                name="MaxAmt"
               >
                 <Input type="number" suffix="VND" />
               </Form.Item>
               <Form.Item
                 label="Hạn mức tối đa theo người gọi vốn"
-                name="hanMucToiDaTheoNguoiGoiVon"
+                name="MaxPercent"
               >
                 <Input type="number" suffix="VND" />
               </Form.Item>
             </Col>
           </Row>
 
-          <Row gutter={[48, 48]}>
+          <Row gutter={[48, 48]} className="mb-0">
             <Col span="12">
               <Form.Item
                 labelCol={{ span: 24 }}
@@ -182,7 +222,7 @@ export default function createAutoInvestRule() {
                       wrapperCol={{ span: 19 }}
                       label="Từ"
                       labelAlign="left"
-                      name="kiHanDauTuTu"
+                      name="MinTerm"
                     >
                       <Input type="number" suffix="tháng" />
                     </Form.Item>
@@ -193,7 +233,7 @@ export default function createAutoInvestRule() {
                       wrapperCol={{ span: 19 }}
                       label="Đến"
                       labelAlign="left"
-                      name="kiHanDauTuDen" >
+                      name="MaxTerm" >
                       <Input type="number" suffix="tháng" />
                     </Form.Item>
                   </Col></Row>
@@ -210,7 +250,7 @@ export default function createAutoInvestRule() {
                       wrapperCol={{ span: 19 }}
                       labelAlign="left"
                       label="Từ"
-                      name="loiTucDauTuTu" >
+                      name="MinRate" >
                       <Input type="number" suffix="%" />
                     </Form.Item>
                   </Col>
@@ -220,15 +260,15 @@ export default function createAutoInvestRule() {
                       wrapperCol={{ span: 19 }}
                       labelAlign="left"
                       label="Đến"
-                      name="loiTucDauTuDen" >
+                      name="MaxRate" >
                       <Input type="number" suffix="%" />
                     </Form.Item>
                   </Col>
                 </Row>
               </Form.Item>
             </Col>
-
           </Row>
+
           <Form.Item>
             <Button
               type="primary"

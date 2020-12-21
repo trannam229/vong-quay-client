@@ -166,35 +166,13 @@ exports.createAutoInvestRule = async (req, res) => {
 
 exports.updateAutoInvestRule = async (req, res) => {
   try {
-    let RuleRequest = {};
-    if(req.body.param.Status && req.body.param.Status !== 'A') {
-      RuleRequest = {
-        Id: req.bod.param.Id,
-        Custid: req.account.CfInfo.CustID,
-        Status: req.body.param.Status
-      }
-    } else {
-      RuleRequest = {
-        Custid: req.account.CfInfo.CustID,
-        MinAmt: req.body.param.soTienToiThieu,
-        MaxAmt: req.body.param.soTienToiDa,
-        ExhaustBalance: req.body.param.suDungHetSoDu,
-        MinRate: req.body.param.loiTucDauTuTu,
-        MaxRate: req.body.param.loiTucDauTuDen,
-        MinTerm: req.body.param.kiHanDauTuTu,
-        MaxTerm: req.body.param.kiHanDauTuDen,
-        CustType: req.body.param.loaiKhachHang,
-        MaxPercent: req.body.param.hanMucToiDaTheoNguoiGoiVon,
-        Sector: req.body.param.chonNganhNghe
-      }
-    }
-
     const params = {
       header: { Sessionid: req.account.CfInfo.SessionID },
-      RuleRequest
+      RuleRequest: req.body.param
     };
+    console.log(params);
     const response = await soapTrading('UpdateAutoInvestRule', params);
-    return successResponse(res, response.CreateAutoInvestRuleResult);
+    return successResponse(res, response.UpdateAutoInvestRuleResult);
   } catch (e) {
     return errorResponse(res, e.message);
   }
