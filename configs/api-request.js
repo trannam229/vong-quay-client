@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 import { notification } from 'antd';
 
 const dev = process.env.NODE_ENV !== "production";
-
-axios.defaults.baseURL = dev ? "http://localhost:3000/api" : "https://lendbiz-staging.herokuapp.com/api";
+const url = dev ? "http://localhost:3002/" : "https://lendbiz-staging.herokuapp.com/"
+axios.defaults.baseURL = url + "api";
 
 const accessToken = Cookies.get('access-token');
 if (accessToken) {
@@ -12,10 +12,14 @@ if (accessToken) {
 }
 
 axios.interceptors.response.use((res) => {
+  
+ 
   if(res.config.url === '/chart-info') return res;
 
-  if (res.data.Status.Code === '3') {
+  if (res.data.Status.Code === '3' || res.status == 403) {
     Cookies.remove('access_token');
+    window.location.href = url + "/login"
+    return
   }
 
   if (res.config.method === 'post' && res.data.Status.Code === '0') {

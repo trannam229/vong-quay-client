@@ -170,7 +170,6 @@ exports.updateAutoInvestRule = async (req, res) => {
       header: { Sessionid: req.account.CfInfo.SessionID },
       RuleRequest: req.body.param
     };
-    console.log(params);
     const response = await soapTrading('UpdateAutoInvestRule', params);
     return successResponse(res, response.UpdateAutoInvestRuleResult);
   } catch (e) {

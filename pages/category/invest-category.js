@@ -8,12 +8,14 @@ import { unionBy } from 'lodash';
 
 export default function Example() {
 
-
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({
     lnInfo: [],
+    filterInfo: [],
     sectors: [],
-    loading: true,
     columns: [],
+    BussinessType: 0,
+    DebtType: 0,
   });
 
   const fetchData = async (date1, date2) => {
@@ -41,6 +43,7 @@ export default function Example() {
           };
         })
         : [];
+      data.filterInfo = data.lnInfo;
       data.columns = [
         {
           title: 'Tên chiến dịch',
@@ -79,22 +82,29 @@ export default function Example() {
           onFilter: (value, record) => record.term.indexOf(value) === 0
         },
       ];
-      data.loading = false;
 
       setState(data)
+      setLoading(false);
     } catch (e) {
       console.log(e.message);
     }
   }
-
-  const filter = (status, customerType, sector) => {
-
-  }
-
   useEffect(() => {
     fetchData();
   }, []);
-
+  useEffect(() => {
+    const filterInfo = state.lnInfo.filter((item) => {
+      if(state.DebtType && state.DebtType != 0){
+        return item.DebtType == state.DebtType;
+      }
+      if(state.BussinessType && state.BussinessType != 0){
+        return item.BussinessType == state.BussinessType;
+      }
+      return true;
+    });
+    setState({...state, filterInfo})
+    setLoading(false);
+  }, [loading])
   const getStatusList = [
     'Trong hạn',
     'Đã hoàn thành',
@@ -108,7 +118,11 @@ export default function Example() {
     'Cá nhân'
   ].map(item => (<Select.Option value={item} key={item}>{item}</Select.Option>));
 
-  const getSectorsList = state.sectors.map(item => (<Select.Option value={item.Val} key={item.Val}>{item.Content}</Select.Option>));
+
+  const filterData = (val, type) => {
+    setLoading(true);
+    setState({ ...state, [type]: val })
+  };
 
   const handleDateChange = dates => {
     fetchData(dates[0].format('YYYY-MM-DD'), dates[1].format('YYYY-MM-DD'))
@@ -126,17 +140,15 @@ export default function Example() {
       >
         <Row>
           <Col span="7">
-            <Form.Item label="Lọc theo tình trạng khoản đầu tư" name="status">
-              <Select>
-                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
+            <Form.Item label="Lọc theo tình trạng khoản đầu tư" name="DebtType">
+              <Select placeholder="Lọc theo tình trạng khoản đầu tư" onChange={(val) => filterData(val, 'DebtType')} allowClear>
                 {getStatusList}
               </Select>
             </Form.Item>
           </Col>
           <Col span="7" offset="1">
-            <Form.Item label="Lọc theo loại khách hàng" name="customerType">
-              <Select>
-                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
+            <Form.Item label="Lọc theo loại khách hàng" name="BussinessType">
+              <Select placeholder="Lọc theo loại khách hàng" onChange={(val) => filterData(val, 'BussinessType')} allowClear>
                 {getCustomerTypeList}
               </Select>
             </Form.Item>
@@ -153,11 +165,11 @@ export default function Example() {
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh mục đầu tư chi tiết</p>
         <Table
           bordered="true"
-          loading={state.loading}
-          dataSource={state.lnInfo}
+          loading={loading}
+          dataSource={state.filterInfo}
           columns={state.columns}
           className="mt-4 invest-category"
-          pagination={{ defaultPageSize: 6 }}
+          pagination={{ defaultPageSize: 5 }}
         />
       </div>
 
