@@ -39,6 +39,9 @@ export default function Example() {
       const autoInvest = (autoInvests.data.AutoInvestList && autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0].Status === 'A')
                        ? autoInvests.data.AutoInvestList.AutoInvestInfo.slice(-1)[0] 
                        : null;
+
+      // const accountResult = await axios.get('/account');
+      // const accountInfo = accountResult.data.AccountInfo;
       const dataList = priceBoard.concat(priceBoardHKD);
 
       const showModal = (id) => {

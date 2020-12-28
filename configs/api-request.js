@@ -26,7 +26,7 @@ axios.interceptors.response.use((res) => {
     notification.success({
       message: 'Notice',
       description: 'Thao tác thành công',
-      placement: 'bottomRight'
+      placement: 'topRight'
     });
   }
 
@@ -34,7 +34,7 @@ axios.interceptors.response.use((res) => {
     notification.error({
       message: 'Error',
       description: res.data.Status.Message,
-      placement: 'bottomRight'
+      placement: 'topRight'
     });
     throw res;
   }

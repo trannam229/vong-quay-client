@@ -159,7 +159,7 @@ export default function Example() {
               <Descriptions.Item label="Tổng tài sản">{state.accountInfo.TotalAsset ? numberWithCommas(state.accountInfo.TotalAsset) + ' VND' : '-'}</Descriptions.Item>
               <Descriptions.Item label="Số dư có thể đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.AvlAmt) + ' VND'}</Descriptions.Item>
               <Descriptions.Item label="Số dư đã đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.Invested) + ' VND'}</Descriptions.Item>
-              <Descriptions.Item label="Số dư chờ khớp lệnh">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.BlockAmt)}</Descriptions.Item>
+              <Descriptions.Item label="Số dư chờ khớp lệnh">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.BlockAmt) + 'VND'}</Descriptions.Item>
             </Descriptions>
           </Col>
           <Col offset={4} span={10} style={style.col}>
