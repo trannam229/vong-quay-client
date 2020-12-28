@@ -43,13 +43,13 @@ export default function Example() {
   return (
     <MainLayout>
       <h3 style={style.header}>Đổi mật khẩu</h3>
-      <Card style={style.card} className="mt-4">
-        <Image src="/key.svg" className="mt-3" width={100} />
+      <Card style={style.card} className="mt-4 changepass-card">
+        <Image src="/key.svg" className="changepass-img" width={180} />
         <Form
           layout="vertical"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          className="mt-4"
+          className=""
         >
           <Form.Item
             label="Mật khẩu hiện tại"

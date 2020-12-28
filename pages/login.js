@@ -1,17 +1,9 @@
 import axios from '../configs/api-request';
-import {Card, Form, Input, Button} from 'antd';
+import {Card, Form, Input, Button, notification, Image} from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 import {useRouter} from 'next/router'
-
-const layout = {
-    labelCol: {span: 8},
-    wrapperCol: {span: 8},
-};
-const tailLayout = {
-    wrapperCol: {offset: 8, span: 16},
-};
-
 
 function login() {
     const route = useRouter();
@@ -35,35 +27,74 @@ function login() {
         console.log('Failed:', errorInfo);
     };
 
+    const quenMatKhau = () => {
+      const key = "forgot";
+      const btn = (
+        <Button type="primary" size="small" onClick={() => notification.close(key)}>
+          OK
+        </Button>
+      );
+    
+      notification.open({
+        message: 'Onlinetrading.lendbiz.vn cho biết',
+        description: 'Quý khách vui lòng liên hệ theo số điện thoại tổng đài của Lendbiz: 024.7307.2686 để được hỗ trợ',
+        key,
+        btn,
+        duration: 10000
+      });
+    }
+
+    const style = {
+      form: {
+        width: '70%',
+        margin: '0 auto'
+      },
+      btnSubmit: {
+        margin: '0 auto',
+        marginTop: '-16px',
+        display: 'block',
+        borderRadius: '20px',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        fontSize: '16px'
+      },
+      formForgot: {
+        marginTop: '-20px'
+      },
+      btnForgot: {
+        float: 'right',
+        border: 'none',
+      }
+    }
+
     return (
         <div style={{paddingTop: 100}}>
-            <Card title="Login form" style={{width: '50%', marginTop: 100, margin: 'auto'}}>
+            <Card style={{width: '40%', marginTop: 100, margin: 'auto', textAlign: 'center'}}>
+                <Image src="/key.svg" className="changepass-img" width={180} />
                 <Form
-                    {...layout}
+                    style={style.form}
                     name="basic"
                     initialValues={{remember: true}}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                 >
                     <Form.Item
-                        label="Username"
                         name="Username"
                         rules={[{required: true, message: 'Please input your username!'}]}
                     >
-                        <Input/>
+                        <Input size="large" prefix={<UserOutlined />} placeholder="Tên đăng nhập"/>
                     </Form.Item>
-
                     <Form.Item
-                        label="Password"
                         name="Password"
                         rules={[{required: true, message: 'Please input your password!'}]}
                     >
-                        <Input.Password/>
+                        <Input.Password size="large" prefix={<LockOutlined />} placeholder="Mật khẩu"/>
                     </Form.Item>
-                    <Form.Item {...tailLayout}>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
+                    <Form.Item style={style.formForgot}>
+                        <a style={style.btnForgot} onClick={quenMatKhau}>Quên mật khẩu?</a>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button style={style.btnSubmit} type="primary" htmlType="submit">Đăng nhập</Button>
                     </Form.Item>
                 </Form>
             </Card>

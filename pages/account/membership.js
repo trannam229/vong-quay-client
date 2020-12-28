@@ -67,10 +67,10 @@ export default function Example() {
         <Descriptions.Item>Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
       </Descriptions>
 
-      <Card style={style.card} loading={loading}>
+      <Card style={style.card} loading={loading} className="membership-card">
         <Row>
           <Col flex="100px">
-            <Image width={100} src={`/${state.cfInfo.CustClass ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
+            <Image width={130} src={`/${state.cfInfo.CustClass ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
           </Col>
           <Col flex="auto">
             <p>Hạng thành viên hiện tại</p>
@@ -95,7 +95,7 @@ export default function Example() {
           ].map(item => {
             return (
               <Col span={5} style={style.benefit} key={item.name}>
-                <Image src={`/${item.medal}.svg`} width={70} />
+                <Image className="membership-description-img" src={`/${item.medal}.svg`} width={100} />
                 <p className="font-weight-bold mt-2 mb-2">{item.name}</p>
                 <p className="mb-2">Mặc định cho tất cả các nhà đầu tư</p>
                 <ul className="pl-4">

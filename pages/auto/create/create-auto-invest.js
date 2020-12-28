@@ -150,14 +150,14 @@ export default function createAutoInvestRule() {
           initialValues={{
             CustType: autoInvest.CustType,
             Sector: autoInvest.Sector,
-            MinAmt: autoInvest.MinAmt,
-            MaxAmt: autoInvest.MaxAmt,
-            ExhaustBalance: autoInvest.ExhaustBalance,
-            MaxPercent: autoInvest.MaxPercent,
-            MinTerm: autoInvest.MinTerm,
-            MaxTerm: autoInvest.MaxTerm,
-            MinRate: autoInvest.MinRate,
-            MaxRate: autoInvest.MaxRate
+            MinAmt: autoInvest.MinAmt || 0,
+            MaxAmt: autoInvest.MaxAmt || 0,
+            ExhaustBalance: autoInvest.ExhaustBalance || 0,
+            MaxPercent: autoInvest.MaxPercent || 0,
+            MinTerm: autoInvest.MinTerm || 0,
+            MaxTerm: autoInvest.MaxTerm || 0,
+            MinRate: autoInvest.MinRate || 0,
+            MaxRate: autoInvest.MaxRate || 0
           }}
         >
           <Row gutter={48, 48}>
