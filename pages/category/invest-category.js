@@ -39,7 +39,8 @@ export default function Example() {
             class: item.ClassCf,
             int: item.int + '%',
             amt: numberWithCommas(item.rlsamt),
-            term: item.term + ' tháng'
+            term: item.term + ' tháng',
+            rlsDate: item.Rlsdate ? moment(item.Rlsdate).utc().format('DD/MM/YYYY') : 'No info',
           };
         })
         : [];
@@ -75,11 +76,16 @@ export default function Example() {
           dataIndex: 'amt',
         },
         {
-          title: 'Kỳ hạn',
+          title: 'Kỳ hạn còn lại',
           key: 'term',
           dataIndex: 'term',
           filters: unionBy(data.lnInfo, 'term').map(({ term }) => ({ text: term, value: term })),
           onFilter: (value, record) => record.term.indexOf(value) === 0
+        },
+        {
+          title: 'Ngày đầu tư',
+          key: 'rlsDate',
+          dataIndex: 'rlsDate',
         },
       ];
 

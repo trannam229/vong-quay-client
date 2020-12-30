@@ -11,16 +11,19 @@ export default function Example() {
       title: 'Thời gian',
       dataIndex: 'time',
       key: 'time',
+      width: 229
     },
     {
       title: 'Số REF',
       dataIndex: 'ref',
       key: 'ref',
+      width: 145
     },
     {
       title: 'Nội dung',
       dataIndex: 'description',
       key: 'description',
+      width: 790
     },
     {
       title: 'Số tiền',

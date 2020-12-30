@@ -202,10 +202,10 @@ export default function createAutoInvestRule() {
                 <Input type="number" suffix="VND" />
               </Form.Item>
               <Form.Item
-                label="Hạn mức tối đa theo người gọi vốn"
+                label="Hạn mức tối đa trên doanh nghiệp gọi vốn"
                 name="MaxPercent"
               >
-                <Input type="number" suffix="VND" />
+                <Input type="number" suffix="%" />
               </Form.Item>
             </Col>
           </Row>

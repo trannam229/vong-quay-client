@@ -94,7 +94,7 @@ export default function Example() {
       />
 
       <Descriptions title="Chương trình phát triển đối tác">
-        <Descriptions.Item className="pb-0">Bạn sẽ nhận được tiền thưởng mỗi khi người được bạn giới thiệu mở tài khoản và đầu tư trong 3 tháng đầu tiên. Thưởng sẽ được trả vào tháng kế tiếp.
+        <Descriptions.Item className="pb-0">Bạn sẽ nhận được tiền thưởng mỗi khi người được bạn giới thiệu mở tài khoản và đầu tư trong 2 tháng đầu tiên. Thưởng sẽ được trả vào tháng kế tiếp.
 Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận thưởng hấp dẫn.</Descriptions.Item>
       </Descriptions>
 

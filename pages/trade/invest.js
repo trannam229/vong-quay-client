@@ -65,7 +65,7 @@ export default function Example() {
           dataIndex: 'InfoURL',
           render: (item) => {
             return (
-              <a href={item} target="_blank">Xem thêm</a>);
+              <a href={item} target="_blank">Xem thông tin &gt;</a>);
           }
         },
         {
@@ -135,7 +135,7 @@ export default function Example() {
           key: 'action',
           dataIndex: 'ReqID',
           render: (id) => {
-            return <Button onClick={() => showModal(id)}>Đầu tư</Button>
+            return <Button onClick={() => showModal(id)}>Đầu tư ngay</Button>
           }
         },
       ];

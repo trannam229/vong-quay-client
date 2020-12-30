@@ -87,10 +87,6 @@ export default {
           name: 'Đổi mật khẩu',
         },
         {
-          path: '/account/faq',
-          name: 'FAQ',
-        },
-        {
           path: '/account/logout',
           name: 'Đăng xuất',
         },

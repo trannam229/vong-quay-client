@@ -18,7 +18,7 @@ export default function Example() {
       key: 'all',
     },
     {
-      title: 'Tháng',
+      title: 'Tháng hiện tại',
       dataIndex: 'month',
       key: 'month',
     }
