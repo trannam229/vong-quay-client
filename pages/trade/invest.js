@@ -4,12 +4,76 @@ import axios from '../../configs/api-request';
 import { PageHeader, Table, Button, Modal, Card, Descriptions, Input, Form } from 'antd';
 import { numberWithCommas } from '@configs/helper';
 import {unionBy} from 'lodash';
-export default function Example() {
+import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
 
+export default function Example() {
+  const cols = [
+    {
+      title: 'Tên chiến dịch',
+      dataIndex: 'ShortName',
+      key: 'ShortName',
+    },
+    {
+      title: 'Thông tin KH',
+      dataIndex: 'InfoURL',
+    },
+    {
+      title: 'Loại KH',
+      dataIndex: 'CustomerType',
+      key: 'CustomerType',
+    },
+    {
+      title: 'Hạng',
+      dataIndex: 'CustClass',
+      key: 'CustClass',
+    },
+    {
+      title: 'Kì hạn',
+      dataIndex: 'Term',
+      key: 'Term',
+    },
+    {
+      title: 'Lợi suất',
+      dataIndex: 'Int',
+      key: 'Int',
+    },
+    {
+      title: 'Ngành',
+      dataIndex: 'Sector',
+      key: 'Sector',
+    },
+    {
+      title: 'Số tiền kêu gọi đầu tư',
+      dataIndex: 'BRegAmt',
+      key: 'BRegAmt',
+    },
+    {
+      title: '% đã đầu tư',
+      dataIndex: 'InvestedRate',
+      key: 'InvestedRate',
+    },
+    {
+      title: 'Số tiền có thể đầu tư',
+      dataIndex: 'BRegRemain',
+      key: 'BRegRemain',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'OrderType',
+      key: 'OrderType',
+    },
+    {
+      title: '',
+      key: 'action',
+      dataIndex: 'ReqID',
+    },
+  ];
   const [items, setItems] = useState({ loading: true });
-  const [columns, setColumns] = useState([]);
+  const [columns, setColumns] = useState(cols);
   const [modal, setModal] = useState({ visible: false, itemDetail: null });
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const accountInfo = jwt.decode(Cookies.get('access_token'))?.AccountResults?.AccountResult[0]?.AccountInfo;
 
   const fetchData = async () => {
     try {
@@ -182,6 +246,15 @@ export default function Example() {
   }
 
   const handleOk = async () => {
+    let isLimitOK = true;
+    if ((accountInfo.TotalAsset >= 50000000 && accountInfo.TotalAsset < 100000000 && +modal.input >= accountInfo.TotalAsset / 5)
+      || (accountInfo.TotalAsset >= 100000000 && accountInfo.TotalAsset < 300000000 && +modal.input >= accountInfo.TotalAsset * 15 / 100)
+      || (accountInfo.TotalAsset >= 300000000 && +modal.input >= accountInfo.TotalAsset / 10)) {
+      isLimitOK = confirm('Bạn đang đặt lệnh vượt qua giới hạn. Bạn có thể gặp rủi ro nếu duy trì tỷ lệ vốn đầu tư lớn lên một Người gọi vốn. Bạn có chắc muốn tiếp tục?')
+    }
+
+    if(!isLimitOK) return;
+
     setConfirmLoading(true);
     try {
       const iRegResult = await axios.post("/ireg", {

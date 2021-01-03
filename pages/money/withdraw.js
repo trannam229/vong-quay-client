@@ -5,14 +5,24 @@ import axios from '../../configs/api-request';
 
 export default function Withdraw() {
   const style = {
+    header: {
+      paddingLeft: 0,
+      paddingTop: 0
+    },
     label: {
       color: '#00007A'
     },
     submitButton: {
-      width: '100px'
+      width: '100px',
+      margin: '0 auto'
     },
     selectInput: {
       width: '100%'
+    },
+    card: {
+      width: '60%',
+      margin: '0 auto',
+      border: 'unset'
     }
   };
 
@@ -24,13 +34,13 @@ export default function Withdraw() {
     'Tỷ lệ nợ xấu cao',
     'Khác'
   ];
-  const descriptionOption = description.map(des => (<Select.Option value={des}>{des}</Select.Option>))
+  const descriptionOption = description.map(des => (<Select.Option value={des} key={des}>{des}</Select.Option>))
   const [state, setState] = useState({});
   let bankAccountList = [];
 
   useEffect(() => {
-    const getBankAccountList = bankAccount => (<Select.Option value={bankAccount.RN}>{bankAccount.AccountNumber}</Select.Option>);
-    const getBankNameList = bankAccount => (<Select.Option value={bankAccount.RN}>{bankAccount.BankName}</Select.Option>);
+    const getBankAccountList = bankAccount => (<Select.Option value={bankAccount.RN} key={bankAccount.RN}>{bankAccount.AccountNumber}</Select.Option>);
+    const getBankNameList = bankAccount => (<Select.Option value={bankAccount.RN} key={bankAccount.RN}>{bankAccount.BankName}</Select.Option>);
     const fetchData = async () => {
       try {
         const { data } = await axios.get("/bank-account");
@@ -82,12 +92,12 @@ export default function Withdraw() {
 
   return (
     <MainLayout>
-      <PageHeader
-        className="site-page-header"
-        title="Rút tiền"
-        style={{ paddingLeft: 0 }}
-      />
-      <Card style={{ width: '100%', textAlign: "center", margin: '0 auto' }}>
+      <Card style={ style.card }>
+        <PageHeader
+          className="site-page-header"
+          title="Rút tiền"
+          style={ style.header }
+        />
         <Form
           layout="vertical"
           onFinish={onFinish}

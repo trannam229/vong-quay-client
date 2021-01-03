@@ -41,6 +41,8 @@ export default function Example() {
             amt: numberWithCommas(item.rlsamt),
             term: item.term + ' tháng',
             rlsDate: item.Rlsdate ? moment(item.Rlsdate).utc().format('DD/MM/YYYY') : 'No info',
+            BussinessType: item.BussinessType,
+            DebtType: item.DebtType,
           };
         })
         : [];
@@ -112,17 +114,17 @@ export default function Example() {
     setLoading(false);
   }, [loading])
   const getStatusList = [
-    'Trong hạn',
-    'Đã hoàn thành',
-    'Chậm trả có khả năng thu hồi',
-    'Nợ xấu'
-  ].map(item => (<Select.Option value={item} key={item}>{item}</Select.Option>));
+    {value: 'NORMAL', name: 'Trong hạn'},
+    {value: 'DONE', name: 'Đã hoàn thành'},
+    {value: 'OVERDUE', name: 'Chậm trả có khả năng thu hồi'},
+    {value: 'BAD', name: 'Nợ xấu'},
+  ].map(item => (<Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>));
 
   const getCustomerTypeList = [
-    'Doanh nghiệp',
-    'Hộ kinh doanh',
-    'Cá nhân'
-  ].map(item => (<Select.Option value={item} key={item}>{item}</Select.Option>));
+    {value: 'DN', name: 'Doanh nghiệp'},
+    {value: 'HKD', name: 'Hộ kinh doanh'},
+    {value: 'CN', name: 'Cá nhân'},
+  ].map(item => (<Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>));
 
 
   const filterData = (val, type) => {
@@ -147,14 +149,16 @@ export default function Example() {
         <Row>
           <Col span="7">
             <Form.Item label="Lọc theo tình trạng khoản đầu tư" name="DebtType">
-              <Select placeholder="Lọc theo tình trạng khoản đầu tư" onChange={(val) => filterData(val, 'DebtType')} allowClear>
+              <Select placeholder="Lọc theo tình trạng khoản đầu tư" onChange={(val) => filterData(val, 'DebtType')}>
+                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
                 {getStatusList}
               </Select>
             </Form.Item>
           </Col>
           <Col span="7" offset="1">
             <Form.Item label="Lọc theo loại khách hàng" name="BussinessType">
-              <Select placeholder="Lọc theo loại khách hàng" onChange={(val) => filterData(val, 'BussinessType')} allowClear>
+              <Select placeholder="Lọc theo loại khách hàng" onChange={(val) => filterData(val, 'BussinessType')}>
+                <Select.Option value={0} key={0}>Chọn tất cả</Select.Option>
                 {getCustomerTypeList}
               </Select>
             </Form.Item>
