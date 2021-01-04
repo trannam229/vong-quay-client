@@ -1,44 +1,44 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { notification } from 'antd';
+import {toast} from 'react-toastify';
 
 const dev = process.env.NODE_ENV !== "production";
-const url = dev ? "http://localhost:3002/" : "https://lendbiz-staging.herokuapp.com/"
+const url = dev ? "http://localhost:3002/" : "http://13.250.123.88:3000/"
 axios.defaults.baseURL = url + "api";
 
+const options = {
+    autoClose: 5000,
+    hideProgressBar: true,
+    position: toast.POSITION.TOP_CENTER,
+    pauseOnHover: true,
+};
 const accessToken = Cookies.get('access-token');
 if (accessToken) {
-  axios.defaults.headers.Authorization = accessToken;
+    axios.defaults.headers.Authorization = accessToken;
 }
 
 axios.interceptors.response.use((res) => {
-  
- 
-  if(res.config.url === '/chart-info') return res;
 
-  if (res.data.Status.Code === '3' || res.status == 403) {
-    Cookies.remove('access_token');
-    window.location.href = url + "/login"
-    return
-  }
 
-  if (res.config.method === 'post' && res.data.Status.Code === '0') {
-    notification.success({
-      message: 'Notice',
-      description: 'Thao tác thành công',
-      placement: 'topRight'
-    });
-  }
+    if (res.config.url === '/chart-info') return res;
 
-  if (res.data.Status.Code !== '0') {
-    notification.error({
-      message: 'Error',
-      description: res.data.Status.Message,
-      placement: 'topRight'
-    });
-    throw res;
-  }
-  return res;
+    if (res.data.Status.Code === '3' || res.status == 403) {
+        Cookies.remove('access_token');
+        window.location.href = url + "/login"
+        return
+    }
+
+    if (res.config.method === 'post' && res.data.Status.Code === '0') {
+        options.type = toast.TYPE.INFO,
+            toast("Thao tác thành công", options);
+    }
+
+    if (res.data.Status.Code !== '0') {
+        options.type = toast.TYPE.ERROR
+        toast(res.data.Status.Message, options)
+        throw res;
+    }
+    return res;
 });
 
 export default axios;
