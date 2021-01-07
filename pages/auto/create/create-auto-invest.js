@@ -62,6 +62,9 @@ export default function createAutoInvestRule() {
   };
 
   const onFinish = async (values) => {
+    values.Sector = values.Sector && values.Sector.toString();
+    values.CustType = values.CustType && values.CustType.toString();
+
     try {
       const autoInvest = await getAutoInvest();
       if (autoInvest) {
@@ -148,8 +151,8 @@ export default function createAutoInvestRule() {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           initialValues={{
-            CustType: autoInvest.CustType,
-            Sector: autoInvest.Sector,
+            CustType: autoInvest.CustType && autoInvest.CustType.split(','),
+            Sector: autoInvest.Sector && autoInvest.Sector.split(','),
             MinAmt: autoInvest.MinAmt || 0,
             MaxAmt: autoInvest.MaxAmt || 0,
             ExhaustBalance: autoInvest.ExhaustBalance || 0,
@@ -166,7 +169,7 @@ export default function createAutoInvestRule() {
                 label="Chọn loại khách hàng"
                 name="CustType"
               >
-                <Select style={style.selectInput}>
+                <Select style={style.selectInput} mode="multiple" allowClear>
                   {descriptionOptionCustType}
                 </Select>
               </Form.Item>
@@ -191,7 +194,7 @@ export default function createAutoInvestRule() {
                 label="Chọn ngành nghề"
                 name="Sector"
               >
-                <Select style={style.selectInput}>
+                <Select style={style.selectInput} mode="multiple" allowClear>
                   {descriptionOptionSector}
                 </Select>
               </Form.Item>
