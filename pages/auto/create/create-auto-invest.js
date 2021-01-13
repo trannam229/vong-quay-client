@@ -151,16 +151,16 @@ export default function createAutoInvestRule() {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           initialValues={{
-            CustType: autoInvest.CustType && autoInvest.CustType.split(','),
-            Sector: autoInvest.Sector && autoInvest.Sector.split(','),
-            MinAmt: autoInvest.MinAmt || 0,
-            MaxAmt: autoInvest.MaxAmt || 0,
-            ExhaustBalance: autoInvest.ExhaustBalance || 0,
-            MaxPercent: autoInvest.MaxPercent || 0,
-            MinTerm: autoInvest.MinTerm || 0,
-            MaxTerm: autoInvest.MaxTerm || 0,
-            MinRate: autoInvest.MinRate || 0,
-            MaxRate: autoInvest.MaxRate || 0
+            CustType: autoInvest?.CustType && autoInvest?.CustType.split(','),
+            Sector: autoInvest?.Sector && autoInvest?.Sector.split(','),
+            MinAmt: autoInvest?.MinAmt || 0,
+            MaxAmt: autoInvest?.MaxAmt || 0,
+            ExhaustBalance: autoInvest?.ExhaustBalance || 0,
+            MaxPercent: autoInvest?.MaxPercent || 0,
+            MinTerm: autoInvest?.MinTerm || 0,
+            MaxTerm: autoInvest?.MaxTerm || 0,
+            MinRate: autoInvest?.MinRate || 0,
+            MaxRate: autoInvest?.MaxRate || 0
           }}
         >
           <Row gutter={48, 48}>
@@ -169,7 +169,7 @@ export default function createAutoInvestRule() {
                 label="Chọn loại khách hàng"
                 name="CustType"
               >
-                <Select style={style.selectInput} mode="multiple" allowClear>
+                <Select style={style.selectInput} mode="multiple" allowClear placeholder="Chọn loại khách hàng">
                   {descriptionOptionCustType}
                 </Select>
               </Form.Item>
@@ -184,7 +184,7 @@ export default function createAutoInvestRule() {
                 label="Sử dụng hết số dư"
                 name="ExhaustBalance"
               >
-                <Select style={style.selectInput}>
+                <Select style={style.selectInput} placeholder="Sử dụng hết số dư">
                   {descriptionOptionSurplus}
                 </Select>
               </Form.Item>
@@ -194,7 +194,7 @@ export default function createAutoInvestRule() {
                 label="Chọn ngành nghề"
                 name="Sector"
               >
-                <Select style={style.selectInput} mode="multiple" allowClear>
+                <Select style={style.selectInput} mode="multiple" allowClear placeholder="Chọn ngành nghề">
                   {descriptionOptionSector}
                 </Select>
               </Form.Item>
