@@ -262,7 +262,6 @@ export default function Example() {
         Amt: +modal.input || 0
       });
       if (iRegResult.data.Status.Code !== '0') {
-        console.log(iRegResult.data.Status.Message);
         setConfirmLoading(false);
         throw iRegResult.data.Status.Message;
       };
@@ -270,7 +269,6 @@ export default function Example() {
       setConfirmLoading(false);
     } catch (e) {
       setConfirmLoading(false);
-      console.log(e);
     }
   };
 
