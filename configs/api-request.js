@@ -25,7 +25,7 @@ axios.interceptors.response.use((res) => {
 
     if (res.data.Status.Code === '3' || res.status == 403) {
         Cookies.remove('access_token');
-        window.location.href = url + "/login"
+        window.location.href = url + "login"
         return
     }
 

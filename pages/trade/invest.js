@@ -236,7 +236,7 @@ export default function Example() {
           <Form.Item label="Nhập số tiền đầu tư">
             {
               !items.autoInvest
-                ? <Input type="number" defaultValue={0} suffix="VND" min={items.autoInvest.MinAmt} max={items.autoInvest.MaxAmt} onChange={(e) => setModal({ ...modal, input: e.target.value })} />
+                ? <Input type="number" defaultValue={0} suffix="VND" min={items?.autoInvest?.MinAmt} max={items?.autoInvest?.MaxAmt} onChange={(e) => setModal({ ...modal, input: e.target.value })} />
                 : <Input type="number" defaultValue={0} suffix="VND" onChange={(e) => setModal({ ...modal, input: e.target.value })} />
             }
           </Form.Item>

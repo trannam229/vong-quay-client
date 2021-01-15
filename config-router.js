@@ -61,14 +61,8 @@ export default {
       ]
     },
     {
-      path: '/auto',
+      path: '/auto/create/create-auto-invest',
       name: 'Đầu tư tự động',
-      routes: [
-        {
-          path: '/auto/create/create-auto-invest',
-          name: 'Cài đặt',
-        }
-      ],
     },
     {
       path: '/account',

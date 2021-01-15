@@ -52,7 +52,6 @@ export default function Example() {
       const filterSector = unionBy(processingOrders.map(setTableSource), 'sector').map(({ sector }) => ({ text: sector, value: sector }));
       const filterClass = unionBy(processingOrders.map(setTableSource), 'class').map(({ class: c }) => ({ text: c, value: c }));
       const filterTerm = unionBy(processingOrders.map(setTableSource), 'term').map(({ term }) => ({ text: term, value: term }));
-      console.log(processingOrders.map(setTableSource));
       const columns = [
         {
           title: 'Tên chiến dịch',
