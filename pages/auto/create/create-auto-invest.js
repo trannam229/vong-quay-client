@@ -143,7 +143,8 @@ export default function createAutoInvestRule() {
         </Form>
       </Card>
       
-      {onOff ? <Card className="create-auto-invest-form" loading={loading} bordered={false} style={{ width: '100%', textAlign: "center" }}>
+      {onOff ?
+      <Card className="create-auto-invest-form" loading={loading} bordered={false} style={{ width: '100%', textAlign: "center" }}>
         <Form
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
