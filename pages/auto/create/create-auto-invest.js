@@ -2,6 +2,8 @@ import MainLayout from '@layouts/main'
 import { PageHeader, Card, Input, Select, Button, Form, Row, Col, Switch } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from '../../../configs/api-request';
+import jwt from 'jsonwebtoken';
+import Cookies from 'js-cookie';
 
 export default function createAutoInvestRule() {
   const [sectors, setSectors] = useState([]);
@@ -9,6 +11,8 @@ export default function createAutoInvestRule() {
   const [loading, setLoading] = useState(true);
   const [switchLoading, setSwitchLoading] = useState(true);
   const [autoInvest, setAutoInvest] = useState(null);
+  const decoded = jwt.decode(Cookies.get('access_token'));
+  const custClass = decoded.CfInfo.CustClass;
 
   const getAutoInvest = async () => {
     try {
@@ -166,16 +170,18 @@ export default function createAutoInvestRule() {
         >
           <Row gutter={48, 48}>
             <Col span="12">
+              {
+                custClass === 'GOLD' || custClass === 'DIAMOND'
+                  ? (
+                    <Form.Item label="Chọn loại khách hàng" name="CustType">
+                      <Select style={style.selectInput} mode="multiple" allowClear placeholder="Chọn loại khách hàng">
+                        {descriptionOptionCustType}
+                      </Select>
+                    </Form.Item>
+                  )
+                  : ''
+              }
               <Form.Item
-                label="Chọn loại khách hàng"
-                name="CustType"
-              >
-                <Select style={style.selectInput} mode="multiple" allowClear placeholder="Chọn loại khách hàng">
-                  {descriptionOptionCustType}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                title="Hạn mức tối đa theo số tiền đầu tư"
                 label="Nhập số tiền tối thiểu"
                 name="MinAmt"
               >
@@ -191,87 +197,96 @@ export default function createAutoInvestRule() {
               </Form.Item>
             </Col>
             <Col span="12">
-              <Form.Item
-                label="Chọn ngành nghề"
-                name="Sector"
-              >
-                <Select style={style.selectInput} mode="multiple" allowClear placeholder="Chọn ngành nghề">
-                  {descriptionOptionSector}
-                </Select>
-              </Form.Item>
+              {
+                custClass === 'GOLD' || custClass === 'DIAMOND'
+                  ? (
+                  <Form.Item label="Chọn ngành nghề" name="Sector">
+                    <Select style={style.selectInput} mode="multiple" allowClear placeholder="Chọn ngành nghề">
+                      {descriptionOptionSector}
+                    </Select>
+                  </Form.Item>
+                  )
+                  : ''
+              }
               <Form.Item
                 label="Nhập số tiền tối đa"
                 name="MaxAmt"
               >
                 <Input type="number" suffix="VND" />
               </Form.Item>
-              <Form.Item
-                label="Hạn mức tối đa trên doanh nghiệp gọi vốn"
-                name="MaxPercent"
-              >
-                <Input type="number" suffix="%" />
-              </Form.Item>
+                {
+                  custClass !== 'BRONZE'
+                    ? (
+                      <Form.Item label="Hạn mức tối đa trên doanh nghiệp gọi vốn" name="MaxPercent">
+                        <Input type="number" suffix="%" />
+                      </Form.Item>
+                    )
+                    : ''
+                }
             </Col>
           </Row>
-
-          <Row gutter={[48, 48]} className="mb-0">
-            <Col span="12">
-              <Form.Item
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }} label="Cài đặt kì hạn đầu tư" >
-                <Row>
-                  <Col span={12} className="pr-3">
-                    <Form.Item
-                      labelCol={{ span: 5 }}
-                      wrapperCol={{ span: 19 }}
-                      label="Từ"
-                      labelAlign="left"
-                      name="MinTerm"
-                    >
-                      <Input type="number" suffix="tháng" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12} className="pl-3">
-                    <Form.Item
-                      labelCol={{ span: 5 }}
-                      wrapperCol={{ span: 19 }}
-                      label="Đến"
-                      labelAlign="left"
-                      name="MaxTerm" >
-                      <Input type="number" suffix="tháng" />
-                    </Form.Item>
-                  </Col></Row>
-              </Form.Item>
-            </Col>
-            <Col span="12" >
-              <Form.Item
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }} label="Cài đặt Lợi tức đầu tư" >
-                <Row>
-                  <Col span={12} className="pr-3">
-                    <Form.Item
-                      labelCol={{ span: 5 }}
-                      wrapperCol={{ span: 19 }}
-                      labelAlign="left"
-                      label="Từ"
-                      name="MinRate" >
-                      <Input type="number" suffix="%" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12} className="pl-3">
-                    <Form.Item
-                      labelCol={{ span: 5 }}
-                      wrapperCol={{ span: 19 }}
-                      labelAlign="left"
-                      label="Đến"
-                      name="MaxRate" >
-                      <Input type="number" suffix="%" />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form.Item>
-            </Col>
-          </Row>
+          {
+            custClass === 'GOLD' || custClass === 'DIAMOND'
+              ? (<Row gutter={[48, 48]} className="mb-0">
+              <Col span="12">
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }} label="Cài đặt kì hạn đầu tư" >
+                  <Row>
+                    <Col span={12} className="pr-3">
+                      <Form.Item
+                        labelCol={{ span: 5 }}
+                        wrapperCol={{ span: 19 }}
+                        label="Từ"
+                        labelAlign="left"
+                        name="MinTerm"
+                      >
+                        <Input type="number" suffix="tháng" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12} className="pl-3">
+                      <Form.Item
+                        labelCol={{ span: 5 }}
+                        wrapperCol={{ span: 19 }}
+                        label="Đến"
+                        labelAlign="left"
+                        name="MaxTerm" >
+                        <Input type="number" suffix="tháng" />
+                      </Form.Item>
+                    </Col></Row>
+                </Form.Item>
+              </Col>
+              <Col span="12" >
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }} label="Cài đặt Lợi tức đầu tư" >
+                  <Row>
+                    <Col span={12} className="pr-3">
+                      <Form.Item
+                        labelCol={{ span: 5 }}
+                        wrapperCol={{ span: 19 }}
+                        labelAlign="left"
+                        label="Từ"
+                        name="MinRate" >
+                        <Input type="number" suffix="%" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12} className="pl-3">
+                      <Form.Item
+                        labelCol={{ span: 5 }}
+                        wrapperCol={{ span: 19 }}
+                        labelAlign="left"
+                        label="Đến"
+                        name="MaxRate" >
+                        <Input type="number" suffix="%" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form.Item>
+              </Col>
+            </Row>)
+              : ''
+          }
 
           <Form.Item>
             <Button

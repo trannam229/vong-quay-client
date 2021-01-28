@@ -263,7 +263,10 @@ export default function Example() {
   };
 
   const handleCancel = () => {
-    setModal({ visible: false });
+    setModal({ 
+      ...modal,
+      visible: false
+    });
   };
 
   return (
@@ -319,7 +322,7 @@ export default function Example() {
         footer={null}
         width={'90%'}
       >
-        <Card className="invest-category-modal-card" title="Thông tin chi tiết">
+        <Card loading={detailLoading} className="invest-category-modal-card" title="Thông tin chi tiết">
           <Descriptions column={4}>
             <Descriptions.Item label="Tên khách hàng" span={4}>{modal.itemDetail?.name  || 'Không xác định'}</Descriptions.Item>
             <Descriptions.Item label="Ngày giao dịch">{modal.itemDetail?.rlsDate  || 'Không xác định'}</Descriptions.Item>
@@ -329,7 +332,6 @@ export default function Example() {
           </Descriptions>
           <Table
             bordered="true"
-            loading={detailLoading}
             dataSource={modal.lndtlInfo}
             columns={detailColumn}
             className="mt-2 invest-category-detail-table"
