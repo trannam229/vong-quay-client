@@ -12,6 +12,17 @@ export default function Example() {
     cfInfo: {},
     accountInfo: {}
   });
+  const rankPoint = [
+    { rank: 'BRONZE', point: 0 },
+    { rank: 'SILVER', point: 5000 },
+    { rank: 'GOLD', point: 15000 },
+    { rank: 'DIAMOND', point: 50000 }
+  ]
+
+  const getNextRankPoint = (rank) => {
+    const index = rankPoint.findIndex(item => item.rank === rank);
+    return rankPoint[index + 1];
+  };
 
   const fetchData = async () => {
     try {
@@ -79,7 +90,11 @@ export default function Example() {
               <Col style={style.custClassText}>|</Col>
               <Col flex="auto" style={style.custClassText}>{numberWithCommas(state.accountInfo.Point || 0)} ĐIỂM</Col>
             </Row>
-            <p>Hãy giành thêm 5.000 điểm để nâng lên hạng Bạc.</p>
+            {
+              state.cfInfo.CustClass === "DIAMOND"
+                ? 'Chúc mừng bạn đã đạt thứ hạng thành viên cao nhất.'
+                : (<p>Hãy giành thêm {getNextRankPoint(state.cfInfo.CustClass).point - state.accountInfo.Point} điểm để nâng lên hạng {getNextRankPoint(state.cfInfo.CustClass).rank}.</p>)
+            }
           </Col>
         </Row>
       </Card>
@@ -88,10 +103,10 @@ export default function Example() {
       <Row justify="space-between">
         {
           [
-            { medal: 'bronze', name: 'ĐỒNG' },
-            { medal: 'silver', name: 'BẠC' },
-            { medal: 'gold', name: 'VÀNG' },
-            { medal: 'diamond', name: 'KIM CƯƠNG' }
+            { medal: 'bronze', name: 'ĐỒNG', benefit: ['Live chat', 'Auto invest (sử dụng hết số dư và Min max)'] },
+            { medal: 'silver', name: 'BẠC', benefit: ['Live chat', 'Auto invest (sử dụng hết số dư, hạn mức tối đa theo người gọi vốn)', 'Quà tặng'] },
+            { medal: 'gold', name: 'VÀNG', benefit: ['Live chat', 'Auto invest (đầy đủ tính năng)', 'Quà tặng', 'Tham gia event', 'Quà tặng sinh nhật'] },
+            { medal: 'diamond', name: 'KIM CƯƠNG', benefit: ['Được nhận mọi ưu đãi', 'Tiếp cận các sản phẩm mới', 'Có nhân viên chăm sóc đặc biệt'] }
           ].map(item => {
             return (
               <Col span={5} style={style.benefit} key={item.name}>
@@ -99,8 +114,7 @@ export default function Example() {
                 <p className="font-weight-bold mt-2 mb-2">{item.name}</p>
                 <p className="mb-2">Mặc định cho tất cả các nhà đầu tư</p>
                 <ul className="pl-4">
-                  <li>Hỗ trợ Live Chat</li>
-                  <li>Đặt lệnh tự động</li>
+                  {item.benefit.map((item, index) => (<li key={index}>{item}</li>))}
                 </ul>
               </Col>
             );

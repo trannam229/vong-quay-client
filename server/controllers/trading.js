@@ -241,6 +241,21 @@ exports.getLN = async (req, res) => {
   }
 };
 
+exports.getLNDtl = async (req, res) => {
+  try {
+    const params = {
+      header: {
+        Sessionid: req.account.CfInfo.SessionID
+      },
+      pv_LnAccount: req.query.lnacctno,
+    };
+    const response = await soapTrading('GetLNDtl', params);
+    return successResponse(res, response.GetLNDtlResult);
+  } catch (e) {
+    return errorResponse(res, e.message);
+  }
+};
+
 // Lịch sử giao dịch
 exports.getOrderBook = async (req, res) => {
   try {
