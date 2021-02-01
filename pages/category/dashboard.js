@@ -133,7 +133,10 @@ export default function Example() {
         yAxes: [{
           ticks: {
             autoSkip: true,
-            autoSkipPadding: 65
+            autoSkipPadding: 65,
+            callback: function (value) {
+              return numberWithCommas(value);
+            },
           },
         }]
       }
@@ -152,7 +155,7 @@ export default function Example() {
         <Descriptions.Item label="· Số điểm hiện tại">{state.accountInfo.Point || '0'}</Descriptions.Item>
       </Descriptions>
 
-      <Card loading={loading} style={style.info} className="mt-3 category-dashboard mb-5">
+      <Card loading={loading} style={style.info} className="category-dashboard">
         <Row>
           <Col span={10} style={style.col}>
             <Descriptions column={1} bordered>
@@ -172,7 +175,7 @@ export default function Example() {
         </Row>
       </Card>
 
-      <Card loading={loading} style={style.chart} className="mt-5">
+      <Card loading={loading} style={style.chart} className="mt-3">
         <Row>
           <Col span={7} offset={1}>
             <Bar

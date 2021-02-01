@@ -304,7 +304,7 @@ export default function Example() {
         </Row>
       </Form>
 
-      <div className="mt-2">
+      <div className="">
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh mục đầu tư chi tiết</p>
         <Table
           bordered="true"

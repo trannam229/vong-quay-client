@@ -98,7 +98,7 @@ export default function Example() {
 Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận thưởng hấp dẫn.</Descriptions.Item>
       </Descriptions>
 
-      <div className="mt-5">
+      <div className="mt-3">
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Xem tiền thưởng</p>
         <Row>
           <Col
@@ -125,7 +125,7 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
         </Row>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-3">
         <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh sách các nhà đầu tư giới thiệu</p>
         <Table
           className="bonus-table"

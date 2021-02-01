@@ -48,7 +48,7 @@ export default function Example() {
       borderRadius: 20,
       border: '2px #69c0ff solid',
       width: 650,
-      margin: '20px auto',
+      margin: '0px auto',
     },
     custClass: {
       borderBottom: '2px gray solid',
