@@ -13,6 +13,7 @@ async function soapAuth(func, args) {
 
 async function soapTrading(func, args) {
   try {
+      console.log(args);
       const client = await soap.createClientAsync('https://bps.lendbiz.vn/BPSTEST/OnlineTrading.asmx?WSDL');
       const response = await client[`${func}Async`](args);
       console.log(head(response));

@@ -3,10 +3,7 @@ import Cookies from 'js-cookie';
 import {toast} from 'react-toastify';
 
 const dev = process.env.NODE_ENV !== "production";
-const urlOrigin = window.location.origin + ":3000/";
-const url = dev ? "http://localhost:3000/" : urlOrigin;
-// const url = "http://localhost:3000/";
-
+const url = dev ? "http://localhost:4000/" : "http://localhost:4000/";
 axios.defaults.baseURL = url + "api";
 
 const options = {

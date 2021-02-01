@@ -21,17 +21,6 @@ const menuItemRender = (options, element) => (
   </Link>
 )
 
-const headerRender = () => {
-  const user = Cookies.get('account_name');
-
-  return (
-    <div className="d-flex hello-user justify-content-end mr-5">
-      Xin chào nhà đầu tư {user}
-      <img src="/vietnam.svg" className="ml-3" width="32"/>
-      <img src="/united-kingdom.svg" className="ml-3" width="32"/>
-    </div>
-  )
-}
 
 export default function Main({ children }) {
   const route = useRouter();
@@ -50,7 +39,6 @@ export default function Main({ children }) {
       logo="/logo-white.png"
       menuItemRender={menuItemRender}
       menuHeaderRender={menuHeaderRender}
-      headerRender={headerRender}
       title="Lendbiz"
     >
       {children}
