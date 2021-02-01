@@ -305,13 +305,13 @@ export default function Example() {
       </Form>
 
       <div className="">
-        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh mục đầu tư chi tiết</p>
+        <p className="font-weight-bold" style={{ fontSize: '16px', marginBottom: '10px' }}>Danh mục đầu tư chi tiết</p>
         <Table
           bordered="true"
           loading={loading}
           dataSource={state.filterInfo}
           columns={state.columns}
-          className="mt-4 invest-category"
+          className="mt-0 invest-category"
           pagination={{ defaultPageSize: 7 }}
         />
       </div>

@@ -157,7 +157,7 @@ export default function Example() {
 
       <Card loading={loading} style={style.info} className="category-dashboard">
         <Row>
-          <Col span={10} style={style.col}>
+          <Col span={11} style={style.col}>
             <Descriptions column={1} bordered>
               <Descriptions.Item label="Tổng tài sản">{state.accountInfo.TotalAsset ? numberWithCommas(state.accountInfo.TotalAsset) + ' VND' : '-'}</Descriptions.Item>
               <Descriptions.Item label="Số dư có thể đầu tư">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.AvlAmt) + ' VND'}</Descriptions.Item>
@@ -165,7 +165,7 @@ export default function Example() {
               <Descriptions.Item label="Số dư chờ khớp lệnh">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.BlockAmt) + 'VND'}</Descriptions.Item>
             </Descriptions>
           </Col>
-          <Col offset={4} span={10} style={style.col}>
+          <Col offset={2} span={11} style={style.col}>
             <Descriptions column={1} bordered>
               <Descriptions.Item label="Khoản đầu tư">{state.accountInfo.numInvest ?? '-'}</Descriptions.Item>
               <Descriptions.Item label="Thu thập ròng">{state.accountInfo.TotalAsset && numberWithCommas(state?.accountInfo.EstProfit) + ' VND'}</Descriptions.Item>

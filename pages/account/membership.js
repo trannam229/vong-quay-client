@@ -74,7 +74,7 @@ export default function Example() {
         title="Hạng thành viên"
         style={{ paddingLeft: 0 }}
       />
-      <Descriptions title="Chương trình khách hàng thân thiết">
+      <Descriptions className="membership-des" title="Chương trình khách hàng thân thiết">
         <Descriptions.Item>Bạn sẽ nhận 1 điểm cho mỗi 100.000 VND tiền đầu tư. Hãy tận hưởng những ưu đãi theo chương trình.</Descriptions.Item>
       </Descriptions>
 

@@ -115,7 +115,7 @@ export default function Example() {
       backgroundColor: 'none',
       width: 900,
       margin: '0 auto',
-      borderStyle: 'none'
+      borderStyle: 'none',
     },
     infoDetail: {
       borderRadius: 50,
@@ -133,7 +133,7 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Card size="small" loading={loading} style={style.info}>
+      <Card className="processing-category-card" size="small" loading={loading} style={style.info}>
         <Row>
           <Col span="7" offset="3" style={style.infoDetail}>
             <p className="mb-0">
@@ -153,7 +153,7 @@ export default function Example() {
       </Card>
 
       <Table
-        className="mt-4 processing-category"
+        className="mt-1 processing-category"
         bordered="true"
         loading={loading}
         dataSource={state.orderBookInfo}

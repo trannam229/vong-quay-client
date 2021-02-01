@@ -22,7 +22,8 @@ export default function Example() {
       fontSize: 18
     },
     header: {
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: '12px'
     },
     card: {
       width: 600,

@@ -102,7 +102,7 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Row>
+      <Row className="account-statement-row">
         <Col span={8}>
           <p className="font-weight-bold">Số dư khả dụng: {loading ? '' : numberWithCommas(state?.accountInfo?.AvlAmt) + ' VND'}</p>
         </Col>
@@ -115,7 +115,7 @@ export default function Example() {
         </Col>
       </Row>
 
-      <Card size="small" loading={loading} style={style.info} className="mt-2">
+      <Card size="small" loading={loading} style={style.info} className="account-statement-card">
         <Row>
           <Col span="6" offset="1" style={style.infoDetail}>
             Tổng phát sinh tăng
@@ -135,8 +135,8 @@ export default function Example() {
         </Row>
       </Card>
 
-      <div className="mt-2">
-        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Sao kê chi tiết</p>
+      <div className="">
+        <p className="font-weight-bold" style={{ fontSize: '16px', marginBottom: 0 }}>Sao kê chi tiết</p>
         <Table
           bordered="true"
           loading={loading}

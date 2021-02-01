@@ -93,13 +93,13 @@ export default function Example() {
         style={{ paddingLeft: 0 }}
       />
 
-      <Descriptions title="Chương trình phát triển đối tác">
+      <Descriptions className="membership-des" title="Chương trình phát triển đối tác">
         <Descriptions.Item className="pb-0">Bạn sẽ nhận được tiền thưởng mỗi khi người được bạn giới thiệu mở tài khoản và đầu tư trong 2 tháng đầu tiên. Thưởng sẽ được trả vào tháng kế tiếp.
 Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận thưởng hấp dẫn.</Descriptions.Item>
       </Descriptions>
 
       <div className="mt-3">
-        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Xem tiền thưởng</p>
+        <p className="font-weight-bold" style={{ fontSize: '16px', marginBottom: '3px' }}>Xem tiền thưởng</p>
         <Row>
           <Col
             span={10}
@@ -126,7 +126,7 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
       </div>
 
       <div className="mt-3">
-        <p className="font-weight-bold" style={{ fontSize: '16px' }}>Danh sách các nhà đầu tư giới thiệu</p>
+        <p className="font-weight-bold" style={{ fontSize: '16px', marginBottom: '3px' }}>Danh sách các nhà đầu tư giới thiệu</p>
         <Table
           className="bonus-table"
           bordered="true"
