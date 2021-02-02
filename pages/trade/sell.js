@@ -12,6 +12,7 @@ export default function Example() {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const fetchData = async () => {
+    setItems({ loading: true });
     try {
       const dealToSellResult = await axios.get("/deal-to-sell");
       if (dealToSellResult.data.Status.Code !== '0') {
@@ -173,6 +174,7 @@ export default function Example() {
       };
       setModal({ visible: false });
       setConfirmLoading(false);
+      fetchData();
     } catch (e) {
       setConfirmLoading(false);
       console.log(e);

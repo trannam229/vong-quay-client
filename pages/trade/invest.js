@@ -76,6 +76,7 @@ export default function Example() {
   const accountInfo = jwt.decode(Cookies.get('access_token'))?.AccountResults?.AccountResult[0]?.AccountInfo;
 
   const fetchData = async () => {
+    setItems({ loading: true });
     try {
       const priceBoardResult = await axios.get("/price-board");
       const priceBoard = priceBoardResult.data.PriceBoardList?.PriceBoard.map(item => {
@@ -267,6 +268,7 @@ export default function Example() {
       };
       setModal({ visible: false });
       setConfirmLoading(false);
+      fetchData();
     } catch (e) {
       setConfirmLoading(false);
     }
