@@ -1,9 +1,12 @@
+import { AppstoreOutlined, DollarCircleOutlined, SyncOutlined, UserOutlined, DiffOutlined } from '@ant-design/icons';
+
 export default {
   path: '/',
   routes: [
     {
       path: '/category',
       name: 'Danh mục',
+      icon: <AppstoreOutlined />,
       routes: [
         {
           path: '/category/dashboard',
@@ -30,6 +33,7 @@ export default {
     {
       path: '/trade',
       name: 'Giao dịch',
+      icon: <DiffOutlined />,
       routes: [
         {
           path: '/trade/invest',
@@ -44,6 +48,7 @@ export default {
     {
       path: '/money',
       name: 'Tiền',
+      icon: <SyncOutlined />,
       routes: [
         {
           path: '/money/deposit',
@@ -63,10 +68,12 @@ export default {
     {
       path: '/auto/create/create-auto-invest',
       name: 'Đầu tư tự động',
+      icon: <DollarCircleOutlined />,
     },
     {
       path: '/account',
       name: 'Tài khoản',
+      icon: <UserOutlined />,
       routes: [
         {
           path: '/account/membership',
