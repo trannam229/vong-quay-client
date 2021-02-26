@@ -54,6 +54,16 @@ header .d-flex.justify-content-end{
   color: white;
 }
 
+.ant-menu-submenu-title span span svg{
+  font-size: 20px;
+  margin-top: -5px;
+}
+
+.ant-menu-item a span svg {
+  font-size: 20px;
+  margin-top: -5px;
+}
+
 .hello-user {
   font-size: 16px !important;
 }
@@ -623,18 +633,31 @@ input[type=number] {
 .ant-pro-global-header-trigger:hover{
   background: @color-8!important;
 }
+.ant-layout-sider-collapsed{
+  flex: 0 0 60px;
+  max-width: 60px;
+  min-width: 60px;
+  width: 60px;
+
+  .ant-menu-inline-collapsed {
+    padding-top: 40px !important;
+    padding-bottom: 0px !important;
+  }
+}
+
 
 @media (min-width: 768px) {
 .ant-layout {
   z-index: 15;
 
   .ant-pro-global-header-trigger {
+    line-height: 33px;
     position: fixed;
     left: 0;
     top: 64px;
     padding: 0;
     width: 80px;
-    height: 80px;
+    height: 40px;
     text-align: center;
     background: #fff !important;
     &:hover {
@@ -644,7 +667,7 @@ input[type=number] {
 }
 
 ul.ant-menu.ant-menu-dark.ant-pro-sider-menu.ant-menu-root.ant-menu-inline {
-  margin-top: 80px;
+  margin-top: 40px;
 }
 
 .ant-pro-global-header-trigger {
