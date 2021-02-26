@@ -23,10 +23,10 @@ function login() {
             if (data.Status.Code !== '0') {
                 console.log('Login failed!');
             } else {
-                const jwtAccount = jwt.sign(Object.assign(data, {Password: values.Password}), 'secretKey');
+                const jwtAccount = jwt.sign(Object.assign(data, { Password: values.Password }), 'secretKey');
                 Cookies.set('access_token', jwtAccount);
                 Cookies.set('account_name', data?.CfInfo?.FullName);
-                route.push({pathname: '/category/dashboard'})
+                route.push({ pathname: '/category/dashboard' })
             }
         } catch (e) {
             console.log(e.message);
