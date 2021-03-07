@@ -28,7 +28,7 @@ axios.interceptors.response.use((res) => {
         return
     }
 
-    if (res.config.method === 'post' && res.data.Status.Code === '0') {
+    if (res.config.url !== '/login' && res.config.method === 'post' && res.data.Status.Code === '0') {
         options.type = toast.TYPE.INFO,
             toast("Thao tác thành công", options);
     }

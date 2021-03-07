@@ -81,7 +81,7 @@ export default function Example() {
       <Card style={style.card} loading={loading} className="membership-card">
         <Row>
           <Col flex="100px">
-            <Image width={130} src={`/${state.cfInfo.CustClass ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
+            <Image preview={false} width={130} src={`/${state.cfInfo.CustClass ? state.cfInfo.CustClass.toLowerCase() : 'medal'}.svg`} />
           </Col>
           <Col flex="auto">
             <p>Hạng thành viên hiện tại</p>
@@ -110,7 +110,7 @@ export default function Example() {
           ].map(item => {
             return (
               <Col span={5} style={style.benefit} key={item.name}>
-                <Image className="membership-description-img" src={`/${item.medal}.svg`} width={100} />
+                <Image preview={false} className="membership-description-img" src={`/${item.medal}.svg`} width={100} />
                 <p className="font-weight-bold mt-2 mb-2">{item.name}</p>
                 <p className="mb-2">Mặc định cho tất cả các nhà đầu tư</p>
                 <ul className="pl-4">

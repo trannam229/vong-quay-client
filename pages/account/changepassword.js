@@ -45,7 +45,7 @@ export default function Example() {
     <MainLayout>
       <h3 style={style.header}>Đổi mật khẩu</h3>
       <Card style={style.card} className="mt-4 changepass-card">
-        <Image src="/key.svg" className="changepass-img" width={180} />
+        <Image preview={false} src="/key.svg" className="changepass-img" width={180} />
         <Form
           layout="vertical"
           onFinish={onFinish}

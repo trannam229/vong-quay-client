@@ -11,7 +11,7 @@ const ProLayout = dynamic(() => import('@ant-design/pro-layout'), {
 
 
 const menuHeaderRender = (logoDom, titleDom, props) => (
-    <Link href="/" className="m-auto">
+    <Link href="/category/dashboard" className="m-auto">
         <div className="text-center">{logoDom}</div>
     </Link>
 )
