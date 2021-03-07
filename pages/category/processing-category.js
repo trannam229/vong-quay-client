@@ -42,8 +42,8 @@ export default function Example() {
         OffsetNumber: '',
         TotalItem: '',
         CurrentIndex: '',
-        FromDate: '2019-10-22',
-        ToDate: '2020-10-22',
+        FromDate: moment().subtract(1, 'year').format('YYYY-MM-DD').toString(),
+        ToDate:moment().format('YYYY-MM-DD').toString(),
       }
       const orderBookResult = await axios.get('/order-book', { params });
       const processingOrders = orderBookResult.data.OrderList ? orderBookResult.data.OrderList.OrderInfo.filter(item => item.OrdStatus === 'Chờ khớp') : [];
