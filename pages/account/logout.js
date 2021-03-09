@@ -36,7 +36,7 @@ export default function Example() {
     <MainLayout>
       <h3 style={style.header}>Đăng xuất</h3>
       <Card style={style.card} className="mt-4">
-        <Image src="/logout.svg" className="mt-3" width={100} />
+        <Image preview={false} src="/logout.svg" className="mt-3" width={100} />
         <p style={style.txt} className="mt-5">Bạn có thực sự muốn Đăng xuất?</p>
         <Button
           type="primary"

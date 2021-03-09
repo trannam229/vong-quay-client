@@ -9,6 +9,7 @@
 
 .ant-layout{
   background-color: white!important;
+  overflow-x: visible !important;
 }
 
 .ant-layout-sider{
@@ -57,6 +58,26 @@ header .d-flex.justify-content-end{
 .ant-menu-submenu-title span span svg{
   font-size: 20px;
   margin-top: -5px;
+}
+.ant-pro-sider-menu > .ant-menu-item-only-child {
+  background-color: @color-8!important;
+  
+  a span {
+    color: rgba(255, 255, 255, 0.65) !important;
+  }
+
+  &:hover {
+    background-color: @color-8!important;
+    a span {
+      color: white !important;
+    }
+  }
+
+  &.ant-menu-item-selected {
+    a span {
+      color: white !important;
+    }
+  }
 }
 
 .ant-menu-item a span svg {
@@ -267,6 +288,7 @@ body {
 
     .ant-descriptions-item-content {
       color: black !important;
+      font-weight: bold !important;
     }
   }
 
@@ -634,10 +656,19 @@ input[type=number] {
   background: @color-8!important;
 }
 .ant-layout-sider-collapsed{
-  flex: 0 0 60px;
-  max-width: 60px;
-  min-width: 60px;
-  width: 60px;
+  flex: 0 0 55px !important;
+  max-width: 55px !important;
+  min-width: 55px !important;
+  width: 55px !important;
+
+  .ant-pro-sider-menu-logo {
+    line-height: 64px;
+
+    img{
+      width: 55px!important;
+      height: 55px!important;
+    }
+  }
 
   .ant-menu-inline-collapsed {
     padding-top: 40px !important;
@@ -652,8 +683,8 @@ input[type=number] {
 
   .ant-pro-global-header-trigger {
     line-height: 33px;
-    position: fixed;
-    left: 0;
+    position: absolute;
+    left: -256px;
     top: 64px;
     padding: 0;
     width: 80px;
@@ -689,8 +720,8 @@ ul.ant-menu.ant-menu-dark.ant-pro-sider-menu.ant-menu-root.ant-menu-inline {
   text-align: right;
 }
 .ant-layout-sider-collapsed.ant-pro-sider-menu-sider + .ant-layout .ant-pro-global-header-trigger {
-  width: 80px;
-  text-align: center;
+  // width: 80px;
+  // text-align: center;
 }
 }
 @media (max-width: 767px) {

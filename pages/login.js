@@ -83,7 +83,7 @@ function login() {
             </div>
             <div style={{paddingTop: 100}}>
                 <Card style={{width: '40%', marginTop: 100, margin: 'auto', textAlign: 'center'}}>
-                    <Image src="/key.svg" className="changepass-img" width={180}/>
+                    <Image preview={false} src="/key.svg" className="changepass-img" width={180}/>
                     <Form
                         style={style.form}
                         name="basic"
