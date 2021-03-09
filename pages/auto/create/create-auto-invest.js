@@ -12,7 +12,7 @@ export default function createAutoInvestRule() {
   const [switchLoading, setSwitchLoading] = useState(true);
   const [autoInvest, setAutoInvest] = useState(null);
   const decoded = jwt.decode(Cookies.get('access_token'));
-  const custClass = decoded.CfInfo.CustClass;
+  const custClass = decoded?.CfInfo?.CustClass;
 
   const getAutoInvest = async () => {
     try {
@@ -168,7 +168,7 @@ export default function createAutoInvestRule() {
             MaxRate: autoInvest?.MaxRate || 0
           }}
         >
-          <Row gutter={48, 48}>
+          <Row gutter={48}>
             <Col span="12">
               {
                 custClass === 'GOLD' || custClass === 'DIAMOND'
