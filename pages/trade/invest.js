@@ -6,6 +6,7 @@ import { numberWithCommas } from '@configs/helper';
 import {unionBy} from 'lodash';
 import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
+import {toast} from 'react-toastify';
 
 export default function Example() {
   const cols = [
@@ -248,6 +249,17 @@ export default function Example() {
 
   const handleOk = async () => {
     let isLimitOK = true;
+    if (!accountInfo) {
+      toast('Unexpected error', {
+        autoClose: 5000,
+        hideProgressBar: true,
+        position: toast.POSITION.TOP_CENTER,
+        pauseOnHover: true,
+        type: toast.TYPE.ERROR
+      })
+      return;
+    }
+
     if ((accountInfo.TotalAsset >= 50000000 && accountInfo.TotalAsset < 100000000 && +modal.input >= accountInfo.TotalAsset / 5)
       || (accountInfo.TotalAsset >= 100000000 && accountInfo.TotalAsset < 300000000 && +modal.input >= accountInfo.TotalAsset * 15 / 100)
       || (accountInfo.TotalAsset >= 300000000 && +modal.input >= accountInfo.TotalAsset / 10)) {

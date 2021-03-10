@@ -36,11 +36,12 @@ export default function Withdraw() {
   ];
   const descriptionOption = description.map(des => (<Select.Option value={des} key={des}>{des}</Select.Option>))
   const [state, setState] = useState({});
+  const [bankName, setbankName] = useState('');
+
   let bankAccountList = [];
 
   useEffect(() => {
     const getBankAccountList = bankAccount => (<Select.Option value={bankAccount.RN} key={bankAccount.RN}>{bankAccount.AccountNumber}</Select.Option>);
-    const getBankNameList = bankAccount => (<Select.Option value={bankAccount.RN} key={bankAccount.RN}>{bankAccount.BankName}</Select.Option>);
     const fetchData = async () => {
       try {
         const { data } = await axios.get("/bank-account");
@@ -48,7 +49,6 @@ export default function Withdraw() {
         setState({
           bankAccountList: data.BankAccountList.BankAccount,
           bankAccountOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankAccountList) : [],
-          bankNameOption: data.BankAccountList ? data.BankAccountList.BankAccount.map(getBankNameList) : [],
         });
       } catch (e) {
         console.log(e.message);
@@ -59,11 +59,6 @@ export default function Withdraw() {
   }, []);
 
   const onFinish = values => {
-    if (values.bankAccount !== values.bankName) {
-      //TODO
-      return;
-    };
-
     const transferMoney = async () => {
       try {
         const body = {
@@ -89,6 +84,10 @@ export default function Withdraw() {
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
+  const handleChangeBank = (value) => {
+    setbankName(state.bankAccountList.find(bankAccount => bankAccount.RN === value).BankName);
+    console.log(state.bankAccountList.find(bankAccount => bankAccount.RN === value).BankName)
+  }
 
   return (
     <MainLayout>
@@ -107,14 +106,14 @@ export default function Withdraw() {
             label="Nhập số tiền cần bán"
             name="amount"
           >
-            <Input suffix="VND" />
+            <Input suffix="VND" required />
           </Form.Item>
 
           <Form.Item
             label="Chọn tài khoản ngân hàng"
             name="bankAccount"
           >
-            <Select style={style.selectInput}>
+            <Select style={style.selectInput} onChange={handleChangeBank}>
               {state.bankAccountOption}
             </Select>
           </Form.Item>
@@ -123,9 +122,7 @@ export default function Withdraw() {
             label="Tên ngân hàng chuyển"
             name="bankName"
           >
-            <Select style={style.selectInput}>
-              {state.bankNameOption}
-            </Select>
+            <div className="bank-name">{bankName}</div>
           </Form.Item>
 
           <Form.Item
