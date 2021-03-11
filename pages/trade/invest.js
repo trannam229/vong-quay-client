@@ -220,7 +220,7 @@ export default function Example() {
   const renderModal = () => {
     if (!modal.itemDetail) return;
     return (
-      <Card className="invest-modal-card" title={`Số dư có thể đầu tư: ` + modal.itemDetail.BRegRemain}>
+      <Card className="invest-modal-card" title={`Số dư có thể đầu tư: ` + (accountInfo ? numberWithCommas(accountInfo?.AvlAmt) : 'No information')}>
         <Descriptions column={1} className="category-dashboard-header" bordered title={modal.itemDetail.ShortName || modal.itemDetail.FullName}>
           <Descriptions.Item label="Đã đăng ký">{modal.itemDetail.invested}</Descriptions.Item>
           <Descriptions.Item label="Mục tiêu">{modal.itemDetail.BRegAmt}</Descriptions.Item>
