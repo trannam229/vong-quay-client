@@ -8,27 +8,20 @@ import { numberWithCommas } from '@configs/helper';
 export default function Example() {
   const columns = [
     {
-      title: 'Thời gian',
-      dataIndex: 'time',
-      key: 'time',
-      width: 229
+      title: 'Nội dung',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: 'Số tiền',
+      key: 'amt',
+      dataIndex: 'amt',
     },
     {
       title: 'Số REF',
       dataIndex: 'ref',
       key: 'ref',
       width: 145
-    },
-    {
-      title: 'Nội dung',
-      dataIndex: 'description',
-      key: 'description',
-      width: 790
-    },
-    {
-      title: 'Số tiền',
-      key: 'amt',
-      dataIndex: 'amt',
     },
   ];
 
@@ -43,7 +36,7 @@ export default function Example() {
       time: moment(item.txdate).utc().format('DD/MM/YYYY | HH:mm:ss'),
       ref: item.txnum,
       description: item.txdesc,
-      amt: item.Credit ? numberWithCommas(item.Credit) : numberWithCommas(-item.Debit)
+      amt: item.Credit ? '+' + numberWithCommas(item.Credit) : numberWithCommas(-item.Debit)
     };
   };
 
@@ -88,7 +81,7 @@ export default function Example() {
     },
     infoDetail: {
       borderRadius: 5,
-      backgroundColor: '#c2f1ff',
+      backgroundColor: '#d4ebff',
       padding: '20px 20px',
       textAlign: 'center'
     }

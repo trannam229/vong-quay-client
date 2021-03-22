@@ -179,7 +179,7 @@ export default function Example() {
           dataIndex: 'int',
         },
         {
-          title: 'Số tiền',
+          title: 'Vốn gốc còn lại',
           key: 'amt',
           dataIndex: 'amt',
         },
@@ -326,9 +326,9 @@ export default function Example() {
           <Descriptions column={4}>
             <Descriptions.Item label="Tên khách hàng" span={4}>{modal.itemDetail?.name  || 'Không xác định'}</Descriptions.Item>
             <Descriptions.Item label="Ngày giao dịch">{modal.itemDetail?.rlsDate  || 'Không xác định'}</Descriptions.Item>
-            <Descriptions.Item label="Số hợp đồng">{modal.itemDetail?.lnacctno  || 'Không xác định'}</Descriptions.Item>
+            <Descriptions.Item label="Vốn gốc còn lại">{modal.itemDetail?.amt  || 'Không xác định'}</Descriptions.Item>
             <Descriptions.Item label="Trạng thái">{statusList[modal.itemDetail?.DebtType] || 'Không xác định'}</Descriptions.Item>
-            <Descriptions.Item label="Lãi suất">{modal.itemDetail?.int  || 'Không xác định'}</Descriptions.Item>
+            <Descriptions.Item label="Lợi suất đầu tư">{modal.itemDetail?.int  || 'Không xác định'}</Descriptions.Item>
           </Descriptions>
           <Table
             bordered="true"

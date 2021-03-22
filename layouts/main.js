@@ -4,6 +4,8 @@ import {useRouter} from 'next/router'
 import Cookies from 'js-cookie';
 import RouterConfigs from "../config-router";
 import {useEffect} from 'react';
+import { Image } from 'antd';
+import jwt from 'jsonwebtoken';
 
 const ProLayout = dynamic(() => import('@ant-design/pro-layout'), {
     ssr: false,
@@ -24,13 +26,17 @@ const menuItemRender = (options, element) => (
 
 const headerRender = (config) => {
     const user = Cookies.get('account_name');
+    const decoded = jwt.decode(Cookies.get('access_token'));
 
     return (
-        <div className="d-flex hello-user justify-content-end mr-5">
-            Xin chào nhà đầu tư {user}
-            <img src="/vietnam.svg" className="ml-3" width="32"/>
-            <img src="/united-kingdom.svg" className="ml-3" width="32"/>
-        </div>
+      <div className="d-flex hello-user justify-content-end mr-5">
+        <Image preview={false} width={60} style={{ marginTop: -18 }} src={`/${decoded?.CfInfo?.CustClass ? decoded?.CfInfo?.CustClass?.toLowerCase() : 'medal'}.svg`} />
+
+        <p>Xin chào nhà đầu tư {user}</p>
+        <Link href="/account/logout" className="m-auto">
+          <a><img src="/logout-01.svg" className="ml-3" width="32" style={{ marginTop: -5 }} /></a>
+        </Link>
+      </div>
     )
 }
 
