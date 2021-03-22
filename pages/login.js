@@ -76,9 +76,7 @@ function login() {
         <>
             <div className="ant-pro-sider-menu-logo d-flex justify-content-between" id="logo">
                 <div className="text-left pl-5"><img src="/logo-white.png" alt="logo"/></div>
-                <div className="d-flex hello-user justify-content-end mr-5"><img
-                    src="/vietnam.svg" className="ml-3 p-2" width="32"/><img src="/united-kingdom.svg" className="ml-3 p-2"
-                                                                         width="32"/>
+                <div className="d-flex hello-user justify-content-end mr-5">
             </div>
             </div>
             <div style={{paddingTop: 100}}>
