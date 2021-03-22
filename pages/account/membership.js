@@ -103,9 +103,9 @@ export default function Example() {
       <Row justify="space-between">
         {
           [
-            { medal: 'bronze', name: 'ĐỒNG', benefit: ['Live chat', 'Auto invest (sử dụng hết số dư và Min max)'] },
-            { medal: 'silver', name: 'BẠC', benefit: ['Live chat', 'Auto invest (sử dụng hết số dư, hạn mức tối đa theo người gọi vốn)', 'Quà tặng'] },
-            { medal: 'gold', name: 'VÀNG', benefit: ['Live chat', 'Auto invest (đầy đủ tính năng)', 'Quà tặng', 'Tham gia event', 'Quà tặng sinh nhật'] },
+            { medal: 'bronze', name: 'ĐỒNG', benefit: ['Auto invest (sử dụng hết số dư và Min max)'] },
+            { medal: 'silver', name: 'BẠC', benefit: ['Auto invest (sử dụng hết số dư, hạn mức tối đa theo người gọi vốn)', 'Quà tặng'] },
+            { medal: 'gold', name: 'VÀNG', benefit: ['Auto invest (đầy đủ tính năng)', 'Quà tặng', 'Tham gia event', 'Quà tặng sinh nhật'] },
             { medal: 'diamond', name: 'KIM CƯƠNG', benefit: ['Được nhận mọi ưu đãi', 'Tiếp cận các sản phẩm mới', 'Có nhân viên chăm sóc đặc biệt'] }
           ].map(item => {
             return (
