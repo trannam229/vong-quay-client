@@ -103,7 +103,7 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
         <Row>
           <Col
             span={10}
-            style={{ backgroundColor: "#A4EAFF" }}
+            style={{ backgroundColor: "#d4ebff" }}
             className="p-2 pr-4 pl-4"
           >
             <Row>
@@ -113,7 +113,7 @@ Hãy giới thiệu thêm nhiều bạn bè tham gia đầu tư để nhận th�
           </Col>
           <Col
             span={10}
-            style={{ backgroundColor: "#A4EAFF" }}
+            style={{ backgroundColor: "#d4ebff" }}
             offset={4}
             className="p-2 pr-4 pl-4"
           >
