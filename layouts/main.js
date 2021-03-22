@@ -34,7 +34,7 @@ const headerRender = (config) => {
 
         <p>Xin chào nhà đầu tư {user}</p>
         <Link href="/account/logout" className="m-auto">
-          <a><img src="/logout-01.svg" className="ml-3" width="32" style={{ marginTop: -5 }} /></a>
+          <a><img src="/logout-01.svg" className="ml-3" width="32" style={{ marginTop: -5, transform:'rotate(180deg)' }} /></a>
         </Link>
       </div>
     )
