@@ -1,5 +1,5 @@
 import MainLayout from '@layouts/main'
-import { PageHeader, Row, Col, Card } from 'antd';
+import { PageHeader, Row, Col, Card, Select } from 'antd';
 
 export default function Example() {
   const style = {
@@ -8,7 +8,6 @@ export default function Example() {
       paddingTop: 0
     },
     info: {
-      borderRadius: '20px',
       border: '2px #339ffe solid',
     },
     label: {
@@ -21,6 +20,27 @@ export default function Example() {
       border: 'unset'
     }
   }
+  const descriptionCustType = [
+    {
+      id: 1,
+      name: 'Ngân hàng TMCP Xăng dầu Petrolimex (PG Bank) - Chi nhánh Thăng Long'
+    },
+    {
+      id: 2,
+      name: 'Ngân hàng TMCP Ngoại Thương Việt Nam (VCB) - Chi nhánh Tây Hà Nội'
+    },{
+      id: 3,
+      name: 'Ngân hàng TMCP Kỹ Thương Việt Nam (TCB) - Chi nhánh Đông Đô'
+    },{
+      id: 4,
+      name: 'Ngân hàng Đầu Tư và Phát Triển Việt Nam (BIDV) - Chi nhánh Đống Đa'
+    },{
+      id: 5,
+      name: 'Ngân hàng TMCP Công Thương Việt Nam (VIETTIN) - Chi nhánh Tây Hà Nội'
+    }
+  ];
+  const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des.id} key={des.id}>{des.name}</Select.Option>))
+
   return (
     <MainLayout>
       <Card style={style.card}>
