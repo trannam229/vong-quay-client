@@ -14,6 +14,16 @@ exports.account = async (req, res) => {
   }
 };
 
+exports.getBankInfo = async (req, res) => {
+  try {
+    const response = await soapTrading('GetBankInfo');
+    return successResponse(res, response.GetBankInfoResult);
+  } catch (e) {
+    return errorResponse(res, e.message);
+  }
+};
+
+
 // RE: reference
 exports.re = async (req, res) => {
   try {

@@ -20,6 +20,7 @@ router.post('/change-password', auth, authCtr.changePassword);
 
 //Online Trading
 router.get('/account', auth, tradingCtr.account);
+router.get('/bank-info', tradingCtr.getBankInfo);
 router.get('/re', auth, tradingCtr.re);
 router.get('/price-board', auth, tradingCtr.getPriceBoard);
 router.get('/price-board-hkd', auth, tradingCtr.getPriceBoardHKD);

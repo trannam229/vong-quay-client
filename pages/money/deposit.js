@@ -1,5 +1,7 @@
 import MainLayout from '@layouts/main'
 import { PageHeader, Row, Col, Card, Select } from 'antd';
+import { useEffect, useState } from 'react';
+import axios from '../../configs/api-request';
 
 export default function Example() {
   const style = {
@@ -20,26 +22,27 @@ export default function Example() {
       border: 'unset'
     }
   }
-  const descriptionCustType = [
-    {
-      id: 1,
-      name: 'Ngân hàng TMCP Xăng dầu Petrolimex (PG Bank) - Chi nhánh Thăng Long'
-    },
-    {
-      id: 2,
-      name: 'Ngân hàng TMCP Ngoại Thương Việt Nam (VCB) - Chi nhánh Tây Hà Nội'
-    },{
-      id: 3,
-      name: 'Ngân hàng TMCP Kỹ Thương Việt Nam (TCB) - Chi nhánh Đông Đô'
-    },{
-      id: 4,
-      name: 'Ngân hàng Đầu Tư và Phát Triển Việt Nam (BIDV) - Chi nhánh Đống Đa'
-    },{
-      id: 5,
-      name: 'Ngân hàng TMCP Công Thương Việt Nam (VIETTIN) - Chi nhánh Tây Hà Nội'
-    }
-  ];
-  const descriptionOptionCustType = descriptionCustType.map(des => (<Select.Option value={des.id} key={des.id}>{des.name}</Select.Option>))
+
+  const [banks, setBanks] = useState([]);
+  const [bankScid, setBankScid] = useState('Vui lòng chọn ngân hàng phía dưới');
+  const [bankAccount, setBankAccount] = useState('Vui lòng chọn ngân hàng phía dưới');
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await axios.get('/bank-info');
+        setBanks(data.Bankinfo.BankInfo)
+      } catch (e) {
+        console.log(e);
+      };
+    };
+    fetchData();
+  }, []);
+
+  const handleChangeBank = (value) => {
+    setBankScid(value);
+    setBankAccount(banks.find(bank => bank.Scid === value).Receiver);
+  }
 
   return (
     <MainLayout>
@@ -56,17 +59,23 @@ export default function Example() {
 
         <Row className="mt-5">
           <Col span="6" className="p-2" style={style.label}>Số tài khoản</Col>
-          <Col span="16" className="p-2 pl-4" style={style.info}>1237040197629</Col>
+          <Col span="16" className="p-2 pl-4" style={style.info}>{bankScid}</Col>
         </Row>
 
         <Row className="mt-5">
           <Col span="6" className="p-2" style={style.label}>Chủ tài khoản</Col>
-          <Col span="16" className="p-2 pl-4" style={style.info}>Công ty CP Lendbiz</Col>
+          <Col span="16" className="p-2 pl-4" style={style.info}>{bankAccount}</Col>
         </Row>
 
-        <Row className="mt-5">
+        <Row className="mt-5 deposit-select-bank">
           <Col span="6" className="p-2" style={style.label}>Mở tại</Col>
-          <Col span="16" className="p-2 pl-4" style={style.info}>Ngân hàng TMCP Xăng dầu Petrolimex (PG Bank) - Chi nhánh Thăng Long</Col>
+          <Col span="16">
+            <Select onChange={handleChangeBank}>
+              {banks
+              ? banks.map(bank => (<Select.Option value={bank.Scid} key={bank.Scid}>{bank.BankName}</Select.Option>))
+              : (<Select.Option value={0} key={0}>No information</Select.Option>)}
+            </Select>
+          </Col>
         </Row>
 
         <Row className="mt-5">
