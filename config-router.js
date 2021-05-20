@@ -1,87 +1,31 @@
-import { AppstoreOutlined, DollarCircleOutlined, SyncOutlined, UserOutlined, DiffOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, DollarCircleOutlined, CreditCardOutlined, UserOutlined, CheckCircleOutlined, PlayCircleOutlined, UnorderedListOutlined } from '@ant-design/icons';
 
 export default {
   path: '/',
   routes: [
     {
-      path: '/category',
-      name: 'Danh mục',
-      icon: <AppstoreOutlined />,
-      routes: [
-        {
-          path: '/category/dashboard',
-          name: 'Tổng quan',
-        },
-        {
-          path: '/category/account-statement',
-          name: 'Sao kê tài khoản',
-        },
-        {
-          path: '/category/invest-category',
-          name: 'Danh mục đầu tư',
-        },
-        {
-          path: '/category/income-report',
-          name: 'Báo cáo thu nhập',
-        },
-        {
-          path: '/category/processing-category',
-          name: 'Danh mục chờ khớp lệnh',
-        },
-      ],
-    },
-    {
-      path: '/trade',
-      name: 'Giao dịch',
-      icon: <DiffOutlined />,
-      routes: [
-        {
-          path: '/trade/invest',
-          name: 'Đầu tư',
-        },
-        {
-          path: '/trade/sell',
-          name: 'Thoái vốn',
-        }
-      ],
-    },
-    {
-      path: '/money',
-      name: 'Tiền',
-      icon: <SyncOutlined />,
-      routes: [
-        {
-          path: '/money/deposit',
-          name: 'Nộp tiền',
-        },
-        {
-          path: '/money/withdraw',
-          name: 'Rút tiền',
-        },
-
-        {
-          path: '/money/payment',
-          name: 'Lệnh chờ thanh toán',
-        }
-      ]
-    },
-    {
-      path: '/auto/create/create-auto-invest',
-      name: 'Đầu tư tự động',
+      path: '/card',
+      name: 'Nạp thẻ',
       icon: <DollarCircleOutlined />,
     },
     {
+      path: '/rotation',
+      name: 'Quay thưởng',
+      icon: <CreditCardOutlined />,
+    },
+    {
+      path: '/diamond',
+      name: 'Rút kim cương',
+      icon: <PlayCircleOutlined />,
+    },
+    {
       path: '/account',
-      name: 'Tài khoản',
-      icon: <UserOutlined />,
+      name: 'Thông tin cá nhân',
+      icon: <UnorderedListOutlined />,
       routes: [
         {
-          path: '/account/membership',
-          name: 'Hạng thành viên',
-        },
-        {
-          path: '/account/bonus',
-          name: 'Tiền thưởng',
+          path: '/account/information',
+          name: 'Thông tin cá nhân',
         },
         {
           path: '/account/changepassword',
@@ -90,8 +34,8 @@ export default {
         {
           path: '/account/logout',
           name: 'Đăng xuất',
-        },
-      ],
+        }
+      ]
     },
   ],
 }
