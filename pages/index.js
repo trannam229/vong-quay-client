@@ -92,7 +92,7 @@ export default function Home() {
 
   const fetch = async () => {
     try {
-      const appId = localStorage.getItem('appId');
+      const appId = localStorage.getItem('appId') || 1;
       setUnit(localStorage.getItem('unit'))
 
       const resListRotation = await axios.get(`/rotation/getByAppId?appId=${appId}`);
