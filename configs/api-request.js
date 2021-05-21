@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { notification } from 'antd';
 
 const dev = process.env.NODE_ENV !== "production";
-const url = !dev ? "http://localhost:3000/" : "http://vongquay.shop/";
+const url = !dev ? "http://localhost:3000/" : "http://vongquay.shop/api/";
 axios.defaults.baseURL = !dev ? url + 'api' : url;
 const success = [200, 304];
 
