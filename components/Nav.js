@@ -26,7 +26,7 @@ export default function Nav() {
               <Link href="/card">NẠP THẺ</Link>
             </li>
             <li>
-              <Link href="/rotation">BÀI VIẾT</Link>
+              <Link href="/diamond">RÚT KIM CƯƠNG</Link>
             </li>
             <li>
               {accessToken

@@ -16,7 +16,7 @@ function login() {
       localStorage.setItem('unit', 'kim cương');
     
       const res = await axios.post('/login', { ...values, appId: localStorage.getItem('appId') });
-      Cookies.set('access-token', res.data.accessToken);
+      Cookies.set('access-token', res.data.accessToken, { expires: 1 / 48 });
       localStorage.setItem('username', values.username)
 
       notification.open({

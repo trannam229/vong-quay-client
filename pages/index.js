@@ -96,11 +96,10 @@ export default function Home() {
       setUnit(localStorage.getItem('unit'))
 
       const resListRotation = await axios.get(`/rotation/getByAppId?appId=${appId}`);
-      resListRotation.data.map(x => {
+      setlistRotation(resListRotation.data.map(x => {
         x.key = x.id;
         return x;
-      })
-      setlistRotation(resListRotation.data);
+      }));
 
       // const res = await axios.get('/diamondDraw/getAll');
       // res.data.filter(x => x.appId == appId && x.status == 0);
@@ -128,7 +127,7 @@ export default function Home() {
       <Card style={style.card}>
         <Row>
           <Col span={12} className="pt-4 mb-5">
-            <Spin/>
+            <Spin rotation={listRotation.length ? listRotation[1] : {}}/>
           </Col>
           <Col span={12}>
               <Table
@@ -144,12 +143,12 @@ export default function Home() {
         </Row>
       </Card>
 
-      <Card style={ {...style.card, ...style.cardListRotation} } className="rotation-index">
+      <Card style={ {...style.card, ...style.cardListRotation} } className="rotation-index mt-5">
         <Row>
           {
             listRotation.map(x => (
               <>
-                <Col span={6} className="ml-3">
+                <Col key={x.key} span={6} className="ml-3">
                   <Image preview={false} src={`http://vongquay.shop/${x.thumbnail}`} />
                   <p className="rotation-name orange-color">{x.rotationName}</p>
                 </Col>
