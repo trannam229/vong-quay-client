@@ -4,7 +4,7 @@ import { notification } from 'antd';
 
 const dev = process.env.NODE_ENV !== "production";
 const url = "http://vongquay.shop/api/";
-// axios.defaults.baseURL = !dev ? url + 'api' : url;
+axios.defaults.baseURL = url;
 const success = [200, 304];
 
 axios.interceptors.request.use(function (config) {
