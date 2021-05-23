@@ -100,7 +100,7 @@ function login() {
   const contentList = {
     tab1: (
       <>
-        <Image preview={false} src="/key.svg" className="changepass-img" width={180} />
+        <Image preview={false} src="/gun/bullet.png" className="changepass-img" width={180} />
         <Form
           style={style.form}
           name="basic"
@@ -180,6 +180,7 @@ function login() {
       tabList={tabList}
       activeTabKey={tab.key}
       onTabChange={key => {onTabChange(key, 'key');}}
+      className="login-card"
     >
       {contentList[tab.key]}
     </Card>

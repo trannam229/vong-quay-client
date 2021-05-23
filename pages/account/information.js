@@ -3,16 +3,14 @@ import axios from '@configs/api-request';
 import { useEffect, useState } from 'react';
 import { numberWithCommas } from '@configs/helper';
 import moment from 'moment';
+import User from '../../components/User';
 
 export default function Example() {
-  const [user, setuser] = useState({});
   const [history, sethistory] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   const fetch = async () => {
     try {
-      const res = await axios.get(`/user/getUser`);
-      setuser(res.data);
       const res2 = await axios.get(`/history/findOne`);
       sethistory(res2.data);
       setIsLoading(false);
@@ -57,24 +55,24 @@ export default function Example() {
   }
   useEffect(() => { fetch() }, []);
   return (
-    <Card loading={isLoading} style={style.card} title="Thông tin cá nhân">
-      <Descriptions column={4} bordered layout="vertical">
-        <Descriptions.Item label="Tên đăng nhập">{user.username || 'Thông tin trống'}</Descriptions.Item>
-        <Descriptions.Item label="Tên đầy đủ">{user.fullName || 'Thông tin trống'}</Descriptions.Item>
-        <Descriptions.Item label="Email">{user.email || 'Thông tin trống'}</Descriptions.Item>
-        <Descriptions.Item label="Ngày đăng ký">{moment(user.createDate).format('DD/MM/YYYY | HH:mm:ss') || 'Thông tin trống'}</Descriptions.Item>
-        <Descriptions.Item label="Số tiền đã nạp (VND)">{(numberWithCommas(user.amount) || 'Thông tin trống')}</Descriptions.Item>
-        <Descriptions.Item label="Số tiền còn lại (VND)">{numberWithCommas(user.currentAmount) || 'Thông tin trống'}</Descriptions.Item>
-        <Descriptions.Item label="Tài sản (kim cương)">{numberWithCommas(user.diamond) || 'Thông tin trống'}</Descriptions.Item>
-      </Descriptions>
-
-      <Table
-        className="mt-4"
-        bordered="true"
-        dataSource={history}
-        columns={columns}
-        pagination={{ defaultPageSize: 10 }}
-      />
-    </Card>
+    <>
+      <div className='container-fluid information'>
+        <div className="row">
+          <div className="col-12 col-md-4">
+            <User></User>
+          </div>
+          <div className="col-12 col-md-8">
+            <Card loading={isLoading} style={style.card} className="history-card" title="Lịch sử quay">
+              <Table
+                bordered="true"
+                dataSource={history}
+                columns={columns}
+                pagination={{ defaultPageSize: 10 }}
+              />
+            </Card>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
