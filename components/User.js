@@ -36,9 +36,7 @@ export default function Example() {
         <Descriptions.Item label="Số tiền còn lại">{numberWithCommas(user.currentAmount) + ' VND'|| 'Thông tin trống'}</Descriptions.Item>
       </Descriptions>
 
-      {/* <Image src={`/character/${char}.png`} width="100%"/> */}
-      <Image src={`/character/${9}.png`} width="100%"/>
-
+      <Image src={`/character/${char}.png`} width="100%"/>
     </Card>
   )
 }
