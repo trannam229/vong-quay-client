@@ -176,7 +176,7 @@ function login() {
 
   return (
     <Card
-      style={{ width: '40%', marginTop: 100, margin: 'auto', textAlign: 'center' }}
+      style={{ width: '50%', marginTop: 100, margin: 'auto', textAlign: 'center' }}
       tabList={tabList}
       activeTabKey={tab.key}
       onTabChange={key => {onTabChange(key, 'key');}}

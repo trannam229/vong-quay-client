@@ -4,72 +4,75 @@ import { useEffect, useState } from 'react';
 import { numberWithCommas } from '@configs/helper';
 import moment from 'moment';
 import User from '../../components/User';
+import History from '../../components/History';
+import CardInput from '../../components/Card';
+import Diamond from '../../components/Diamond';
+import ChangePass from '../../components/ChangePass';
+import Logout from '../../components/Logout';
 
 export default function Example() {
-  const [history, sethistory] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [tab, setTab] = useState({ key: 'tab1' });
 
-  const fetch = async () => {
-    try {
-      const res2 = await axios.get(`/history/findOne`);
-      sethistory(res2.data);
-      setIsLoading(false);
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  const columns = [
+  const tabList = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      key: 'tab1',
+      tab: 'Lịch sử',
     },
     {
-      title: 'Hành động',
-      dataIndex: 'action',
-      key: 'action',
+      key: 'tab2',
+      tab: 'Nạp thẻ',
     },
     {
-      title: 'Thời gian',
-      dataIndex: 'createDate',
-      key: 'createDate',
-      render: (x) => moment(x).format('DD/MM/YYYY | HH:mm:ss')
+      key: 'tab3',
+      tab: 'Rút kim cương',
     },
     {
-      title: 'Miêu tả',
-      dataIndex: 'description',
-      key: 'description',
+      key: 'tab4',
+      tab: 'Đổi mật khẩu',
     },
     {
-      title: 'Số tiền',
-      dataIndex: 'money',
-      key: 'money',
-      render: (data) => numberWithCommas(data)
+      key: 'tab5',
+      tab: 'Đăng xuất',
     },
   ];
-  const style = {
-    card: {
-      width: '100%',
-      border: 'none',
-    }
-  }
-  useEffect(() => { fetch() }, []);
+
+  const contentList = {
+    tab1: (
+      <History></History>
+    ),
+    tab2: (
+      <CardInput></CardInput>
+    ),
+    tab3: (
+      <Diamond></Diamond>
+    ),
+    tab4: (
+      <ChangePass></ChangePass>
+    ),
+    tab5: (
+      <Logout></Logout>
+    ),
+  };
+
+  const onTabChange = (key, type) => {
+    setTab({ [type]: key });
+  };
   return (
     <>
       <div className='container-fluid information'>
         <div className="row">
+          <div className="col-12 col-md-8">
+            <Card
+              className="login-card info-card"
+              tabList={tabList}
+              activeTabKey={tab.key}
+              onTabChange={key => { onTabChange(key, 'key'); }}
+            >
+              {contentList[tab.key]}
+            </Card>
+          </div>
           <div className="col-12 col-md-4">
             <User></User>
-          </div>
-          <div className="col-12 col-md-8">
-            <Card loading={isLoading} style={style.card} className="history-card" title="Lịch sử quay">
-              <Table
-                bordered="true"
-                dataSource={history}
-                columns={columns}
-                pagination={{ defaultPageSize: 10 }}
-              />
-            </Card>
           </div>
         </div>
       </div>

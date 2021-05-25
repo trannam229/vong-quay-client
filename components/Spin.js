@@ -5,7 +5,6 @@ import _ from 'lodash';
 
 export default function Spin({ rotation }) {
   const [drawStyle, setDrawStyle] = useState({});
-
   const style = {
     span1: {
       clipPath: 'polygon(50% 100%, 92% 0, 8% 0%)',
@@ -34,25 +33,6 @@ export default function Spin({ rotation }) {
     },
   }
 
-  // const style = {
-  //   span: {
-  //     width: 0,
-  //     height: 0,
-  //     borderLeft: '122px solid transparent',
-  //     borderRight: '122px solid transparent',
-  //     borderBottom: '240px solid red',
-  //     top: '50%',
-  //   },
-  //   span1: {
-  //     left: 128,
-  //     transform: 'rotate(0deg)',
-  //   },
-  //   span2: {
-  //     left: 128,
-  //     transform: 'rotate(180deg)',
-  //   }
-  // }
-
   const id = rotation.id;
   const renderDraw = () => {
     if (_.isEmpty(rotation)) return '';
@@ -61,10 +41,10 @@ export default function Spin({ rotation }) {
       <div className="main-box" style={drawStyle}>
         <div className="box">
           <div className="box1">
-            <span style={{...style.span, ...style.span1}} className="span1"><b>{valueList[0].value}</b></span>
-            <span style={{...style.span, ...style.span2}} className="span2"><b>{valueList[1].value}</b></span>
-            <span style={style.span3} className="span3"><b>{valueList[2].value}</b></span>
-            <span style={style.span4} className="span4"><b>{valueList[3].value}</b></span>
+            <span style={{...style.span, ...style.span1}} className="span1"><b>{valueList[0]?.value || 0}</b></span>
+            <span style={{...style.span, ...style.span2}} className="span2"><b>{valueList[1]?.value || 0}</b></span>
+            <span style={style.span3} className="span3"><b>{valueList[2]?.value || 0}</b></span>
+            <span style={style.span4} className="span4"><b>{valueList[3]?.value || 0}</b></span>
           </div>
           <div className="box2">
             <span style={style.span1} className="span1"><b>{valueList[4]?.value || 0 }</b></span>
@@ -79,9 +59,10 @@ export default function Spin({ rotation }) {
 
   const randomDraw = (data) => {
     const index = rotation.createValueJsons.findIndex(x => x.valueId === data.valueId);
-    const x = 5;
+    const quantity = rotation.createValueJsons.length;
+    const x = 10;
     const y = 27;
-    const deg = (Math.floor(Math.random() * (x - y)) + y) * 360 - index*90;
+    const deg = (Math.floor(Math.random() * (x - y)) + y) * 360 - index*360/quantity;
     setDrawStyle({
       transition: 'all ease 5s',
       transform: `rotate(${+deg}deg)`
@@ -119,10 +100,14 @@ export default function Spin({ rotation }) {
   }
 
   return (
-    <div className="rotation-item">
-      {renderDraw()}
-      {/* <Image preview={false} style={drawStyle} width="90%" src='/rotation-sample.png' /> */}
-      <Image preview={false} className="rotation-btn" src="/btn-quay.png" onClick={draw} />
+    <div class="rotation-item-index">
+      <p className="rotation-name">{rotation.rotationName} - Chỉ {rotation.price}đ/lần</p>
+
+      <div className="rotation-item">
+        {renderDraw()}
+        {/* <Image preview={false} style={drawStyle} width="90%" src='/rotation-sample.png' /> */}
+        <Image preview={false} className="rotation-btn" src="/btn-quay.png" onClick={draw} />
+      </div>
     </div>
   )
 }

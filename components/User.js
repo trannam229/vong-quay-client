@@ -9,10 +9,11 @@ export default function Example() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetch = async () => {
+    setChar(Math.floor(Math.random() * 10));
+
     try {
       const res = await axios.get(`/user/getUser`);
       setuser(res.data);
-      setChar(Math.floor(Math.random() * 6));
       setIsLoading(false);
     } catch (e) {
       console.log(e)
@@ -32,8 +33,8 @@ export default function Example() {
         <Descriptions.Item label="Tên đầy đủ">{user.fullName || 'Thông tin trống'}</Descriptions.Item>
         <Descriptions.Item label="Email">{user.email || 'Thông tin trống'}</Descriptions.Item>
         <Descriptions.Item label="Tài sản">{numberWithCommas(user.diamond) + ' kim cương'|| 'Thông tin trống'}</Descriptions.Item>
-        <Descriptions.Item label="Số tiền đã nạp">{(numberWithCommas(user.amount) + ' VND'|| 'Thông tin trống')}</Descriptions.Item>
-        <Descriptions.Item label="Số tiền còn lại">{numberWithCommas(user.currentAmount) + ' VND'|| 'Thông tin trống'}</Descriptions.Item>
+        {/* <Descriptions.Item label="Số tiền đã nạp">{(numberWithCommas(user.amount) + ' VND'|| 'Thông tin trống')}</Descriptions.Item> */}
+        <Descriptions.Item label="Số tiền hiện có">{numberWithCommas(user.currentAmount) + ' VND'|| 'Thông tin trống'}</Descriptions.Item>
       </Descriptions>
 
       <Image src={`/character/${char}.png`} width="100%"/>

@@ -55,6 +55,12 @@
   button:active {
     cursor: url("/gun/bullet-hole.svg") 20 20, auto !important;
   }
+
+  .rotation-list {
+    &:hover, & .ant-image-img:hover {
+      cursor: url("/gun/gun-pointer-red.svg") 20 20, auto !important;
+    }
+  }
 }
 
 //Layout
@@ -100,46 +106,77 @@
   .menu {
     display: inline-block;
   }
-}
 
-.nav ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  list-style: none;
-  margin: 0;
-}
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 0;
 
-.nav ul li a {
-  position: relative;
-  padding-left: 15px;
-  font-size: 20px;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-left: 15px;
-  margin-right: 15px;
-  text-decoration: none;
-  transition: color .25s ease;
-  outline: none !important;
-  font-family: 'Roboto', sans-serif !important;
-  font-weight: 400 !important;
-
-  &:hover {
-    color: @color-1 !important;
+    li a {
+      position: relative;
+      padding-left: 15px;
+      font-size: 20px;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-left: 15px;
+      margin-right: 15px;
+      text-decoration: none;
+      transition: color .25s ease;
+      outline: none !important;
+      font-family: 'Roboto', sans-serif !important;
+      font-weight: 400 !important;
+    
+      &:hover {
+        color: @color-1 !important;
+      }
+    
+      &:before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 0 10px 10px;
+        border-color: transparent transparent @color-1 transparent;
+        transition: transform .25s ease;
+      }
+    }
   }
 
-  &:before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 0;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 0 10px 10px;
-    border-color: transparent transparent @color-1 transparent;
-    transition: transform .25s ease;
+  @media screen and (max-width: 1060px) {
+    .logo {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 557px) {
+    .menu {
+      ul {
+        padding-left: 0px;
+
+        li {
+          text-align: center;
+
+          a {
+            margin-left: 5px;
+            margin-right: 5px;
+            padding-left: 0px;
+            text-align: left;
+            font-size: 16px;
+
+            &:before {
+              top: 3px;
+              left: -12px;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -240,7 +277,7 @@
 
   .ant-table-title {
     text-align: center !important;
-    color: @color-1 !important;
+    color: @color-2 !important;
     font-size: 24px !important;
     border: none !important;
 
@@ -279,6 +316,89 @@
   }
 }
 
+.rotation-item-index {
+  width: 500px;
+
+  .rotation-name {
+    color: @color-2;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .rotation-item {
+    position: relative;
+    height: 500px;
+  
+    .main-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      .box {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 10px solid #fff;
+        overflow: hidden;
+      }
+  
+      .box1 {
+        span {
+          background-image: url(/bg.jpeg);
+          background-size: cover !important;
+        }
+      }
+  
+      .box2 {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-135deg);
+  
+        span {
+          background-image: url(/bg.jpeg);
+          background-size: cover !important;
+  
+        }
+      }
+  
+      span {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        display: inline-block;
+  
+        b {
+          width: 65px;
+          height: 65px;
+          line-height: 65px;
+          border-radius: 50%;
+          font-size: 26px;
+          text-align: center;
+          background-color: #fff;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          box-shadow: inset 0 3px 3px 0 #717171;
+        }
+      }
+    }
+  
+    .ant-image {
+      position: absolute;
+      width: 125px;
+      top: 33%;
+      left: 187px;
+  
+      &:hover {
+        cursor: url("/gun/gun-pointer.svg");
+      }
+    }
+  }
+}
+
 //Rotation
 .rotation {
   .ant-card-head-title {
@@ -288,77 +408,6 @@
 
   .rotation-name {
     font-size: 24px;
-  }
-}
-
-.rotation-item {
-  position: relative;
-
-  .main-box {
-    position: relative;
-    width: 500px;
-    height: 500px;
-
-    .box {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 10px solid #fff;
-      overflow: hidden;
-    }
-
-    .box1 {
-      span {
-        background-image: url(/bg.jpeg);
-        background-size: cover !important;
-      }
-    }
-
-    .box2 {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-135deg);
-
-      span {
-        background-image: url(/bg.jpeg);
-        background-size: cover !important;
-
-      }
-    }
-
-    span {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      display: inline-block;
-
-      b {
-        width: 65px;
-        height: 65px;
-        line-height: 65px;
-        border-radius: 50%;
-        font-size: 26px;
-        text-align: center;
-        background-color: #fff;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: inset 0 3px 3px 0 #717171;
-      }
-    }
-  }
-
-  .ant-image {
-    position: absolute;
-    width: 125px;
-    top: 33%;
-    left: 187px;
-
-    &:hover {
-      cursor: url("/gun/gun-pointer.svg");
-    }
   }
 }
 
@@ -385,12 +434,30 @@
   }
 }
 
-//Information
+@media screen and (max-width: 767px) { 
+  .login-card, .diamond-card, .card-card {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 960px !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 1140px !important;
+  }
+}
+
+//User
 .user-card {
   background-color: rgba(0, 0, 0, 0.5) !important;
   border: none !important;
   height: calc(100vh - 140px) !important;
-  overflow: hidden;
+  overflow: scroll;
   * {
     color: white !important;
   }
@@ -426,13 +493,64 @@
   }
 }
 
-.history-card {
+.info-card {
   background-color: rgba(0, 0, 0, 0.5) !important;
-  border: none !important;
   height: calc(100vh - 140px) !important;
+  overflow: scroll;
+
+  .ant-card-body {
+    padding: 12px 5px !important;
+  }
+
+  .ant-card {
+    background-color: rgba(0, 0, 0, 0) !important;
+  }
+}
+
+//Card
+.card-card {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border: none !important;
 
   .ant-card-head-title {
     color: @color-1 !important;
     font-size: 20px !important;
+  }
+}
+
+.history-card {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border: none !important;
+
+  .ant-card-head-title {
+    color: @color-1 !important;
+    font-size: 20px !important;
+  }
+
+  .ant-pagination-item-ellipsis {
+    color: #fff !important;
+  }
+}
+
+//Diamond
+.diamond-card {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border: none !important;
+
+  .ant-card-head-title {
+    color: @color-1 !important;
+    font-size: 20px !important;
+  }
+
+  .ant-form-item-label label{
+    color: #fff !important;
+  }
+
+  .ant-input[disabled] {
+    color: black !important;
+  }
+
+  .ant-select-selection-item {
+    text-align: left !important;
   }
 }

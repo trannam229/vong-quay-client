@@ -10,6 +10,7 @@ export default function Home() {
   const [dataTable, setDataTable] = useState([]);
   const [listRotation, setlistRotation] = useState([]);
   const [unit, setUnit] = useState();
+  const [rotationIndex, setRotationIndex ] = useState(0);
 
   const column = [
     {
@@ -73,6 +74,12 @@ export default function Home() {
       username: 'trannam4',
       value: 500,
       time: '5 phút trước',
+    },
+    {
+      key: 8,
+      username: 'trannam4',
+      value: 500,
+      time: '5 phút trước',
     }
   ]
 
@@ -116,6 +123,11 @@ export default function Home() {
 
   useEffect(() => { fetch() }, []);
 
+  const changeRotation = (index) => {
+    setRotationIndex(index);
+    window.scrollTo(0, 0);
+  }
+
   return (
     <>
       <div className="text-index text-center pb-1">
@@ -126,10 +138,10 @@ export default function Home() {
 
       <Card style={style.card}>
         <Row>
-          <Col span={12} className="pt-4 mb-5">
-            <Spin rotation={listRotation.length ? listRotation[1] : {}}/>
+          <Col span={24} md={12} sm={24} className="pt-3 mb-5">
+            <Spin rotation={listRotation.length ? listRotation[rotationIndex] : {}}/>
           </Col>
-          <Col span={12}>
+          <Col span={24} md={12} sm={24}>
               <Table
                 bordered
                 title={() => "LƯỢT QUAY GẦN ĐÂY"}
@@ -137,7 +149,7 @@ export default function Home() {
                 columns={column}
                 className="table-index"
                 dataSource={dataTable}
-                pagination={{ hideOnSinglePage: true, defaultPageSize: 7 }}
+                pagination={{ hideOnSinglePage: true, defaultPageSize: 8 }}
               />
           </Col>
         </Row>
@@ -146,11 +158,12 @@ export default function Home() {
       <Card style={ {...style.card, ...style.cardListRotation} } className="rotation-index mt-5">
         <Row>
           {
-            listRotation.map(x => (
+            listRotation.map((x, index) => (
               <>
-                <Col key={x.key} span={6} className="ml-3">
+                <Col onClick={() => changeRotation(index)} key={x.key} span={6} className="rotation-list ml-3">
                   <Image preview={false} src={`http://vongquay.shop/${x.thumbnail}`} />
                   <p className="rotation-name orange-color">{x.rotationName}</p>
+                  <p className="rotation-name orange-color">Giá chỉ {x.price} đồng</p>
                 </Col>
               </>
             ))
