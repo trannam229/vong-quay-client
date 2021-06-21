@@ -17,6 +17,7 @@ export default function MyApp({ Component, pageProps }) {
   //   route.push({ pathname: '/login' })
   //   return;
   // }
+
   return (
   <Layout>
     <Component {...pageProps} />

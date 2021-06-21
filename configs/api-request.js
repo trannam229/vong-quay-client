@@ -26,7 +26,7 @@ axios.interceptors.response.use((res) => {
 
   return res;
 }, (error) => {
-  if (error.response.status == '403') {
+  if (error.response.status == '403' && (res.config.url === '/login/admin' || res.config.url === '/login' || res.config.url === '/user/register')) {
     notification.open({
       type: 'error',
       description: 'Bạn chưa đăng nhập',

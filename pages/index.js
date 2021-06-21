@@ -6,6 +6,7 @@ import { numberWithCommas } from '@configs/helper';
 import { Card, Table, Row, Col, Image } from 'antd';
 import moment from 'moment';
 import Spin from 'components/Spin';
+
 export default function Home() {
   const [dataTable, setDataTable] = useState([]);
   const [listRotation, setlistRotation] = useState([]);
@@ -138,7 +139,7 @@ export default function Home() {
 
       <Card style={style.card}>
         <Row>
-          <Col span={24} md={12} sm={24} className="pt-3 mb-5">
+          <Col span={24} md={12} sm={24} className="pt-3 mb-5 pr-3">
             <Spin rotation={listRotation.length ? listRotation[rotationIndex] : {}}/>
           </Col>
           <Col span={24} md={12} sm={24}>

@@ -54,11 +54,7 @@ function login() {
 
       setTab({ key: 'tab2' })
     } catch (e) {
-      notification.open({
-        type: 'error',
-        message: 'Đăng nhập thất bại!',
-        description: 'Sai tên đăng nhập hoặc mật khẩu.',
-      });
+      console.log(e);
     }
   };
 

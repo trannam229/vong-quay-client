@@ -57,6 +57,7 @@ export default function Example() {
   const onTabChange = (key, type) => {
     setTab({ [type]: key });
   };
+
   return (
     <>
       <div className='container-fluid information'>
